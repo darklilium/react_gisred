@@ -1,0 +1,229 @@
+.ap__info_wrapper{
+visibility: hidden;
+}
+
+.table{
+  padding: 0;
+  margin: 0;
+}
+
+.griddle{
+
+    bottom: 0;
+    font-size: 11px;
+    padding: 0;
+    margin: 0;
+
+}
+
+.ap__wrapper-tables{
+  z-index: 5;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column-reverse;
+  visibility: hidden;
+}
+
+.ap__info_wrapper-medidores{
+  background: ghostwhite;
+  width: 100%;
+  z-index: 2;
+  flex-direction: column;
+  display: none;
+}
+
+.ap__info_wrapper-luminarias{
+  background: ghostwhite;
+  width: 100%;
+  z-index: 2;
+  display: none;
+}
+
+.ap__info_wrapper-luminariasAsociadas{
+  background: ghostwhite;
+  width: 100%;
+  z-index: 2;
+  flex-direction: column;
+  display: none;
+}
+
+.medidores_filter{
+  display: flex;
+    flex-direction: row;
+}
+
+.medidores_tools{
+  display: flex;
+  flex-direction: column;
+  min-width : 5%;
+
+}
+.medidores_tools_h6{
+  height: 33%;
+  color: ghostwhite;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.medidores_tools_buttons{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.ap_table_navbar{
+  flex-grow: 1;
+}
+
+
+.h6_medidores{
+    background: cornflowerblue;
+}
+
+.h6_luminarias{
+    background: green;
+}
+
+.h6_luminariasAsociadas{
+  background: lightseagreen;
+}
+
+@media screen and (min-width: 641px) and (max-width: 1440px) and (orientation: landscape)  {
+
+  //select all the elements inside the parent element.
+  .ap__wrapper-tables input{
+    max-width: 9em;
+
+  }
+}
+
+
+
+@media screen and (max-width: 640px) and (min-width:481px) and (orientation: portrait)  {
+
+  //select all the elements inside the parent element.
+  .ap__wrapper-tables input{
+    max-width: 7em;
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+}
+
+@media screen and (max-width: 640px) and (min-width:481px) and (orientation: landscape)  {
+  .griddle{
+
+      bottom: 0;
+      font-size: 8px;
+      padding: 0;
+      margin: 0;
+
+  }
+
+}
+@media screen and (max-width: 480px) and (min-width:320px) and (orientation: portrait)  {
+  .ap__info_wrapper{
+  visibility: hidden;
+  }
+
+  .table{
+    padding: 0;
+      margin: 0;
+  }
+
+  .griddle{
+
+      bottom: 0;
+      font-size: 8px;
+      padding: 0;
+      margin: 0;
+
+  }
+
+  .ap__wrapper-tables{
+    z-index: 5;
+    bottom: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column-reverse;
+    visibility: hidden;
+  }
+
+  .ap__info_wrapper-medidores{
+    background: ghostwhite;
+    width: 100%;
+    z-index: 2;
+    display: none;
+  }
+
+  .ap__info_wrapper-luminarias{
+    background: ghostwhite;
+    width: 100%;
+    z-index: 2;
+    display: none;
+  }
+
+  .medidores_tools{
+    min-width : 10%;
+  }
+  //select all the elements inside the parent element.
+  .ap__wrapper-tables input{
+    width: 5em;
+  }
+}
+
+@media screen and (max-width: 480px) and (min-width:320px) and (orientation: landscape)  {
+  .ap__info_wrapper{
+  visibility: hidden;
+  }
+
+  .table{
+    padding: 0;
+      margin: 0;
+  }
+
+  .griddle{
+
+      bottom: 0;
+      font-size: 8px;
+      padding: 0;
+      margin: 0;
+
+  }
+
+  .ap__wrapper-tables{
+    z-index: 5;
+    bottom: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column-reverse !important;
+    visibility: hidden;
+    height: 100%;
+  }
+
+  .ap__info_wrapper-medidores{
+    background: ghostwhite;
+    width: 100%;
+    z-index: 2;
+  display: none;
+  }
+
+  .ap__info_wrapper-luminarias{
+    background: ghostwhite;
+    width: 100%;
+    z-index: 2;
+      display: none;
+  }
+
+  .medidores_tools{
+
+    min-width : 13%;
+
+  }
+  //select all the elements inside the parent element.
+  .ap__wrapper-tables input{
+    width: 7em;
+  }
+
+}
