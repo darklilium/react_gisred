@@ -293,7 +293,7 @@ function getUserPermission(user, token, callback){
     getPermission((map, featureSet) => {
 
         let permissions = featureSet.features.map((permission)=>{
-          let per = [{
+          let per = {
             "username": permission.attributes['usuario'],
             "application": permission.attributes['modulo'],
             "module": permission.attributes['widget'],
@@ -301,10 +301,10 @@ function getUserPermission(user, token, callback){
             "update": permission.attributes['update_'],
             "delete": permission.attributes['delete_'],
             "platform": permission.attributes['plataforma']
-          }];
+          };
           return per;
         });
-        console.log(permissions);
+
         callback(permissions);
 
     },(errorQuery)=>{
