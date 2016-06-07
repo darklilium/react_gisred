@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {moduleList, insertMyData} from '../../../js/services/dashboard/moduleList';
+import {FactigisModuleList, FactigisInsertMyData} from '../../../js/services/factigis_services/factigisModuleList';
 import cookieHandler from 'cookie-handler';
 
-class GisredDashboard extends React.Component {
+class FactigisDashboard extends React.Component {
 
   constructor(props){
     super(props);
     this.onClickWidget = this.onClickWidget.bind(this);
     this.state = {
-      moduleList: []
+      factigisModuleList: []
     }
 
   }
@@ -21,17 +21,16 @@ class GisredDashboard extends React.Component {
     }
     //else , charge the modules that the user has permissions
     var myDashboardModules = cookieHandler.get('usrprmssns');
-    var list = insertMyData(moduleList(), myDashboardModules)
+    var list = FactigisInsertMyData(FactigisModuleList(), myDashboardModules)
 
-    console.log(list);
-    this.setState({moduleList: list});
+    this.setState({factigisModuleList: list});
   }
   onClickWidget(event){
     window.location.href = "factigis.html";
   }
   render(){
 
-    var modules = this.state.moduleList.map((m, index)=>{
+    var modules = this.state.factigisModuleList.map((m, index)=>{
 
         let url = m.url;
         let urlName = m.alias;
@@ -61,4 +60,4 @@ class GisredDashboard extends React.Component {
   }
 }
 
-export default GisredDashboard;
+export default FactigisDashboard;

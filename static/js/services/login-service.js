@@ -6,56 +6,6 @@ import {regionsExtent} from '../services/ap_services/regionsExtent-service';
 import my_AP_Settings from '../services/ap_services/ap_settings-service';
 import cookieHandler from 'cookie-handler';
 
-/*
-function genericLogin(user, pass){
-  const url = myLayers.read_tokenURL();
-
-  const data = {
-    username: user,
-    password: pass,
-    client: 'requestip',
-    expiration: 10080,
-    format: 'jsonp'
-  };
-
-  $.ajax({
-    method: 'POST',
-    url: url,
-    data: data,
-    dataType: 'html'
-  })
-  .done(myToken => {
-    if(myToken.indexOf('Exception') >= 0) {
-      notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
-      return;
-    }
-    if (myToken.indexOf('error') >= 0){
-      notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
-      return;
-    }
-  //  console.log(myToken);
-    console.log('Requesting service access');
-    console.log('Logging in to gisred-interruptions');
-    console.log('writing token into system');
-    token.write(myToken);
-
-    const page = "REACT_INTERRUPCIONES_WEB";
-    const module = "PO_INTERRUPCIONES";
-
-    notifications("Logging in...","Login_Success", ".notification-login");
-  //  window.location.href = "interrupciones.html";
-
-    // saveLogin(user,page,module,myToken);
-  })
-  .fail(error => {
-    console.log("You are not authorized ):");
-    console.log(error);
-    notifications("Acceso no autorizado.","Login_Failed", ".notification-login");
-  });
-
-  console.log('done');
-}
-*/
 function saveLogin(user,page,mod, tkn){
 
   const data = {
@@ -120,8 +70,6 @@ function muniLogin(user,pass){
     notifications("Logging in...","Login_Success", ".notification-login");
 
     saveSettings(user);
-
-
     // saveLogin(user,page,module,myToken);
   })
   .fail(error => {
@@ -161,73 +109,7 @@ function saveSettings(user){
   });
 }
 
-//for gisred modules on dashboard //needs to be fixed
 
-/*function factigisLogin(user, pass){
-    const url = myLayers.read_tokenURL();
-
-    const data = {
-      username: user,
-      password: pass,
-      client: 'requestip',
-      expiration: 1440,
-      format: 'jsonp'
-    };
-
-    $.ajax({
-      method: 'POST',
-      url: url,
-      data: data,
-      dataType: 'html'
-    })
-    .done(myToken => {
-      if(myToken.indexOf('Exception') >= 0) {
-        notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
-        return;
-      }
-      if (myToken.indexOf('error') >= 0){
-        notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
-        return;
-      }
-    //  console.log(myToken);
-      console.log('Requesting service access');
-      console.log('Logging in to gisred_dashboard');
-      console.log('writing token into system');
-      token.write(myToken);
-
-      const page = "REACT_GISRED";
-      const module = "GISRED_DASHBOARD";
-
-      notifications("Logging in...","Login_Success", ".notification-login");
-    //  window.location.href = "interrupciones.html";
-      saveSettingsFactigis(user);
-      // saveLogin(user,page,module,myToken);
-    })
-    .fail(error => {
-      console.log("You are not authorized ):");
-      console.log(error);
-      notifications("Acceso no autorizado.","Login_Failed", ".notification-login");
-    });
-
-    console.log('done');
-  }
-*/
-/*
-function saveSettingsFactigis(user){
-  var getUserAccountSettings = createQueryTask({
-    url: myLayers.read_logAccess(),
-    whereClause: "usuario = '"+ user+ "'",
-    returnGeometry: false
-  });
-
-  getUserAccountSettings((map,featureSet) =>{
-
-    window.location.href = "gisredDashboard.html";
-  },(error)=>{
-    console.log("Error getting the user settings");
-  });
-}
-*/
 
 function gisredLogin(user, pass){
   const url = myLayers.read_tokenURL();

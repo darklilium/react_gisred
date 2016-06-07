@@ -6,7 +6,10 @@ module.exports = {
     dashboard: './static/js/bundles/dashboard.js',
     interruptions: './static/js/bundles/interruptions.js',
     apchq: './static/js/bundles/apchq.js',
-    factigis: './static/js/bundles/factigis.js'
+    factigis: './static/js/bundles/factigis.js',
+    factigisDashboard: './static/js/bundles/factigisDashboard.js',
+    factigisBackoffice: './static/js/bundles/factigisBackoffice.js',
+    factigisFrontoffice: './static/js/bundles/factigisFrontoffice.js'
 
   },
   output: {
