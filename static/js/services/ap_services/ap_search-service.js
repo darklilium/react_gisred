@@ -1,7 +1,7 @@
 import createQueryTask from '../../../js/services/createquerytask-service';
 import layers from '../../../js/services/layers-service';
 import {notifications} from '../../../js/utils/notifications';
-import {ap_infoWindow_rotulo} from '../../../js/utils/makeInfoWindow';
+import {ap_infoWindow_rotulo} from '../../../js/utils/makeInfowindow';
 import makeSymbol from '../../../js/utils/makeSymbol';
 
 function ap_search_service(type, value, region){

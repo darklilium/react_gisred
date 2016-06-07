@@ -1,8 +1,9 @@
 import React from 'react';
-import { genericLogin } from '../services/login-service';
+//import { genericLogin } from '../services/login-service';
 import {notifications} from '../utils/notifications';
 import { muniLogin } from '../services/login-service';
-import { factigisLogin } from '../services/login-service';
+//import { factigisLogin } from '../services/login-service';
+import { gisredLogin } from '../services/login-service';
 
 class LoginApp extends React.Component {
   constructor(){
@@ -12,10 +13,10 @@ class LoginApp extends React.Component {
 
   componentWillMount(){
     //change the loginwall dinamically
-    let randomPicNumber = Math.floor((Math.random() * 8) + 1);
+    let randomPicNumber = Math.floor((Math.random() * 6) + 1);
     //********Cambiar randomPicSrc para test/prod*******
     //let randomPicSrc = "css/images/login_images/loginwall"+ randomPicNumber+ ".jpg"; //prod
-    let randomPicSrc = "static/css/images/login_images/ap_images/apwall"+ randomPicNumber+ ".jpg";//desarrollo
+    let randomPicSrc = "static/css/images/login_images/loginwall"+ randomPicNumber+ ".jpg";//desarrollo
     $('.login_wrapper').css("background-image", "url("+randomPicSrc+")");
   }
 
@@ -23,34 +24,28 @@ class LoginApp extends React.Component {
 
     var userValue = this.refs.username.value;
     var passValue = this.refs.password.value;
-
+    //If they dont put any username or password
     if (userValue=="" || passValue==""){
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
       return;
     }
-
+    //For domain users
     if (userValue.includes('vialactea\\')){
-      console.log("Trying to access REACT_SOMEWIDGET_");
-
-        //genericLogin(userValue, passValue);
-
+      console.log("Trying to access REACT_GISRED_DASHBOARD");
+      gisredLogin(userValue, passValue);
       return;
 
+    //for cityhall users
     }if(userValue.includes('muni')){
       console.log("Trying to access REACT_AP_WEB");
       muniLogin(userValue, passValue);
       return;
 
-    } else {
+    }else {
       console.log("Trying to access REACT_GISRED_DASHBOARD");
-
       userValue =  'vialactea\\'+this.refs.username.value;
-      factigisLogin(userValue, passValue);
-      //genericLogin(userValue, passValue);
-
+      gisredLogin(userValue, passValue);
     }
-
-
   }
 
   render(){
@@ -65,10 +60,10 @@ class LoginApp extends React.Component {
           <aside className="login_aside">
               <div className="aside_div">
                 <img className="login_aside__img" />
-                <h1 className="login_aside__h1"> Bienvenidos a Factigis </h1>
+                <h1 className="login_aside__h1"> Bienvenidos a GISRED </h1>
               </div>
               <div className="aside_div2">
-                <p className="login_aside__p">Aplicación para ....<br />
+                <p className="login_aside__p">Gestor de aplicaciones que permiten el análisis de la red eléctrica<br />
                 La información contenida en este sitio se obtiene del sistema Smallworld y catastro</p>
               </div>
           </aside>

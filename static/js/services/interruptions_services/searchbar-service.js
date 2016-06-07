@@ -1,6 +1,6 @@
 import layers from '../../services/layers-service';
 import makeSymbol from '../../utils/makeSymbol';
-import {makeInfoWindow,makeInfoWindowPerSED,makeInfoWindowPerSEDInterrupted,makeInfoWindowPerNisInfo} from '../../utils/makeInfowindow';
+import {makeInfowindow,makeInfowindowPerSED,makeInfowindowPerSEDInterrupted,makeInfowindowPerNisInfo} from '../../utils/makeInfowindow';
 import createQueryTask from '../../services/createquerytask-service';
 import {notifications} from '../../utils/notifications';
 
@@ -43,7 +43,7 @@ function searchBar_NIS(nis){
 
             let sed = featureSet.features[0].attributes['resp_id_sed'];
             let address = featureSet.features[0].attributes['direccion_resu'];
-            makeInfoWindow(myNis,myOrder,myIncidence,sed, attribute.geometry, 0, address, ETR );
+            makeInfowindow(myNis,myOrder,myIncidence,sed, attribute.geometry, 0, address, ETR );
             map.graphics.add(new esri.Graphic(attribute.geometry,pointSymbol));
             map.centerAndZoom(attribute.geometry,20);
             let message = 'NIS: '+ nis + ' presente en interrupción';
@@ -110,7 +110,7 @@ function searchMassive(sed, nis, address, nisgeom){
         let pointSymbol = makeSymbol.makePoint();
         map.graphics.add(new esri.Graphic(nisgeom,pointSymbol));
         map.centerAndZoom(nisgeom,20);
-        makeInfoWindowPerNisInfo(nis,sed, nisgeom,address);
+        makeInfowindowPerNisInfo(nis,sed, nisgeom,address);
 
         return;
       }
@@ -128,7 +128,7 @@ function searchMassive(sed, nis, address, nisgeom){
         let myOrder = attr.attributes['ARCGIS.dbo.POWERON_TRANSFORMADORES.id_orden'];
         let myIncidence = attr.attributes['ARCGIS.dbo.POWERON_TRANSFORMADORES.id_incidencia'];
 
-        makeInfoWindow(nis,myOrder,myIncidence,sed, nisgeom, 0, address);
+        makeInfowindow(nis,myOrder,myIncidence,sed, nisgeom, 0, address);
         map.graphics.add(new esri.Graphic(nisgeom,pointSymbol));
         map.centerAndZoom(nisgeom,20);
       });
@@ -314,7 +314,7 @@ function searchBar_SED(sed){
       map.graphics.add(new esri.Graphic(attribute.geometry,pointSymbol));
       map.centerAndZoom(attribute.geometry,15);
       //console.log(attr.attributes['nombre']);
-      makeInfoWindowPerSEDInterrupted(sed,
+      makeInfowindowPerSEDInterrupted(sed,
                                       attribute.geometry,
                                       attribute.attributes['ARCGIS.dbo.POWERON_TRANSFORMADORES.id_orden'],
                                       attribute.attributes['ARCGIS.dbo.POWERON_TRANSFORMADORES.id_incidencia'],
@@ -355,7 +355,7 @@ function sedLocation(sed){
           map.graphics.add(new esri.Graphic(attr.geometry,pointSymbol));
           map.centerAndZoom(attr.geometry,15);
           console.log(attr.attributes['nombre']);
-          makeInfoWindowPerSED(sed, attr.geometry, attr.attributes['nombre'],
+          makeInfowindowPerSED(sed, attr.geometry, attr.attributes['nombre'],
                               attr.attributes['comuna'], attr.attributes['alimentador'], attr.attributes['propiedad']);
         });
   });

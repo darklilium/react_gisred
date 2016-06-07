@@ -1,7 +1,7 @@
 import token from '../services/token-service';
 import myinfotemplate from '../utils/infoTemplates';
 import mymap from '../services/map-service';
-import {ap_infoWindow} from '../utils/makeInfoWindow';
+import {ap_infoWindow} from '../utils/makeInfowindow';
 import {ap_showEditor} from '../services/ap_services/ap_editData-service';
 function myLayers(){
   //const serviceMain = 'http://gisred.chilquinta/arcgis/';

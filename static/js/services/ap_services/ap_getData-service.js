@@ -4,7 +4,7 @@ import layers from '../../../js/services/layers-service';
 import makeSymbol from '../../../js/utils/makeSymbol';
 import {addCertainLayer} from '../../../js/services/layers-service';
 import mymap from '../../../js/services/map-service';
-import {ap_infoWindow} from '../../../js/utils/makeInfoWindow';
+import {ap_infoWindow} from '../../../js/utils/makeInfowindow';
 
 function ap_getDataMedidores(comuna,callback) {
   var dataMedidoresSrv = createQueryTask({

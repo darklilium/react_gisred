@@ -4,9 +4,9 @@ import token from '../services/token-service';
 import createQueryTask from '../services/createquerytask-service';
 import {regionsExtent} from '../services/ap_services/regionsExtent-service';
 import my_AP_Settings from '../services/ap_services/ap_settings-service';
+import cookieHandler from 'cookie-handler';
 
-
-
+/*
 function genericLogin(user, pass){
   const url = myLayers.read_tokenURL();
 
@@ -55,7 +55,7 @@ function genericLogin(user, pass){
 
   console.log('done');
 }
-
+*/
 function saveLogin(user,page,mod, tkn){
 
   const data = {
@@ -77,6 +77,7 @@ function saveLogin(user,page,mod, tkn){
     console.log(f,"no pase")
   });
 }
+
 
 function muniLogin(user,pass){
   const url = myLayers.read_tokenURL();
@@ -162,7 +163,73 @@ function saveSettings(user){
 
 //for gisred modules on dashboard //needs to be fixed
 
-function factigisLogin(user, pass){
+/*function factigisLogin(user, pass){
+    const url = myLayers.read_tokenURL();
+
+    const data = {
+      username: user,
+      password: pass,
+      client: 'requestip',
+      expiration: 1440,
+      format: 'jsonp'
+    };
+
+    $.ajax({
+      method: 'POST',
+      url: url,
+      data: data,
+      dataType: 'html'
+    })
+    .done(myToken => {
+      if(myToken.indexOf('Exception') >= 0) {
+        notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
+        return;
+      }
+      if (myToken.indexOf('error') >= 0){
+        notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
+        return;
+      }
+    //  console.log(myToken);
+      console.log('Requesting service access');
+      console.log('Logging in to gisred_dashboard');
+      console.log('writing token into system');
+      token.write(myToken);
+
+      const page = "REACT_GISRED";
+      const module = "GISRED_DASHBOARD";
+
+      notifications("Logging in...","Login_Success", ".notification-login");
+    //  window.location.href = "interrupciones.html";
+      saveSettingsFactigis(user);
+      // saveLogin(user,page,module,myToken);
+    })
+    .fail(error => {
+      console.log("You are not authorized ):");
+      console.log(error);
+      notifications("Acceso no autorizado.","Login_Failed", ".notification-login");
+    });
+
+    console.log('done');
+  }
+*/
+/*
+function saveSettingsFactigis(user){
+  var getUserAccountSettings = createQueryTask({
+    url: myLayers.read_logAccess(),
+    whereClause: "usuario = '"+ user+ "'",
+    returnGeometry: false
+  });
+
+  getUserAccountSettings((map,featureSet) =>{
+
+    window.location.href = "gisredDashboard.html";
+  },(error)=>{
+    console.log("Error getting the user settings");
+  });
+}
+*/
+
+function gisredLogin(user, pass){
   const url = myLayers.read_tokenURL();
 
   const data = {
@@ -188,56 +255,84 @@ function factigisLogin(user, pass){
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
       return;
     }
-  //  console.log(myToken);
-    console.log('Requesting service access');
-    console.log('Logging in to gisred_dashboard');
-    console.log('writing token into system');
-    token.write(myToken);
 
-    const page = "REACT_GISRED";
-    const module = "GISRED_DASHBOARD";
+    //if the login is correct. Get user permission:
+    getUserPermission(user, myToken, (UserPermissions)=>{
+        if(UserPermissions=='NOPERMISSIONS'){
+          console.log('User doesnt have permissions for any application, dashboard empty...');
+        }else{
+          console.log('User has permissions...requesting service access and login in to GISRED_DASHBOARD');
+          console.log('writing token into system');
+          token.write(myToken);
+          cookieHandler.set('usrprmssns',UserPermissions);
+          console.log(UserPermissions);
+          const page = "REACT_GISRED";
+          const module = "GISRED_DASHBOARD";
+          window.location.href = "gisredDashboard.html";
+          // saveGisredLogin(user,page,module,myToken);
+          notifications("Logging in...","Login_Success", ".notification-login");
+        }
+    });
 
-    notifications("Logging in...","Login_Success", ".notification-login");
-  //  window.location.href = "interrupciones.html";
-    saveSettingsFactigis(user);
-    // saveLogin(user,page,module,myToken);
   })
   .fail(error => {
-    console.log("You are not authorized ):");
-    console.log(error);
+    console.log("You are not authorized ):" , error);
     notifications("Acceso no autorizado.","Login_Failed", ".notification-login");
   });
 
-  console.log('done');
+  console.log('gisred login done');
 }
 
-
-function saveSettingsFactigis(user){
-  var getUserAccountSettings = createQueryTask({
-    url: myLayers.read_logAccess(),
-    whereClause: "usuario = '"+ user+ "'",
-    returnGeometry: false
-  });
-
-  getUserAccountSettings((map,featureSet) =>{
-  /*    let myRegion = regionsExtent().filter(region =>{
-      return region[0] ==  featureSet.features[0].attributes.widget;
+function getUserPermission(user, token, callback){
+    console.log(user, token);
+    var getPermission = createQueryTask({
+      url: myLayers.read_logAccess(),
+      whereClause: "usuario='"+user + "'"
     });
-  */
-    //logo,comuna,latx,laty,zoom
-  /*  my_AP_Settings.write(
-      featureSet.features[0].attributes.usuario, //logo
-      featureSet.features[0].attributes.widget, //region
-      myRegion[0][1], //latx
-      myRegion[0][2], //laty
-      myRegion[0][3]); //zoom
 
-*/
-    window.location.href = "gisredDashboard.html";
-  },(error)=>{
-    console.log("Error getting the user settings");
+    getPermission((map, featureSet) => {
+
+        let permissions = featureSet.features.map((permission)=>{
+          let per = [{
+            "username": permission.attributes['usuario'],
+            "application": permission.attributes['modulo'],
+            "module": permission.attributes['widget'],
+            "insert": permission.attributes['insert_'],
+            "update": permission.attributes['update_'],
+            "delete": permission.attributes['delete_'],
+            "platform": permission.attributes['plataforma']
+          }];
+          return per;
+        });
+        console.log(permissions);
+        callback(permissions);
+
+    },(errorQuery)=>{
+        console.log("Error performing query for ap_getDataMedidores", errorQuery);
+        callback("NOPERMISSIONS")
+    });
+}
+
+function saveGisredLogin(user,page,mod, tkn){
+
+  const data = {
+    f: 'json',
+    adds: JSON.stringify([{ attributes: { "usuario": user, "pagina": page, "module": mod  }, geometry: {} }]),
+    token: tkn
+  };
+
+  jQuery.ajax({
+    method: 'POST',
+    url: "http://gisred.chilquinta.cl:5555/arcgis/rest/services/Admin/LogAccesos/FeatureServer/1/applyedits",
+    dataType:'html',
+    data: data
+  })
+  .done(d =>{
+    console.log(d,"pase");
+  })
+  .fail(f=>{
+    console.log(f,"no pase")
   });
 }
 
-
-export { genericLogin, muniLogin,factigisLogin };
+export { /*genericLogin,*/ muniLogin, /*factigisLogin,*/gisredLogin,saveGisredLogin };
