@@ -4,8 +4,10 @@ module.exports = {
   entry: {
     login: './static/js/bundles/login.js',
     dashboard: './static/js/bundles/dashboard.js',
-    factigis: './static/js/bundles/factigis.js',
-    factigisDashBoard: './static/js/bundles/factigisDashBoard.js'
+    interruptions: './static/js/bundles/interruptions.js',
+    apchq: './static/js/bundles/apchq.js',
+    factigis: './static/js/bundles/factigis.js'
+
   },
   output: {
     path: path.join(path.join(__dirname, 'dist'), 'js'),

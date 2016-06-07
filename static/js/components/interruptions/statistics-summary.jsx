@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import token from '../services/token-service';
-import layers from '../services/layers-service';
-import createQueryTask from '../services/createquerytask-service';
-import {getStatisticsSummary} from '../services/getstatistics-summary-service';
-import {getStatisticPerOffice} from '../services/getstatistics-summary-service';
-import {getStatisticsRegionPercent} from '../services/getstatistics-summary-service';
+import token from '../../services/token-service';
+import layers from '../../services/layers-service';
+import createQueryTask from '../../services/createquerytask-service';
+import {getStatisticsSummary} from '../../services/interruptions_services/getstatistics-summary-service';
+import {getStatisticPerOffice} from '../../services/interruptions_services/getstatistics-summary-service';
+import {getStatisticsRegionPercent} from '../../services/interruptions_services/getstatistics-summary-service';
 import ReactTabs from 'react-tabs';
-import formatDate from '../utils/milliSecondsToDate';
-import {exportToExcel} from '../utils/exportToExcel';
+import formatDate from '../../utils/milliSecondsToDate';
+import {exportToExcel} from '../../utils/exportToExcel';
 
-import exportGraphicsToPDF from '../utils/exportToPDF';
+import exportGraphicsToPDF from '../../utils/exportToPDF';
 
 class StatisticsSummary extends React.Component {
 

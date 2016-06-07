@@ -1,6 +1,6 @@
 import React from 'react';
-import layers from '../services/layers-service';
-import mymap from '../services/map-service';
+import layers from '../../services/layers-service';
+import mymap from '../../services/map-service';
 
 /**
  *  callback is a function that will do what we need with the result of the

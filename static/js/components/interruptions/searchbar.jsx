@@ -1,16 +1,15 @@
 import React from 'react';
-import mymap from '../services/map-service';
-import layers from '../services/layers-service';
-import {searchBar_NIS} from '../services/searchbar-service';
-import {searchBar_Order} from '../services/searchbar-service';
-import {searchBar_Incidence} from '../services/searchbar-service';
-import {searchBar_SED} from '../services/searchbar-service';
-import {getStatisticsSummary} from '../services/getstatistics-summary-service';
-import {addMapsAndLayers} from '../services/map-service';
-import {exportToExcel} from '../utils/exportToExcel';
-import {translateInfo} from '../utils/exportToExcel';
-import formatDate from '../utils/milliSecondsToDate';
-import {setLayers} from '../services/layers-service';
+import mymap from '../../services/map-service';
+import layers from '../../services/layers-service';
+import {searchBar_NIS} from '../../services/interruptions_services/searchbar-service';
+import {searchBar_Order} from '../../services/interruptions_services/searchbar-service';
+import {searchBar_Incidence} from '../../services/interruptions_services/searchbar-service';
+import {searchBar_SED} from '../../services/interruptions_services/searchbar-service';
+import {getStatisticsSummary} from '../../services/interruptions_services/getstatistics-summary-service';
+import {exportToExcel} from '../../utils/exportToExcel';
+import {translateInfo} from '../../utils/exportToExcel';
+import formatDate from '../../utils/milliSecondsToDate';
+import {setLayers} from '../../services/layers-service';
 
 
 class SearchBar extends React.Component {

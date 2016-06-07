@@ -190,12 +190,12 @@ function factigisLogin(user, pass){
     }
   //  console.log(myToken);
     console.log('Requesting service access');
-    console.log('Logging in to gisred-factigis_dashboard');
+    console.log('Logging in to gisred_dashboard');
     console.log('writing token into system');
     token.write(myToken);
 
-    const page = "REACT_GISRED_FACTIGIS";
-    const module = "FACTIGIS_DASHBOARD";
+    const page = "REACT_GISRED";
+    const module = "GISRED_DASHBOARD";
 
     notifications("Logging in...","Login_Success", ".notification-login");
   //  window.location.href = "interrupciones.html";
@@ -233,7 +233,7 @@ function saveSettingsFactigis(user){
       myRegion[0][3]); //zoom
 
 */
-    window.location.href = "factigis_dashboard.html";
+    window.location.href = "gisredDashboard.html";
   },(error)=>{
     console.log("Error getting the user settings");
   });

@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Factigis from '../components/factigis/Factigis.jsx';
+import GisredDashboard from '../components/dashboard/gisredDashboard.jsx';
 
-ReactDOM.render(<Factigis />, document.getElementById('myfactigis'));
+ReactDOM.render(<GisredDashboard />, document.getElementById('myGISRED_Dashboard'));

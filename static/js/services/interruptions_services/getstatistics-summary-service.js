@@ -1,5 +1,5 @@
-import layers from '../services/layers-service';
-import createQueryTask from '../services/createquerytask-service';
+import layers from '../../services/layers-service';
+import createQueryTask from '../../services/createquerytask-service';
 import Highcharts from 'highcharts';
 import highcharts from 'highcharts/modules/exporting';
 

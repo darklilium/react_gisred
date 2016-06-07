@@ -1,8 +1,8 @@
 import React from 'react';
-import layers from '../services/layers-service';
-import createQueryTask from '../services/createquerytask-service';
-import {tokenValidator} from '../services/token-service';
-import token from '../services/token-service';
+import layers from '../../services/layers-service';
+import createQueryTask from '../../services/createquerytask-service';
+import {tokenValidator} from '../../services/token-service';
+import token from '../../services/token-service';
 class StatisticsToolbar extends React.Component {
   constructor(props){
     super(props);

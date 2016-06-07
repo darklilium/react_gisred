@@ -1,16 +1,16 @@
 import React from 'react';
 import Griddle from 'griddle-react';
-import getInterruptionsByExtent from '../services/getInterruptionsByExtent-service';
-import mymap from '../services/map-service';
-import makeSymbol from '../utils/makeSymbol';
-import {makeInfoWindowPerGridInfo} from '../utils/makeInfowindow';
+import getInterruptionsByExtent from '../../services/interruptions_services/getInterruptionsByExtent-service';
+import mymap from '../../services/map-service';
+import makeSymbol from '../../utils/makeSymbol';
+import {makeInfoWindowPerGridInfo} from '../../utils/makeInfowindow';
 
 class GriddleGrid extends React.Component{
   constructor(props){
     super(props);
     this.onRowClick = this.onRowClick.bind(this);
   }
-  
+
   onRowClick(gridRow, event){
     var map = mymap.getMap();
     map.graphics.clear();

@@ -180,5 +180,10 @@ function ap_infoWindow_rotulo(poleNumber){
   map.infoWindow.show(geometry, map.getInfoWindowAnchor(geometry));
 */
 }
-export {makeInfoWindow, makeInfoWindowPerSED, makeInfoWindowPerSEDInterrupted,makeInfoWindowPerNisInfo,
-        makeInfoWindowPerGridInfo,ap_infoWindow,ap_infoWindow_rotulo};
+export {makeInfoWindow,
+        makeInfoWindowPerSED,
+        makeInfoWindowPerSEDInterrupted,
+        makeInfoWindowPerNisInfo,
+        makeInfoWindowPerGridInfo,
+        ap_infoWindow,
+        ap_infoWindow_rotulo};

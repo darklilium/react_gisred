@@ -1,8 +1,8 @@
 import {getFormatedDateNow} from './milliSecondsToDate';
 
-import {graphicResults} from '../services/getstatistics-summary-service';
-import {graphicResults2} from '../services/getstatistics-summary-service';
-import {graphicResults3} from '../services/getstatistics-summary-service';
+import {graphicResults} from '../services/interruptions_services/getstatistics-summary-service';
+import {graphicResults2} from '../services/interruptions_services/getstatistics-summary-service';
+import {graphicResults3} from '../services/interruptions_services/getstatistics-summary-service';
 
 function createChartsColumns(){
   return {
