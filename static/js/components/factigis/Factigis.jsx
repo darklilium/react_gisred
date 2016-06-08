@@ -20,8 +20,13 @@ class Factigis extends React.Component {
   render(){
     return (
       <div className="wrapper_factigis">
-        <Factigis_Add />
-        <div className="factigis_map_div" id="factigis_map_div"></div>
+        <div className="wrapper_factibilidadLeft">
+          <Factigis_Add />
+        </div>
+        <div className="wrapper_factibilidadRight">
+          <div className="factigis_map_div" id="factigis_map_div"></div>
+        </div>
+        
       </div>
     );
   }

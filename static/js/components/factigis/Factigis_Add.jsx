@@ -13,7 +13,6 @@ class Factigis_Add extends React.Component {
   render(){
     return (
       <div className="wrapper_factigisAdd">
-
         <button className="btn btn-default" title="Ir " type="button" >
             <span><i className="fa fa-lightbulb-o"></i></span>
         </button>
