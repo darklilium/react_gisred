@@ -1,6 +1,6 @@
 //CSS Code for Dashboard
 
-.bodyfactigis{
+.bodyfactigisdashboard{
   background-image: url("images/factigis_images/dashboardbg.jpg");
   background-size: 100% 100%;
   background-attachment: fixed;
@@ -45,3 +45,6 @@ font-weight: bolder;
 .factigisDashboard-img{
     width: inherit;
 }
+
+
+@import "components/factigis/factigis_frontoffice.scss";
