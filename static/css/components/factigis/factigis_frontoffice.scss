@@ -1,0 +1,28 @@
+.esriSimpleSliderTL {
+    top: 4em;
+    visibility: hidden;
+}
+
+.bodyfactigis{
+  width: 100%;
+  height: 100vh;
+
+}
+//Factigis frontOffice
+.wrapper_factigis{
+height: inherit;
+}
+
+.factigis_map_div{
+height: inherit;
+}
+
+.myFactigis_FrontOffice{
+  height: inherit;
+}
+
+@media screen and (min-width: 320px) and (max-width: 480px) and (orientation: portrait)  {
+  
+}
+
+@import "components/factigis/factigis_add.scss";
