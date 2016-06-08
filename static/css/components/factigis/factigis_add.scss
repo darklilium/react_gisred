@@ -1,1 +1,93 @@
+.wrapper_factigisAdd{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em;
+}
 
+
+.factigis_hr{
+  border: 1px;
+    border-style: inset;
+    width: 100%;
+}
+
+
+.factigis_groupbox{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.factigis-input{
+  width: 85%;
+}
+
+.factigis_submitButton{
+  width: 100%;
+}
+
+.factigis-selectFromMapButton{
+  width: 3em;
+  margin: 0 0 0 0.5em;
+}
+
+
+/* Checkbox CSS */
+/* Icons :To start, hide the original checkbox.*/
+/* Hide the Ordinary Checkbox */
+.factigis_ul{
+  list-style: none;
+}
+
+
+input[type="checkbox"] {
+    display: none;
+}
+/* Checkbox Icons */
+label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    padding: 16px 28px 0 0;
+    font-weight: normal;
+    
+}
+
+label:before, label:after {
+    font-family: FontAwesome;
+    font-size: 0px;
+    /*absolutely positioned*/
+    position: absolute; top: 0; left: -49px; right: 10px;
+}
+
+label:before {
+    content: '\f096'; /*checkbox unchecked */
+}
+label:after {
+    content: '\f00c'; /*checkbox checked*/
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0.5;
+    font-size: 15px;
+    top: 16px;
+    left: -25px;
+    color: #1EAB06;
+
+-webkit-transition: all 0.50s;
+    -moz-transition: all 0.50s;
+    -o-transition: all 0.50s;
+     transition: all 0.50s;
+}
+
+/* Animating the Checkbox Icon */
+input[type="checkbox"]:checked + label:after {
+    max-width: 25px;
+    opacity: 1;
+    margin-right: 90px;
+}
+
+/*Next, we need to set some styles on our list and label tags with a relative position and padding. Then, we need to set up styles using our pseudo code before and after our label. For this part, we’re going to set the checkbox font to Font Awesome as we’re going to use an icon.
+*/
+
+/* Checkbox Icons */

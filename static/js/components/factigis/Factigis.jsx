@@ -6,7 +6,7 @@ import mymap from '../../services/map-service';
 class Factigis extends React.Component {
   constructor(props){
     super(props);
-
+    
   }
   componentWillMount(){
 
@@ -26,7 +26,7 @@ class Factigis extends React.Component {
         <div className="wrapper_factibilidadRight">
           <div className="factigis_map_div" id="factigis_map_div"></div>
         </div>
-        
+
       </div>
     );
   }
