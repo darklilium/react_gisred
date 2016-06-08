@@ -22,7 +22,7 @@ class FactigisDashboard extends React.Component {
     //else , charge the modules that the user has permissions
     var myDashboardModules = cookieHandler.get('usrprmssns');
     var list = FactigisInsertMyData(FactigisModuleList(), myDashboardModules)
-
+    console.log(list);
     this.setState({factigisModuleList: list});
   }
   onClickWidget(event){
@@ -48,12 +48,12 @@ class FactigisDashboard extends React.Component {
           'fontcolor': 'white',
           'display': display
         };
-         return  <div className="gisredDashboard_moduleContainer" style={divstyle} key={index}>
-                    <div className="gisredDashboard-divimg"><img className="gisredDashboard-img" src={imgSrc}></img></div>
-                    <a className="gisredDashboard-aLink" key={index} href={url}>{urlName}</a><br/></div>;
+         return  <div className="factigisDashboard_moduleContainer" style={divstyle} key={index}>
+                    <div className="factigisDashboard-divimg"><img className="factigisDashboard-img" src={imgSrc}></img></div>
+                    <a className="factigisDashboard-aLink" key={index} href={url}>{urlName}</a><br/></div>;
        });
     return (
-    <div className="wrapper_gisredDashboard">
+    <div className="wrapper_factigisDashboard">
         {modules}
     </div>
   );

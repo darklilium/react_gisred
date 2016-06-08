@@ -179,6 +179,7 @@ function getUserPermission(user, token, callback){
             "username": permission.attributes['usuario'],
             "application": permission.attributes['aplicacion'],
             "module": permission.attributes['modulo'],
+            "widget": permission.attributes['widget'],
             "insert": permission.attributes['insert_'],
             "update": permission.attributes['update_'],
             "delete": permission.attributes['delete_'],

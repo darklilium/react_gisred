@@ -25,7 +25,7 @@ function insertMyData(list, permissions){
       array.forEach(item => {
         if(item.application === permission.application){
           newList.push({
-            module_name: item['application'],
+            application: item['application'],
             alias: item['alias'],
             available: item['Available'],
             Permission: 'yes',
