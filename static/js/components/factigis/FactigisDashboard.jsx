@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {FactigisModuleList, FactigisInsertMyData} from '../../../js/services/factigis_services/factigisModuleList';
 import cookieHandler from 'cookie-handler';
+import {saveGisredLogin} from '../../services/login-service';
 
 class FactigisDashboard extends React.Component {
 
@@ -21,9 +22,15 @@ class FactigisDashboard extends React.Component {
     }
     //else , charge the modules that the user has permissions
     var myDashboardModules = cookieHandler.get('usrprmssns');
-    var list = FactigisInsertMyData(FactigisModuleList(), myDashboardModules)
-    console.log(list);
+    var list = FactigisInsertMyData(FactigisModuleList(), myDashboardModules);
     this.setState({factigisModuleList: list});
+
+    //and then save where the user is:
+    var userPermissions = cookieHandler.get('usrprmssns');
+    const page = "REACT_FACTIGIS";
+    const module = "DASHBOARD";
+    //saveGisredLogin(userPermissions[0].username,page,module,localStorage.getItem('token'));
+    console.log(userPermissions[0].username,page,module,localStorage.getItem('token'));
   }
   onClickWidget(event){
     window.location.href = "factigis.html";

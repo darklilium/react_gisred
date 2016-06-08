@@ -10,7 +10,8 @@ import {getClieInterruptionsByExtent} from '../../services/interruptions_service
 import {getSEDByExtent} from '../../services/interruptions_services/getInterruptionsByExtent-service';
 import token from '../../services/token-service';
 import LayerList from '../LayerList.jsx';
-
+import {saveGisredLogin} from '../../services/login-service';
+import cookieHandler from 'cookie-handler';
 
 function createDataObject(){
   return {
@@ -38,6 +39,13 @@ class Interruptions extends React.Component {
         window.location.href = "index.html";
         return;
     }
+
+    //Save where the user is:
+    var userPermissions = cookieHandler.get('usrprmssns');
+    const page = "REACT_INTERRUPCIONES_WEB";
+    const module = "PO_INTERRUPCIONES";
+    console.log(userPermissions[0].username,page,module,localStorage.getItem('token'));
+    //saveGisredLogin(userPermissions[0].username, page,module,localStorage.getItem('token'));
 
     // if you are going to use the same object to represent both values
     // use a factory function to create both objects

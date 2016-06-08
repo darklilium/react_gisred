@@ -142,12 +142,19 @@ function gisredLogin(user, pass){
     getUserPermission(user, myToken, (UserPermissions)=>{
         if(UserPermissions=='NOPERMISSIONS'){
           console.log('User doesnt have permissions for any application, dashboard empty...');
+
+          //Save that the user is in dashboard
+          let page = "REACT_GISRED";
+          let module = "GISRED_DASHBOARD";
+          // saveGisredLogin(user,page,module,myToken);
         }else{
           console.log('User has permissions...requesting service access and login in to GISRED_DASHBOARD');
           console.log('writing token into system');
           token.write(myToken);
           cookieHandler.set('usrprmssns',UserPermissions);
           console.log(UserPermissions);
+
+          //Save that the user is in dashboard
           const page = "REACT_GISRED";
           const module = "GISRED_DASHBOARD";
           window.location.href = "gisredDashboard.html";
