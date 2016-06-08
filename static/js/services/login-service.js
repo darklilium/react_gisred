@@ -169,7 +169,7 @@ function getUserPermission(user, token, callback){
     console.log(user, token);
     var getPermission = createQueryTask({
       url: myLayers.read_logAccess(),
-      whereClause: "usuario='"+user + "'"
+      whereClause: "usuario='"+user + "' AND plataforma='WEB'"
     });
 
     getPermission((map, featureSet) => {
@@ -177,8 +177,8 @@ function getUserPermission(user, token, callback){
         let permissions = featureSet.features.map((permission)=>{
           let per = {
             "username": permission.attributes['usuario'],
-            "application": permission.attributes['modulo'],
-            "module": permission.attributes['widget'],
+            "application": permission.attributes['aplicacion'],
+            "module": permission.attributes['modulo'],
             "insert": permission.attributes['insert_'],
             "update": permission.attributes['update_'],
             "delete": permission.attributes['delete_'],
