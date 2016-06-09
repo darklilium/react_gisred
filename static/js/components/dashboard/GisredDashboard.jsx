@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {moduleList, insertMyData} from '../../../js/services/dashboard/moduleList';
+import {moduleList, insertMyData,excludeData} from '../../../js/services/dashboard/moduleList';
 import cookieHandler from 'cookie-handler';
 
 class GisredDashboard extends React.Component {
@@ -9,7 +9,9 @@ class GisredDashboard extends React.Component {
     super(props);
     this.onClickWidget = this.onClickWidget.bind(this);
     this.state = {
-      moduleList: []
+      moduleList: [],
+      allModules: [],
+      notAvailableModules: []
     }
 
   }
@@ -21,28 +23,33 @@ class GisredDashboard extends React.Component {
     }
     //else , charge the modules that the user has permissions
     var myDashboardModules = cookieHandler.get('usrprmssns');
-    var list = insertMyData(moduleList(), myDashboardModules)
+    var list = insertMyData(moduleList(), myDashboardModules);
 
-    console.log(list);
     this.setState({moduleList: list});
+    this.setState({allModules: moduleList()});
+
+    var myLi = list;
+    var mAll = moduleList();
+    var myPropList = ['application', 'alias','Available','Permission','Insert','Update','Delete','url','color','img'];
+    var result = excludeData(mAll,myLi,myPropList);
+
+    this.setState({notAvailableModules: result});
   }
   onClickWidget(event){
     window.location.href = "factigis.html";
   }
   render(){
-
-    var modules = this.state.moduleList.map((m, index)=>{
-
-        let url = m.url;
+    var myModules = this.state.moduleList.map((m, index)=>{
+        let url =  m.url;
         let urlName = m.alias;
         let imgSrc = m.img;
         let color = m.color;
         let display;
-        if (m.available=='yes'){
-          display = 'flex';
 
+        if (m.Available=='yes'){
+          display='flex'
         }else{
-          display  = 'none';
+          display='none'
         }
         let divstyle = {
           'backgroundColor': color,
@@ -52,10 +59,26 @@ class GisredDashboard extends React.Component {
          return  <div className="gisredDashboard_moduleContainer" style={divstyle} key={index}>
                     <div className="gisredDashboard-divimg"><img className="gisredDashboard-img" src={imgSrc}></img></div>
                     <a className="gisredDashboard-aLink" key={index} href={url}>{urlName}</a><br/></div>;
-       });
+    });
+
+    var excludeModules = this.state.notAvailableModules.map((exm,index)=>{
+      let url =  exm.url;
+      let urlName = exm.alias;
+      let imgSrc = exm.img;
+      let color = 'gray';
+      let divstyle = {
+        'backgroundColor': color,
+        'fontcolor': 'white'
+      };
+       return  <div className="gisredDashboard_moduleContainer" style={divstyle} key={index}>
+                  <div className="gisredDashboard-divimg"><img className="gisredDashboard-img" src={imgSrc}></img></div>
+                  <h7 className="gisredDashboard-aLink" key={index} href={url}>{urlName}</h7><br/></div>;
+
+    });
     return (
-    <div className="wrapper_gisredDashboard">
-        {modules}
+    <div className="wrapper_gisredDashboard" id="wrapper_gisredDashboard">
+        {myModules}
+        {excludeModules}
     </div>
   );
   }

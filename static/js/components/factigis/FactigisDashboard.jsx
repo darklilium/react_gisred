@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {FactigisModuleList, FactigisInsertMyData} from '../../../js/services/factigis_services/factigisModuleList';
+import {FactigisModuleList, excludeDataFactigis,FactigisInsertMyData} from '../../../js/services/factigis_services/factigisModuleList';
 import cookieHandler from 'cookie-handler';
 import {saveGisredLogin} from '../../services/login-service';
 
@@ -10,7 +10,8 @@ class FactigisDashboard extends React.Component {
     super(props);
     this.onClickWidget = this.onClickWidget.bind(this);
     this.state = {
-      factigisModuleList: []
+      factigisModuleList: [],
+      factigisNotAvList: []
     }
 
   }
@@ -31,12 +32,43 @@ class FactigisDashboard extends React.Component {
     const module = "DASHBOARD";
     //saveGisredLogin(userPermissions[0].username,page,module,localStorage.getItem('token'));
     console.log(userPermissions[0].username,page,module,localStorage.getItem('token'));
+
+    //and load the other not available modules
+
+    var myLi = list;
+    var mAll = FactigisModuleList();
+    var myPropList = ['module', 'alias','Available','Permission','Insert','Update','Delete','url','color','img'];
+    var result = excludeDataFactigis(mAll,myLi,myPropList);
+
+    this.setState({factigisNotAvList: result});
+
   }
   onClickWidget(event){
     window.location.href = "factigis.html";
   }
   render(){
+    var excludeModules = this.state.factigisNotAvList.map((m, index)=>{
 
+        let url = m.url;
+        let urlName = m.alias;
+        let imgSrc = m.img;
+        let color = m.color;
+        let display;
+        if (m.available=='yes'){
+          display = 'flex';
+
+        }else{
+          display  = 'none';
+        }
+        let divstyle = {
+          'backgroundColor': color,
+          'fontcolor': 'white',
+          'display': display
+        };
+         return  <div className="factigisDashboard_moduleContainer" style={divstyle} key={index}>
+                    <div className="factigisDashboard-divimg"><img className="factigisDashboard-img" src={imgSrc}></img></div>
+                    <a className="factigisDashboard-aLink" key={index} href={url}>{urlName}</a><br/></div>;
+    });
     var modules = this.state.factigisModuleList.map((m, index)=>{
 
         let url = m.url;
@@ -58,10 +90,12 @@ class FactigisDashboard extends React.Component {
          return  <div className="factigisDashboard_moduleContainer" style={divstyle} key={index}>
                     <div className="factigisDashboard-divimg"><img className="factigisDashboard-img" src={imgSrc}></img></div>
                     <a className="factigisDashboard-aLink" key={index} href={url}>{urlName}</a><br/></div>;
-       });
+    });
+
     return (
     <div className="wrapper_factigisDashboard">
         {modules}
+        {excludeModules}
     </div>
   );
   }
