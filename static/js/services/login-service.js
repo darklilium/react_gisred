@@ -129,17 +129,23 @@ function gisredLogin(user, pass){
     dataType: 'html'
   })
   .done(myToken => {
+
     if(myToken.indexOf('Exception') >= 0) {
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
+
       return;
     }
     if (myToken.indexOf('error') >= 0){
+
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
       return;
     }
-
+    
+    console.log('writing token into system');
+    token.write(myToken);
     //if the login is correct. Get user permission:
     getUserPermission(user, myToken, (UserPermissions)=>{
+      console.log("getting permissions",myToken);
         if(UserPermissions=='NOPERMISSIONS'){
           console.log('User doesnt have permissions for any application, dashboard empty...');
 
@@ -149,7 +155,7 @@ function gisredLogin(user, pass){
           // saveGisredLogin(user,page,module,myToken);
         }else{
           console.log('User has permissions...requesting service access and login in to GISRED_DASHBOARD');
-          console.log('writing token into system');
+
           token.write(myToken);
           cookieHandler.set('usrprmssns',UserPermissions);
           console.log(UserPermissions);
@@ -173,7 +179,8 @@ function gisredLogin(user, pass){
 }
 
 function getUserPermission(user, token, callback){
-    console.log(user, token);
+
+    console.log("here",user, token);
     var getPermission = createQueryTask({
       url: myLayers.read_logAccess(),
       whereClause: "usuario='"+user + "' AND plataforma='WEB'"

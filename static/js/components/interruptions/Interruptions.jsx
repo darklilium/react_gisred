@@ -1,6 +1,6 @@
 import React from 'react';
 import mymap from '../../services/map-service';
-import {addCertainLayer} from '../../services/layers-service';
+import {addCertainLayer, layersActivated} from '../../services/layers-service';
 import formatDate from '../../utils/milliSecondsToDate';
 import StatisticsToolbar from '../interruptions/StatisticsToolbar.jsx';
 import SearchBar from '../interruptions/Searchbar.jsx';
@@ -56,9 +56,10 @@ class Interruptions extends React.Component {
     };
   }
   componentDidMount(){
+
     var map = mymap.createMap("map_div","topo",-71.2905 ,-33.1009,9);
     map.disableKeyboardNavigation();
-
+    console.log(map);
     addCertainLayer('po_interrupciones',9,"");
 
     map.on('extent-change', ()=>{

@@ -118,7 +118,25 @@ function myLayers(){
     },
     read_ap_catastro_fotos(){
         return serviceURL + "AP_Municipal/AP_MUNICIPAL/FeatureServer/10?f=json&token=" + token.read();
+    },
+
+    /* FACTIGIS LAYERS*/
+    read_factigis_transmision(){
+        return serviceURL + "PMS/Concesiones/MapServer/0?f=json&token=" + token.read();
+    },
+    read_factigis_distrubucion(){
+        return serviceURL + "PMS/Concesiones/MapServer/1?f=json&token=" + token.read();
+    },
+    read_factigis_vialidad(){
+        return serviceURL + "PMS/Vialidad/MapServer/0?f=json&token=" + token.read();
+    },
+    read_factigis(){
+        return serviceURL + "PMS/Concesiones/MapServer?f=json&token=" + token.read();
+    },
+    read_factigis2(){
+        return serviceURL + "PMS/Vialidad/MapServer?f=json&token=" + token.read();
     }
+
 
   };
 }
@@ -216,7 +234,30 @@ function setLayers(){
       console.log(whereRegion);
 
       return apTramosLayer;
+    },
+    /* factigis module */
+    factigis_transmision(whereRegion, layerNumber){
+      var fDistribucionsLayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_factigis(),{id:"factigis_transmision",
+      opacity:0.3});
+      fDistribucionsLayer.setImageFormat("png32");
+      fDistribucionsLayer.setVisibleLayers([0]);
+      return fDistribucionsLayer;
+    },
+    factigis_distribucion(whereRegion, layerNumber){
+      var fTransmisionLayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_factigis(),{id:"factigis_distribucion",
+      opacity:0.3});
+      fTransmisionLayer.setImageFormat("png32");
+      fTransmisionLayer.setVisibleLayers([1]);
+      return fTransmisionLayer;
+    },
+    factigis_vialidad(whereRegion, layerNumber){
+      var fVialidadsLayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_factigis2(),{id:"factigis_vialidad",
+      opacity:0.3});
+      fVialidadsLayer.setVisibleLayers([0]);
+      fVialidadsLayer.setImageFormat("png32");
+      return fVialidadsLayer;
     }
+
   }
 }
 
@@ -233,15 +274,16 @@ function layersActivated(){
         activeLayers.push(currentLayer.id);
         //alert("id: " + currentLayer.id);
       }
-      console.log(activeLayers);
+      console.log("Layers actived" ,activeLayers);
       return activeLayers;
 
     }
   }
 }
 
-// TO DO: this function add the default and not defaults layer (from the layerlist) in the app.
+// TO DO: this function add the default and not defaults layer (from the LayerList) in the app.
 function addCertainLayer(layerNameToAdd, order, where, callback){
+  //checkbox setup n° 6
   var mapp = mymap.getMap();
   var myLayerToAdd;
 
@@ -272,18 +314,43 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     case 'ap_tramos':
       myLayerToAdd = setLayers().ap_tramos(where,5);
     break;
+
+    case 'factigis_transmision':
+      myLayerToAdd = setLayers().factigis_transmision(where,order);
+    break;
+
+    case 'factigis_distribucion':
+      myLayerToAdd = setLayers().factigis_distribucion(where,order);
+    break;
+
+    case 'factigis_vialidad':
+      myLayerToAdd = setLayers().factigis_vialidad(where,order);
+    break;
+
     default:
   }
 
   mapp.addLayer(myLayerToAdd,order);
 
-  //Set here if you add more layers in the layerlist.
-  if (check_alimentador.checked){
-    mapp.addLayer(setLayers().alimentadores(),1);
-  }
-  if (check_ap_modificaciones.checked){
-    mapp.addLayer(setLayers().ap_modificaciones(), 1);
-  }
+  //Set here if you add more layers in the LayerList.
+  //checkbox setup n° 5
+    if (check_alimentador.checked){
+      mapp.addLayer(setLayers().alimentadores(),1);
+    }
+
+    if (check_ap_modificaciones.checked){
+      mapp.addLayer(setLayers().ap_modificaciones(), 1);
+    }
+    if (check_factigis_distribucion.checked){
+      mapp.addLayer(setLayers().factigis_distribucion(), 1);
+    }
+    if (check_factigis_transmision.checked){
+      mapp.addLayer(setLayers().factigis_transmision(), 1);
+    }
+    if (check_factigis_vialidad.checked){
+      mapp.addLayer(setLayers().factigis_vialidad(), 1);
+    }
+
 
 
 }

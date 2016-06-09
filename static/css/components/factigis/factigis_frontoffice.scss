@@ -83,7 +83,8 @@ $factigis_bgColor : ghostwhite;
   }
 
   .factigis_map_div{
-    height: 640px;
+    height: inherit;
+        position: fixed;
   }
 
   .wrapper_factigis {
@@ -110,5 +111,45 @@ $factigis_bgColor : ghostwhite;
 
 }
 
+/*
+.LayerList__wrapper{
+  z-index: 4;
+  margin-top: 3.5em;
+  position: absolute;
+  padding: 0.5em;
+  margin-left: 1em;
+  display: inline-block;
+  width: auto;
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.LayerList__fieldset{
+  display: flex;
+}
+.LayerList__legend{
+  font-size: 11px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.LayerList__checkbox{
+
+}
+.LayerList__h6{
+  font-size: xx-small;
+  margin-bottom: 0px;
+  margin-top: 0.8em;
+}
+.LayerList__checkbox-div{
+  display: flex;
+  width: auto;
+  flex-direction: row;
+}
+*/
 
 @import "components/factigis/factigis_add.scss";
+@import "components/layerlist-component";
+
+.LayerList__legend{
+  font-size: 11px;
+}

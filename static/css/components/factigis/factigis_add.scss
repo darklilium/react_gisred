@@ -32,14 +32,29 @@
   margin: 0 0 0 0.5em;
 }
 
+.factigis_hr-subtitle {
 
+    border-style: ridge;
+    width: 100%;
+    color:rgba(0, 0, 0, 0.04);
+
+    margin: 0px;
+}
 /* Checkbox CSS */
 /* Icons :To start, hide the original checkbox.*/
 /* Hide the Ordinary Checkbox */
 .factigis_ul{
   list-style: none;
+  display: flex;
+  justify-content: space-between;
 }
 
+.factigis_BigGroupbox{
+  display: flex;
+  flex-direction: column;
+  padding: 0.8em 1em 0.8em 1em;
+  font-size: 11px;
+}
 
 input[type="checkbox"] {
     display: none;
@@ -51,7 +66,7 @@ label {
     cursor: pointer;
     padding: 16px 28px 0 0;
     font-weight: normal;
-    
+
 }
 
 label:before, label:after {
@@ -87,7 +102,14 @@ input[type="checkbox"]:checked + label:after {
     margin-right: 90px;
 }
 
-/*Next, we need to set some styles on our list and label tags with a relative position and padding. Then, we need to set up styles using our pseudo code before and after our label. For this part, we’re going to set the checkbox font to Font Awesome as we’re going to use an icon.
-*/
-
-/* Checkbox Icons */
+//media screens for responsive design 'till 640px max'
+@media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait)  {
+  .factigis_ul{
+    flex-direction: column;
+  }
+}
+@media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: landscape)  {
+  .factigis_ul{
+    flex-direction: column;
+  }
+}
