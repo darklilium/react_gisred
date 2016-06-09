@@ -48,26 +48,19 @@ class FactigisDashboard extends React.Component {
   }
   render(){
     var excludeModules = this.state.factigisNotAvList.map((m, index)=>{
-
+        console.log(m);
         let url = m.url;
         let urlName = m.alias;
         let imgSrc = m.img;
         let color = m.color;
-        let display;
-        if (m.available=='yes'){
-          display = 'flex';
 
-        }else{
-          display  = 'none';
-        }
         let divstyle = {
-          'backgroundColor': color,
-          'fontcolor': 'white',
-          'display': display
+          'backgroundColor': 'gray',
+          'fontcolor': 'white'
         };
          return  <div className="factigisDashboard_moduleContainer" style={divstyle} key={index}>
                     <div className="factigisDashboard-divimg"><img className="factigisDashboard-img" src={imgSrc}></img></div>
-                    <a className="factigisDashboard-aLink" key={index} href={url}>{urlName}</a><br/></div>;
+                    <h7 className="factigisDashboard-aLink" key={index} href={url}>{urlName}</h7><br/></div>;
     });
     var modules = this.state.factigisModuleList.map((m, index)=>{
 
