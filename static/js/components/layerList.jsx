@@ -21,7 +21,6 @@ class LayerList extends React.Component {
     // checkbox setup n° 4
     var mapp = mymap.getMap();
 
-
     /*19/05/2016*/
     switch (check.currentTarget.id) {
       case "check_alimentador":
@@ -195,15 +194,15 @@ class LayerList extends React.Component {
             <h6 style={visibilityStyle.check_ap_modificaciones} className="LayerList__h6">Modificaciones</h6>
           </div>
           <div className="LayerList__checkbox-div">
-            <input style={visibilityStyle.check_factigis_distribucion} className="LayerList__checkbox" type="checkbox" id="check_factigis_distribucion" ref="check_factigis_distribucion" defaultChecked={true} onClick={this.onClick} ></input>
+            <input style={visibilityStyle.check_factigis_distribucion} className="LayerList__checkbox" type="checkbox" id="check_factigis_distribucion" ref="check_factigis_distribucion" onClick={this.onClick} ></input>
             <h6 style={visibilityStyle.check_factigis_distribucion} className="LayerList__h6">Distribucion</h6>
           </div>
           <div className="LayerList__checkbox-div">
-            <input style={visibilityStyle.check_factigis_transmision} className="LayerList__checkbox" type="checkbox" id="check_factigis_transmision" ref="check_factigis_transmision" defaultChecked={true} onClick={this.onClick} ></input>
+            <input style={visibilityStyle.check_factigis_transmision} className="LayerList__checkbox" type="checkbox" id="check_factigis_transmision" ref="check_factigis_transmision" onClick={this.onClick} ></input>
             <h6 style={visibilityStyle.check_factigis_transmision} className="LayerList__h6">Transmision</h6>
           </div>
           <div className="LayerList__checkbox-div">
-            <input style={visibilityStyle.check_factigis_vialidad} className="LayerList__checkbox" type="checkbox" id="check_factigis_vialidad" ref="check_factigis_vialidad" defaultChecked={true} onClick={this.onClick} ></input>
+            <input style={visibilityStyle.check_factigis_vialidad} className="LayerList__checkbox" type="checkbox" id="check_factigis_vialidad" ref="check_factigis_vialidad" onClick={this.onClick} ></input>
             <h6 style={visibilityStyle.check_factigis_vialidad} className="LayerList__h6">Vialidad</h6>
           </div>
       </fieldset>

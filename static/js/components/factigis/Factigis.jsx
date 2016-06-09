@@ -16,12 +16,7 @@ class Factigis extends React.Component {
 
   componentDidMount(){
     var map = mymap.createMap("factigis_map_div","topo",-71.2905 ,-33.1009,9);
-    console.log(map);
-    addCertainLayer('factigis_transmision',8,"");
-    addCertainLayer('factigis_distribucion',9,"");
-    addCertainLayer('factigis_vialidad',10,"");
-
-
+    
   }
 
   render(){
