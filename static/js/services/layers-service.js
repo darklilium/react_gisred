@@ -142,13 +142,12 @@ function myLayers(){
 
     }
 
-
   };
 }
 
 //TO DO: this function sets the layers that will be added in the app, integrating the infowindow and their special properties.
 function setLayers(){
-//check n°7
+  //check n°7
   return {
     alimentadores(){
       var layerAlimentador = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_layerAlimentador(),{id:"gis_alimentadores"});
@@ -268,7 +267,6 @@ function setLayers(){
       fSSEELayer.setImageFormat("png32");
       return fSSEELayer;
     }
-
   }
 }
 
@@ -316,12 +314,12 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
 
     case 'ap_luminarias':
       myLayerToAdd = setLayers().ap_luminarias(where,6);
-
     break;
 
     case 'ap_modificaciones':
       myLayerToAdd = setLayers().ap_modificaciones(where,7);
     break;
+
     case 'ap_tramos':
       myLayerToAdd = setLayers().ap_tramos(where,5);
     break;
@@ -349,28 +347,24 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
 
   //Set here if you add more layers in the LayerList.
   //checkbox setup n° 5
-    if (check_alimentador.checked){
-      mapp.addLayer(setLayers().alimentadores(),1);
-    }
-
-    if (check_ap_modificaciones.checked){
-      mapp.addLayer(setLayers().ap_modificaciones(), 1);
-    }
-    if (check_factigis_distribucion.checked){
-      mapp.addLayer(setLayers().factigis_distribucion(), 1);
-    }
-    if (check_factigis_transmision.checked){
-      mapp.addLayer(setLayers().factigis_transmision(), 1);
-    }
-    if (check_factigis_vialidad.checked){
-      mapp.addLayer(setLayers().factigis_vialidad(), 1);
-    }
-    if (check_SSEE.checked){
-      mapp.addLayer(setLayers().SSEE(), 1);
-    }
-
-
-
+  if (check_alimentador.checked){
+    mapp.addLayer(setLayers().alimentadores(),1);
+  }
+  if (check_ap_modificaciones.checked){
+    mapp.addLayer(setLayers().ap_modificaciones(), 1);
+  }
+  if (check_factigis_distribucion.checked){
+    mapp.addLayer(setLayers().factigis_distribucion(), 1);
+  }
+  if (check_factigis_transmision.checked){
+    mapp.addLayer(setLayers().factigis_transmision(), 1);
+  }
+  if (check_factigis_vialidad.checked){
+    mapp.addLayer(setLayers().factigis_vialidad(), 1);
+  }
+  if (check_SSEE.checked){
+    mapp.addLayer(setLayers().SSEE(), 1);
+  }
 }
 export default myLayers();
 export {setLayers,layersActivated,addCertainLayer};

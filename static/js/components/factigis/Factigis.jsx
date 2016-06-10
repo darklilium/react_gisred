@@ -8,7 +8,9 @@ import LayerList from '../../components/LayerList.jsx';
 class Factigis extends React.Component {
   constructor(props){
     super(props);
-
+    this.state = {
+      themap: {}
+    }
   }
   componentWillMount(){
 
@@ -16,14 +18,14 @@ class Factigis extends React.Component {
 
   componentDidMount(){
     var map = mymap.createMap("factigis_map_div","topo",-71.2905 ,-33.1009,9);
-    
+    this.setState({themap: map});
   }
 
   render(){
     return (
       <div className="wrapper_factigis">
         <div className="wrapper_factibilidadLeft">
-          <Factigis_Add />
+          <Factigis_Add themap={this.state.themap}/>
         </div>
         <div className="wrapper_factibilidadRight">
         <LayerList show={["check_factigis_transmision", "check_factigis_distribucion", "check_factigis_vialidad"]} />

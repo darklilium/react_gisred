@@ -4,6 +4,7 @@ import ReactTabs from 'react-tabs';
 import Select from 'react-select';
 import {tipoCliente} from '../../services/factigis_services/cbData-service';
 import {tipoContribuyente} from '../../services/factigis_services/cbData-service';
+import {mymap} from '../../services/map-service';
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -16,6 +17,9 @@ class Factigis_Add extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.onChangeTipoCliente = this.onChangeTipoCliente.bind(this);
     this.onChangeTipoContribuyente = this.onChangeTipoContribuyente.bind(this);
+    this.onClickCliente = this.onClickCliente.bind(this);
+    this.onClickPoste = this.onClickPoste.bind(this);
+    this.onClickDireccion = this.onClickDireccion.bind(this);
 
     this.state = {
       //selected tab in the beginning
@@ -37,9 +41,15 @@ class Factigis_Add extends React.Component {
       //save geometries selected
       factigis_geoCliente: '',
       factigis_geoPoste: '',
-      factigis_geoDireccion: ''
+      factigis_geoDireccion: '',
+
+      //save state for togglebuttons
+      toggleCliente: 'OFF',
+      togglePoste: 'OFF',
+      toggleDireccion: 'OFF'
     }
   }
+
   componentWillMount(){
 
     this.setState({
@@ -47,6 +57,7 @@ class Factigis_Add extends React.Component {
       factigis_tipoContribuyente:tipoContribuyente
     });
   }
+
   handleSelect(index, last){
     this.setState({
       selectedTab: index,
@@ -58,11 +69,51 @@ class Factigis_Add extends React.Component {
     console.log(val);
     this.setState({factigis_selectedValueCliente: val});
   }
+
   onChangeTipoContribuyente(val){
     console.log(val);
     this.setState({factigis_selectedValueTipoContribuyente: val});
   }
 
+  onClickCliente(e){
+    var map = this.props.themap;
+    var clienteMapClick;
+
+    if (this.state.toggleCliente =='OFF'){
+      this.setState({toggleCliente: 'ON'});
+      $('.factigis_btnSelectCliente').css('color',"crimson");
+
+      //getting the map point for location
+      clienteMapClick = map.on("click",(m)=>{
+          console.log("clickeando mapa", m);
+      });
+
+    }else{
+      this.setState({toggleCliente: 'OFF'});
+      $('.factigis_btnSelectCliente').css('color',"black");
+      clienteMapClick.remove();
+    }
+  }
+  onClickPoste(e){
+
+    if (this.state.togglePoste =='OFF'){
+      this.setState({togglePoste: 'ON'});
+        $('.factigis_btnSelectPoste').css('color',"crimson");
+    }else{
+      this.setState({togglePoste: 'OFF'});
+        $('.factigis_btnSelectPoste').css('color',"black");
+    }
+  }
+  onClickDireccion(e){
+
+    if (this.state.toggleDireccion =='OFF'){
+      this.setState({toggleDireccion: 'ON'});
+        $('.factigis_btnSelectDireccion').css('color',"crimson");
+    }else{
+      this.setState({toggleDireccion: 'OFF'});
+        $('.factigis_btnSelectDireccion').css('color',"black");
+    }
+  }
   render(){
 
     return (
@@ -80,9 +131,10 @@ class Factigis_Add extends React.Component {
           <h8>Rut:</h8>
           <div className="factigis_groupbox">
             <input id="factigis_txtRut" className="factigis-input" ref="rutValue" title="Ingrese Rut e indique ubicación del cliente" type="text" placeholder="Ingrese Rut e indique ubicación del cliente"  />
-            <button className="factigis-selectFromMapButton btn btn-default" title="Ir " type="button" >
+            <button onClick={this.onClickCliente} className="factigis-selectFromMapButton factigis_btnSelectCliente btn btn-default" title="Ir " type="button" >
               <span><i className="fa fa-map-marker"></i></span>
-              </button>
+            </button>
+            <h8 className="factigis__toggleBtnLabel">{this.state.toggleCliente}</h8>
           </div>
           <h8>Tipo Cliente:</h8>
           <div className="factigis_groupbox">
@@ -136,9 +188,10 @@ class Factigis_Add extends React.Component {
           <h8>Rótulo Conexión:</h8>
           <div className="factigis_groupbox">
             <input id="ap_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
-            <button className="factigis-selectFromMapButton btn btn-default" title="Ir " type="button" >
+            <button onClick={this.onClickPoste} className="factigis-selectFromMapButton factigis_btnSelectPoste btn btn-default" title="Ir " type="button" >
               <span><i className="fa fa-map-signs"></i></span>
             </button>
+            <h8 className="factigis__toggleBtnLabel">{this.state.togglePoste}</h8>
           </div>
           <h8>Tramo de Conexión:</h8>
           <div className="factigis_groupbox">
@@ -157,9 +210,10 @@ class Factigis_Add extends React.Component {
           <h8>Dirección:</h8>
           <div className="factigis_groupbox">
             <input id="ap_txtObsLuminaria" className="factigis-input" ref="dirValue" title="Dirección" type="text" placeholder="Dirección encontrada" />
-            <button className="factigis-selectFromMapButton btn btn-default" title="Ir " type="button" >
+            <button onClick={this.onClickDireccion} className="factigis-selectFromMapButton factigis_btnSelectDireccion btn btn-default" title="Ir " type="button" >
               <span><i className="fa fa-home"></i></span>
-              </button>
+            </button>
+            <h8 className="factigis__toggleBtnLabel">{this.state.toggleDireccion}</h8>
           </div>
         </div>
           <hr className="factigis_hr"/>

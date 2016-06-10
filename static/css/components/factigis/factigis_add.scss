@@ -61,6 +61,7 @@
   width: 85%;
 }
 
+
 input[type="checkbox"] {
     display: none;
 }
@@ -107,6 +108,25 @@ input[type="checkbox"]:checked + label:after {
     margin-right: 90px;
 }
 
+.factigis__toggleBtnLabel{
+  display: flex;
+  flex-direction: inherit;
+  align-items: center;
+  padding-left: 1em;
+  display: none;
+}
+
+.factigis_btnSelectCliente{
+  color: black;
+}
+
+.factigis_btnSelectPoste{
+  color: black;
+}
+
+.factigis_btnSelectDireccion{
+  color: black;
+}
 //media screens for responsive design 'till 640px max'
 @media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait)  {
   .factigis_ul{

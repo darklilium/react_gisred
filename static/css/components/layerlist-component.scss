@@ -9,28 +9,12 @@
   border-radius: 0;
   background-color: rgba(255, 255, 255, 0.6);
 }
-.lLayerList_fieldset{
-  display: flex;
-}
-.laLayerListlegend{
-  font-size: 11px;
-  padding: 0px;
-  margin: 0px;
-}
-
-.layLayerListheckbox{
-
-}
-.layeLayerList{
-  font-size: xx-small;
-  margin-bottom: 0px;
-  margin-top: 0.8em;
-}
-.layerLayerListckbox-div{
-  display: flex;
-  width: auto;
-  flex-direction: row;
-}
 .LayerList__checkbox-div{
   display: flex;
+}
+
+.LayerList__legend{
+  font-size: inherit;
+  margin-bottom: 0em;
+  font-weight: 700;
 }

@@ -21,6 +21,7 @@ class LayerList extends React.Component {
     // checkbox setup n° 4
     var mapp = mymap.getMap();
 
+
     /*19/05/2016*/
     switch (check.currentTarget.id) {
       case "check_alimentador":
@@ -164,7 +165,7 @@ class LayerList extends React.Component {
         case "check_cuadrillas":
 
           visibilityStyle.check_cuadrillas.visibility= 'visible';
-            visibilityStyle.check_cuadrillas.display= 'flex';
+          visibilityStyle.check_cuadrillas.display= 'flex';
         break;
 
         case "check_ap_modificaciones":
