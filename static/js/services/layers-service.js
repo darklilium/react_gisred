@@ -10,6 +10,7 @@ function myLayers(){
   const serviceURL = serviceMain + 'rest/services/';
   var graphicLayer = new esri.layers.GraphicsLayer();
 
+  //check 8 and last one
   return {
     //The following layers are for common use in any gisred app.
     read_tokenURL(){
@@ -135,6 +136,10 @@ function myLayers(){
     },
     read_factigis2(){
         return serviceURL + "PMS/Vialidad/MapServer?f=json&token=" + token.read();
+    },
+    read_SSEE(){
+      return serviceURL + "Chilquinta_006/Equipos_pto_006/MapServer?f=json&token=" + token.read();
+
     }
 
 
@@ -143,7 +148,7 @@ function myLayers(){
 
 //TO DO: this function sets the layers that will be added in the app, integrating the infowindow and their special properties.
 function setLayers(){
-
+//check n°7
   return {
     alimentadores(){
       var layerAlimentador = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_layerAlimentador(),{id:"gis_alimentadores"});
@@ -256,6 +261,12 @@ function setLayers(){
       fVialidadsLayer.setVisibleLayers([0]);
       fVialidadsLayer.setImageFormat("png32");
       return fVialidadsLayer;
+    },
+    gis_SSEE(whereRegion, layerNumber){
+      var fSSEELayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_SSEE(),{id:"gis_SSEE"});
+      fSSEELayer.setVisibleLayers([0]);
+      fSSEELayer.setImageFormat("png32");
+      return fSSEELayer;
     }
 
   }
@@ -327,6 +338,10 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
       myLayerToAdd = setLayers().factigis_vialidad(where,order);
     break;
 
+    case 'gis_SSEE':
+      myLayerToAdd = setLayers().read_SSEE(where,order);
+    break;
+
     default:
   }
 
@@ -349,6 +364,9 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     }
     if (check_factigis_vialidad.checked){
       mapp.addLayer(setLayers().factigis_vialidad(), 1);
+    }
+    if (check_SSEE.checked){
+      mapp.addLayer(setLayers().SSEE(), 1);
     }
 
 

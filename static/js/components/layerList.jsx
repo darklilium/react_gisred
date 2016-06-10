@@ -96,6 +96,17 @@ class LayerList extends React.Component {
         mapp.graphics.clear();
         mapp.removeLayer(mapp.getLayer("factigis_vialidad"));
       break;
+
+      case "check_SSEE":
+        var addDistribucionLayer = setLayers().gis_SSEE("",8);
+        if (this.refs.check_SSEE.checked){
+          mapp.addLayer(addDistribucionLayer);
+          return;
+        }
+
+        mapp.graphics.clear();
+        mapp.removeLayer(mapp.getLayer("gis_SSEE"));
+      break;
       default:
 
     }
@@ -130,6 +141,11 @@ class LayerList extends React.Component {
           margin: '9px 0 0 0'
       },
       check_factigis_vialidad:{
+          visibility: 'hidden',
+          display: 'none',
+          margin: '9px 0 0 0'
+      },
+      check_SSEE:{
           visibility: 'hidden',
           display: 'none',
           margin: '9px 0 0 0'
@@ -171,6 +187,11 @@ class LayerList extends React.Component {
           visibilityStyle.check_factigis_vialidad.visibility= 'visible';
           visibilityStyle.check_factigis_vialidad.display= 'flex';
         break;
+        case "check_SSEE":
+          visibilityStyle.check_SSEE.visibility= 'visible';
+          visibilityStyle.check_SSEE.display= 'flex';
+        break;
+
         default:
 
       }
@@ -204,6 +225,10 @@ class LayerList extends React.Component {
           <div className="LayerList__checkbox-div">
             <input style={visibilityStyle.check_factigis_vialidad} className="LayerList__checkbox" type="checkbox" id="check_factigis_vialidad" ref="check_factigis_vialidad" onClick={this.onClick} ></input>
             <h6 style={visibilityStyle.check_factigis_vialidad} className="LayerList__h6">Vialidad</h6>
+          </div>
+          <div className="LayerList__checkbox-div">
+            <input style={visibilityStyle.check_SSEE} className="LayerList__checkbox" type="checkbox" id="check_SSEE" ref="check_SSEE" onClick={this.onClick} ></input>
+            <h6 style={visibilityStyle.check_SSEE} className="LayerList__h6">SSEE</h6>
           </div>
       </fieldset>
     </div>);
