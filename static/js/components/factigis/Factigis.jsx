@@ -28,7 +28,7 @@ class Factigis extends React.Component {
           <Factigis_Add themap={this.state.themap}/>
         </div>
         <div className="wrapper_factibilidadRight">
-        <LayerList show={["check_factigis_transmision", "check_factigis_distribucion", "check_factigis_vialidad"]} />
+        <LayerList show={["check_factigis_transmision", "check_factigis_distribucion", "check_factigis_vialidad", "check_campamentos"]} />
           <div className="factigis_map_div" id="factigis_map_div"></div>
         </div>
 

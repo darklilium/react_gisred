@@ -125,7 +125,7 @@ function myLayers(){
     read_factigis_transmision(){
         return serviceURL + "PMS/Concesiones/MapServer/0?f=json&token=" + token.read();
     },
-    read_factigis_distrubucion(){
+    read_factigis_distribucion(){
         return serviceURL + "PMS/Concesiones/MapServer/1?f=json&token=" + token.read();
     },
     read_factigis_vialidad(){
@@ -140,6 +140,9 @@ function myLayers(){
     read_SSEE(){
       return serviceURL + "Chilquinta_006/Equipos_pto_006/MapServer?f=json&token=" + token.read();
 
+    },
+    read_campamentos(){
+      return serviceURL + "MANTENIMIENTO/Otras_Capas/MapServer/3?f=json&token=" + token.read();
     }
 
   };
@@ -266,6 +269,12 @@ function setLayers(){
       fSSEELayer.setVisibleLayers([0]);
       fSSEELayer.setImageFormat("png32");
       return fSSEELayer;
+    },
+    gis_campamentos(whereRegion, layerNumber){
+      var fcampamentosLayer = new esri.layers.FeatureLayer(myLayers().read_campamentos(),{id:"gis_campamentos",
+      mode: esri.layers.FeatureLayer.MODE_ONDEMAND});
+
+      return fcampamentosLayer;
     }
   }
 }
@@ -339,6 +348,9 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     case 'gis_SSEE':
       myLayerToAdd = setLayers().read_SSEE(where,order);
     break;
+    case 'gis_campamentos':
+      myLayerToAdd = setLayers().read_campamentos(where,order);
+    break;
 
     default:
   }
@@ -365,6 +377,10 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
   if (check_SSEE.checked){
     mapp.addLayer(setLayers().SSEE(), 1);
   }
+  if (check_campamentos.checked){
+    mapp.addLayer(setLayers().campamentos(), 1);
+  }
+
 }
 export default myLayers();
 export {setLayers,layersActivated,addCertainLayer};

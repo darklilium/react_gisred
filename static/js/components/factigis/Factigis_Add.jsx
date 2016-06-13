@@ -5,6 +5,7 @@ import Select from 'react-select';
 import {tipoCliente} from '../../services/factigis_services/cbData-service';
 import {tipoContribuyente} from '../../services/factigis_services/cbData-service';
 import {mymap} from '../../services/map-service';
+import {factigis_validator} from '../../services/factigis_services/factigis_validator-service';
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -33,7 +34,7 @@ class Factigis_Add extends React.Component {
       factigis_selectedValueTipoContribuyente: '',
 
       //check states per validation zones
-      zonaConcesion: true,
+      zonaConcesion: false,
       zonaCampamentos: false,
       zonaRestringida: false,
       zonaVialidad: false,
@@ -46,7 +47,12 @@ class Factigis_Add extends React.Component {
       //save state for togglebuttons
       toggleCliente: 'OFF',
       togglePoste: 'OFF',
-      toggleDireccion: 'OFF'
+      toggleDireccion: 'OFF',
+
+      //disable - enable button event-handlers
+      btnCliente: '',
+      btnPoste: '',
+      btnDireccion: ''
     }
   }
 
@@ -77,43 +83,78 @@ class Factigis_Add extends React.Component {
 
   onClickCliente(e){
     var map = this.props.themap;
-    var clienteMapClick;
 
     if (this.state.toggleCliente =='OFF'){
       this.setState({toggleCliente: 'ON'});
       $('.factigis_btnSelectCliente').css('color',"crimson");
 
-      //getting the map point for location
-      clienteMapClick = map.on("click",(m)=>{
-          console.log("clickeando mapa", m);
+      var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
+      //  console.log("My click", g.mapPoint);
+        this.setState({factigis_geoCliente: g.mapPoint});
+
+        //validar factibilidad.
+        var zones = factigis_validator(g.mapPoint, (callbackMain)=>{
+          console.log(callbackMain);
+          this.setState({
+            zonaConcesion: callbackMain.zonaConcesion,
+            zonaCampamentos: callbackMain.zonaCampamentos,
+            zonaRestringida: callbackMain.zonaRestringida,
+            zonaVialidad: callbackMain.zonaVialidad,
+          });
+        });
+
+
       });
+      this.setState({btnCliente: map_click_handle});
+
 
     }else{
       this.setState({toggleCliente: 'OFF'});
       $('.factigis_btnSelectCliente').css('color',"black");
-      clienteMapClick.remove();
+      dojo.disconnect(this.state.btnCliente);
+      //console.log("this is my saved point for cliente", this.state.factigis_geoCliente);
     }
   }
   onClickPoste(e){
-
+    var map = this.props.themap;
     if (this.state.togglePoste =='OFF'){
       this.setState({togglePoste: 'ON'});
         $('.factigis_btnSelectPoste').css('color',"crimson");
+
+        var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
+      //    console.log("My click poste", g.mapPoint);
+          this.setState({factigis_geoPoste: g.mapPoint});
+        });
+        this.setState({btnPoste: map_click_handle});
     }else{
       this.setState({togglePoste: 'OFF'});
         $('.factigis_btnSelectPoste').css('color',"black");
+        dojo.disconnect(this.state.btnPoste);
+        //console.log("this is my saved point for poste", this.state.factigis_geoPoste);
     }
   }
+
   onClickDireccion(e){
+    var map = this.props.themap;
 
     if (this.state.toggleDireccion =='OFF'){
       this.setState({toggleDireccion: 'ON'});
         $('.factigis_btnSelectDireccion').css('color',"crimson");
+
+        var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
+        //  console.log("My click direccion", g.mapPoint);
+          this.setState({factigis_geoDireccion: g.mapPoint});
+        });
+        this.setState({btnDireccion: map_click_handle});
+
     }else{
       this.setState({toggleDireccion: 'OFF'});
-        $('.factigis_btnSelectDireccion').css('color',"black");
+      $('.factigis_btnSelectDireccion').css('color',"black");
+      dojo.disconnect(this.state.btnDireccion);
+    //  console.log("this is my saved point for direccion", this.state.factigis_geoDireccion);
     }
   }
+
   render(){
 
     return (

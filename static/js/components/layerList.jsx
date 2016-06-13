@@ -108,6 +108,16 @@ class LayerList extends React.Component {
         mapp.graphics.clear();
         mapp.removeLayer(mapp.getLayer("gis_SSEE"));
       break;
+      case "check_campamentos":
+        var addDistribucionLayer = setLayers().gis_campamentos("",9);
+        if (this.refs.check_campamentos.checked){
+          mapp.addLayer(addDistribucionLayer);
+          return;
+        }
+
+        mapp.graphics.clear();
+        mapp.removeLayer(mapp.getLayer("gis_campamentos"));
+      break;
       default:
 
     }
@@ -147,6 +157,11 @@ class LayerList extends React.Component {
           margin: '9px 0 0 0'
       },
       check_SSEE:{
+          visibility: 'hidden',
+          display: 'none',
+          margin: '9px 0 0 0'
+      },
+      check_campamentos:{
           visibility: 'hidden',
           display: 'none',
           margin: '9px 0 0 0'
@@ -192,6 +207,10 @@ class LayerList extends React.Component {
           visibilityStyle.check_SSEE.visibility= 'visible';
           visibilityStyle.check_SSEE.display= 'flex';
         break;
+        case "check_campamentos":
+          visibilityStyle.check_campamentos.visibility= 'visible';
+          visibilityStyle.check_campamentos.display= 'flex';
+        break;
 
         default:
 
@@ -230,6 +249,10 @@ class LayerList extends React.Component {
           <div className="LayerList__checkbox-div">
             <input style={visibilityStyle.check_SSEE} className="LayerList__checkbox" type="checkbox" id="check_SSEE" ref="check_SSEE" onClick={this.onClick} ></input>
             <h6 style={visibilityStyle.check_SSEE} className="LayerList__h6">SSEE</h6>
+          </div>
+          <div className="LayerList__checkbox-div">
+            <input style={visibilityStyle.check_campamentos} className="LayerList__checkbox" type="checkbox" id="check_campamentos" ref="check_campamentos" onClick={this.onClick} ></input>
+            <h6 style={visibilityStyle.check_campamentos} className="LayerList__h6">Campamentos</h6>
           </div>
       </fieldset>
     </div>);
