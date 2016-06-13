@@ -57,10 +57,10 @@ function campamentosZoneValidator(point,callback){
   qTaskCampamentos.execute(qCampamentos, (featureSet)=>{
     if(featureSet.features.length){
 
-      return callback(true);
+      return callback(false);
     }else{
       console.log("no hay", featureSet.features.length, "campamento");
-      return callback(false);
+      return callback(true);
     }
 
   }, (Errorq)=>{
@@ -109,10 +109,10 @@ function vialidadZoneValidator(point,callback){
   qTaskVialidad.execute(qVialidad, (featureSet)=>{
     if(featureSet.features.length){
 
-      return callback(true);
+      return callback(false);
     }else{
 
-      return callback(false);
+      return callback(true);
     }
 
   }, (Errorq)=>{
