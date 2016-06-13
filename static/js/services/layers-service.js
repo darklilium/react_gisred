@@ -123,7 +123,7 @@ function myLayers(){
 
     /* FACTIGIS LAYERS*/
     read_factigis_transmision(){
-        return serviceURL + "PMS/Concesiones/MapServer/0?f=json&token=" + token.read();
+        return serviceURL + "Varios/FACTIBILIDAD/MapServer/0?f=json&token=" + token.read();
     },
     read_factigis_distribucion(){
         return serviceURL + "PMS/Concesiones/MapServer/1?f=json&token=" + token.read();
@@ -244,10 +244,9 @@ function setLayers(){
     },
     /* factigis module */
     factigis_transmision(whereRegion, layerNumber){
-      var fDistribucionsLayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_factigis(),{id:"factigis_transmision",
-      opacity:0.3});
-      fDistribucionsLayer.setImageFormat("png32");
-      fDistribucionsLayer.setVisibleLayers([0]);
+      var fDistribucionsLayer = new esri.layers.FeatureLayer(myLayers().read_factigis_transmision(),{id:"factigis_transmision"
+      });
+
       return fDistribucionsLayer;
     },
     factigis_distribucion(whereRegion, layerNumber){

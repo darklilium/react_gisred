@@ -95,12 +95,15 @@ class Factigis_Add extends React.Component {
         //validar factibilidad.
         var zones = factigis_validator(g.mapPoint, (callbackMain)=>{
           console.log(callbackMain);
+
           this.setState({
             zonaConcesion: callbackMain.zonaConcesion,
             zonaCampamentos: callbackMain.zonaCampamentos,
             zonaRestringida: callbackMain.zonaRestringida,
             zonaVialidad: callbackMain.zonaVialidad,
           });
+
+        
         });
 
 
@@ -264,21 +267,21 @@ class Factigis_Add extends React.Component {
 
                 <li>
                   <input type="checkbox" name="manager" id="manager" disabled="true" checked={this.state.zonaConcesion} />
-                  <label htmlFor="manager">Zona Concesión</label>
+                  <label htmlFor="manager" id="lblConcesion">Zona Concesión</label>
                 </li>
                 <li>
                   <input type="checkbox" name="webdesigner" id="webdesigner" disabled="true" checked={this.state.zonaRestringida} />
-                  <label htmlFor="webdesigner">Zona Restringida</label>
+                  <label htmlFor="webdesigner" id="lblRestringida">Zona Restringida</label>
                 </li>
 
 
                 <li>
                   <input type="checkbox" name="webdev" id="webdev"  disabled="true" checked={this.state.zonaVialidad}/>
-                  <label htmlFor="webdev">Zona Vialidad</label>
+                  <label htmlFor="webdev" id="lblVialidad">Zona Vialidad</label>
                 </li>
                 <li>
                   <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaCampamentos} />
-                  <label htmlFor="csr">Zona Campamentos</label>
+                  <label htmlFor="csr" id="lblCampamentos">Zona Campamentos</label>
                 </li>
 
             </ul>

@@ -72,8 +72,8 @@ function campamentosZoneValidator(point,callback){
 }
 
 function transmisionZoneValidator(point,callback){
-    var layer = "http://gisred.chilquinta.cl:5555/arcgis/rest/services/PMS/Concesiones/MapServer/0?f=json&token=" + token.read();
-  var qTaskCampamentos = new esri.tasks.QueryTask(layer);
+
+  var qTaskCampamentos = new esri.tasks.QueryTask(layers.read_factigis_transmision());
 
 
   var qCampamentos = new esri.tasks.Query();
@@ -85,10 +85,10 @@ function transmisionZoneValidator(point,callback){
     if(featureSet.features.length){
       console.log("hay", featureSet.features.length, "trans", featureSet);
 
-      return callback(true);
+      return callback(false);
     }else{
       console.log("no hay", featureSet.features.length, "trans");
-      return callback(false);
+      return callback(true);
     }
 
   }, (Errorq)=>{
