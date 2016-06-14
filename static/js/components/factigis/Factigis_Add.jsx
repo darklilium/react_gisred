@@ -10,6 +10,8 @@ import makeSymbol from '../../utils/makeSymbol';
 import layers from '../../services/layers-service';
 import {layersActivated, setLayers} from '../../services/layers-service';
 import {factigis_findDireccion, factigis_findRotulo} from '../../services/factigis_services/factigis_find-service';
+import Rut from 'rutjs';
+
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -25,6 +27,7 @@ class Factigis_Add extends React.Component {
     this.onClickCliente = this.onClickCliente.bind(this);
     this.onClickPoste = this.onClickPoste.bind(this);
     this.onClickDireccion = this.onClickDireccion.bind(this);
+    this.onClickAgregarCliente = this.onClickAgregarCliente.bind(this);
 
     this.state = {
       //selected tab in the beginning
@@ -199,6 +202,17 @@ class Factigis_Add extends React.Component {
     }
   }
 
+  onClickAgregarCliente(){
+    var r = this.refs.rutClienteValue.value;
+    var rut = new Rut(String(r));
+      if (rut.isValid){
+        console.log("rut valido");
+      }else{
+          console.log("rut invalido");
+      }
+
+  }
+
   render(){
 
     return (
@@ -215,7 +229,7 @@ class Factigis_Add extends React.Component {
         <div className="factigis_BigGroupbox">
           <h8>Rut:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtRut" className="factigis-input" ref="rutValue" title="Ingrese Rut e indique ubicación del cliente" type="text" placeholder="Ingrese Rut e indique ubicación del cliente"  />
+            <input id="factigis_txtRut" className="factigis-input" ref="rutClienteValue" title="Ingrese Rut e indique ubicación del cliente" type="text" placeholder="Ingrese Rut e indique ubicación del cliente"  />
             <button onClick={this.onClickCliente} className="factigis-selectFromMapButton factigis_btnSelectCliente btn btn-default" title="Ir " type="button" >
               <span><i className="fa fa-map-marker"></i></span>
             </button>
@@ -232,28 +246,28 @@ class Factigis_Add extends React.Component {
 
           <h8>Nombre Cliente:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtTipoCliente" className="factigis-input" ref="rutValue" title="Escriba el nombre del cliente" type="text" placeholder=""  />
+            <input id="factigis_txtTipoCliente" className="factigis-input" ref="nombreClienteValue" title="Escriba el nombre del cliente" type="text" placeholder=""  />
             <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-marker"></i></span>
               </button>
           </div>
           <h8>Apellido:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtTipoCliente" className="factigis-input" ref="rutValue" title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
+            <input id="factigis_txtTipoCliente" className="factigis-input" ref="apellidoClienteValue" title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
             <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-marker"></i></span>
               </button>
           </div>
           <h8>Telefono:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtTipoCliente" className="factigis-input" ref="rutValue" title="Ingrese teléfono del cliente" type="text" placeholder="Celular o Fijo"  />
+            <input id="factigis_txtTipoCliente" className="factigis-input" ref="telefonoClienteValue" title="Ingrese teléfono del cliente" type="text" placeholder="Celular o Fijo"  />
             <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-marker"></i></span>
               </button>
           </div>
           <h8>Email:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtTipoCliente" className="factigis-input" ref="rutValue" title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com"  />
+            <input id="factigis_txtTipoCliente" className="factigis-input" ref="emailClientevalue" title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com"  />
             <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-marker"></i></span>
               </button>
@@ -280,14 +294,14 @@ class Factigis_Add extends React.Component {
           </div>
           <h8>Tramo de Conexión:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+            <input id="factigis_txtObsLuminaria" className="factigis-input" ref="tramoValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
             <button className="factigis-selectFromMapButton btn btn-default"  style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-signs"></i></span>
             </button>
           </div>
           <h8>Tipo de Empalme:</h8>
           <div className="factigis_groupbox">
-            <input id="factigis_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+            <input id="factigis_txtObsLuminaria" className="factigis-input" ref="empalmeValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
             <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-signs"></i></span>
             </button>
@@ -328,7 +342,7 @@ class Factigis_Add extends React.Component {
             </ul>
           </div>
           <hr className="factigis_hr"/>
-            <button className="factigis_submitButton btn btn-success" title="Ir " type="button" >
+            <button className="factigis_submitButton btn btn-success" title="Ir " type="button" onClick={this.onClickAgregarCliente} >
                 <span><i className="fa fa-plus"></i> Agregar</span>
             </button>
           </TabPanel>
