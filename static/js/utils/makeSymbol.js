@@ -51,6 +51,48 @@ function makeSymbol(){
       );
 
       return mySymbol;
+    },
+    makePointCustomer(){
+      var mySymbol = new esri.symbol.SimpleMarkerSymbol(
+        esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE,
+        20,
+        new esri.symbol.SimpleLineSymbol(
+          esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+          new esri.Color([0, 14, 156, 5]),
+          1
+        ),
+        new esri.Color([0, 14, 156, 5])
+      );
+
+      return mySymbol;
+    },
+    makePointPipe(){
+      var mySymbol = new esri.symbol.SimpleMarkerSymbol(
+        esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE,
+        20,
+        new esri.symbol.SimpleLineSymbol(
+          esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+          new esri.Color([156, 0, 0, 5]),
+          1
+        ),
+        new esri.Color([156, 0, 0, 5])
+      );
+
+      return mySymbol;
+    },
+    makePointAddress(){
+      var mySymbol = new esri.symbol.SimpleMarkerSymbol(
+        esri.symbol.SimpleMarkerSymbol.STYLE_CIRCLE,
+        20,
+        new esri.symbol.SimpleLineSymbol(
+          esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+          new esri.Color([152, 0, 156, 1]),
+          1
+        ),
+        new esri.Color([152, 0, 156, 1])
+      );
+
+      return mySymbol;
     }
   }
 }

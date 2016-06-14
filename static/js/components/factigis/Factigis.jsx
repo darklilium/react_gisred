@@ -19,6 +19,14 @@ class Factigis extends React.Component {
   componentDidMount(){
     var map = mymap.createMap("factigis_map_div","topo",-71.2905 ,-33.1009,9);
     this.setState({themap: map});
+
+    addCertainLayer("gis_cartografia", 11, "",(gis_cartografia)=>{
+      gis_cartografia.on("click",(event)=>{console.log(event.graphic.attributes)});
+    });
+    addCertainLayer("gis_rotulos", 12, "",(gis_rotulos)=>{
+      gis_rotulos.on("click",(event)=>{console.log(event.graphic.attributes)});
+    });
+
   }
 
   render(){

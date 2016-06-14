@@ -26,7 +26,7 @@ function myLayers(){
     },
     //dmps adresses
     read_cartography(){
-      return serviceURL + "Cartografia/DMPS/MapServer/0?f=json&token=" + token.read();
+      return serviceURL + "Cartografia/DMPS/MapServer?f=json&token=" + token.read();
     },
 
     //The following layers and services are just for Interruptions app. (interrupciones.html and interruptions.js)
@@ -139,10 +139,18 @@ function myLayers(){
     },
     read_SSEE(){
       return serviceURL + "Chilquinta_006/Equipos_pto_006/MapServer?f=json&token=" + token.read();
-
     },
     read_campamentos(){
       return serviceURL + "MANTENIMIENTO/Otras_Capas/MapServer/3?f=json&token=" + token.read();
+    },
+    read_direcciones(){
+      return serviceURL + "Cartografia/DMPS/MapServer/0?f=json&token=" + token.read();
+    },
+    read_rotulos(){
+      return serviceURL + "Chilquinta_006/Nodos_006/MapServer?f=json&token=" + token.read();
+    },
+    read_rotulos2(){
+      return serviceURL + "Chilquinta_006/Nodos_006/MapServer/0?f=json&token=" + token.read();
     }
 
   };
@@ -274,6 +282,25 @@ function setLayers(){
       mode: esri.layers.FeatureLayer.MODE_ONDEMAND});
 
       return fcampamentosLayer;
+    },
+    gis_rotulos(){
+      var frotulosLayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_rotulos(),{id:"gis_rotulos"});
+      frotulosLayer.setVisibleLayers([0]);
+      frotulosLayer.setImageFormat("png32");
+      return frotulosLayer;
+    },
+    gis_direcciones(){
+      var fdireccionesLayer = new esri.layers.FeatureLayer(myLayers().read_direcciones(),{id:"gis_direcciones",
+      outFields: ["id_direccion","comuna","nombre_calle","numero"]});
+
+      return fdireccionesLayer;
+    },
+    gis_cartografia(){
+      var fSSEELayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_cartography(),{id:"gis_cartografia"});
+      fSSEELayer.setVisibleLayers([0]);
+      fSSEELayer.setImageFormat("png32");
+      return fSSEELayer;
+    //  http://gisred.chilquinta.cl:5555/arcgis/rest/services/Cartografia/Cartografia/MapServer
     }
   }
 }
@@ -350,7 +377,15 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     case 'gis_campamentos':
       myLayerToAdd = setLayers().read_campamentos(where,order);
     break;
-
+    case 'gis_direcciones':
+      myLayerToAdd = setLayers().gis_direcciones(where,order);
+    break;
+    case 'gis_cartografia':
+      myLayerToAdd = setLayers().gis_cartografia(where,order);
+    break;
+    case 'gis_rotulos':
+      myLayerToAdd = setLayers().gis_rotulos(where,order);
+    break;
     default:
   }
 
@@ -380,6 +415,7 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     mapp.addLayer(setLayers().campamentos(), 1);
   }
 
+  callback(myLayerToAdd);
 }
 export default myLayers();
 export {setLayers,layersActivated,addCertainLayer};

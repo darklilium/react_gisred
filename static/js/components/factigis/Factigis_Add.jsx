@@ -6,6 +6,10 @@ import {tipoCliente} from '../../services/factigis_services/cbData-service';
 import {tipoContribuyente} from '../../services/factigis_services/cbData-service';
 import {mymap} from '../../services/map-service';
 import {factigis_validator} from '../../services/factigis_services/factigis_validator-service';
+import makeSymbol from '../../utils/makeSymbol';
+import layers from '../../services/layers-service';
+import {layersActivated, setLayers} from '../../services/layers-service';
+import {factigis_findDireccion, factigis_findRotulo} from '../../services/factigis_services/factigis_find-service';
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -60,7 +64,22 @@ class Factigis_Add extends React.Component {
 
     this.setState({
       factigis_tipoCliente: tipoCliente,
-      factigis_tipoContribuyente:tipoContribuyente
+      factigis_tipoContribuyente:tipoContribuyente,
+
+      layerDirecciones: 'off',
+
+      //textfields values
+      factigisDireccion: '',  //per full name
+      factigisIDDireccion: '', //per id dir
+      factigisEmpalme:'',
+      factigisConexion: '',
+      factigisRotulo: '',
+      factigisEmail: '',
+      factigisTelefono: '',
+      factigisApellido: '',
+      factigisNombreCliente: '',
+      factigisRut: ''
+
     });
   }
 
@@ -83,13 +102,14 @@ class Factigis_Add extends React.Component {
 
   onClickCliente(e){
     var map = this.props.themap;
+    //clean graphics on layer
 
     if (this.state.toggleCliente =='OFF'){
       this.setState({toggleCliente: 'ON'});
       $('.factigis_btnSelectCliente').css('color',"crimson");
 
       var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
-      //  console.log("My click", g.mapPoint);
+        //saves geometry point for customer.
         this.setState({factigis_geoCliente: g.mapPoint});
 
         //validar factibilidad.
@@ -102,10 +122,13 @@ class Factigis_Add extends React.Component {
             zonaRestringida: callbackMain.zonaRestringida,
             zonaVialidad: callbackMain.zonaVialidad,
           });
-
-        
         });
 
+        //draw customer location on the map.
+        map.graphics.clear();
+        let pointSymbol = makeSymbol.makePointCustomer();
+        console.log(g);
+        map.graphics.add(new esri.Graphic(g.mapPoint,pointSymbol));
 
       });
       this.setState({btnCliente: map_click_handle});
@@ -118,15 +141,23 @@ class Factigis_Add extends React.Component {
       //console.log("this is my saved point for cliente", this.state.factigis_geoCliente);
     }
   }
+
   onClickPoste(e){
     var map = this.props.themap;
+
     if (this.state.togglePoste =='OFF'){
       this.setState({togglePoste: 'ON'});
         $('.factigis_btnSelectPoste').css('color',"crimson");
 
         var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
-      //    console.log("My click poste", g.mapPoint);
-          this.setState({factigis_geoPoste: g.mapPoint});
+          factigis_findRotulo(g.mapPoint, (featureSetFeatures)=>{
+
+            let rotulo = featureSetFeatures[0].attributes['rotulo'];
+            this.setState({
+              factigis_geoPoste: featureSetFeatures[0].geometry,
+              factigisRotulo: rotulo
+            });
+          });
         });
         this.setState({btnPoste: map_click_handle});
     }else{
@@ -140,21 +171,31 @@ class Factigis_Add extends React.Component {
   onClickDireccion(e){
     var map = this.props.themap;
 
+
     if (this.state.toggleDireccion =='OFF'){
       this.setState({toggleDireccion: 'ON'});
         $('.factigis_btnSelectDireccion').css('color',"crimson");
 
         var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
-        //  console.log("My click direccion", g.mapPoint);
-          this.setState({factigis_geoDireccion: g.mapPoint});
-        });
+          factigis_findDireccion(g.mapPoint, (featureSetFeatures)=>{
+
+            let direccion = featureSetFeatures[0].attributes['nombre_calle'] + " " + featureSetFeatures[0].attributes['numero'];
+            this.setState({
+              factigis_geoDireccion: featureSetFeatures[0].geometry,
+              factigisDireccion: direccion,
+              factigisIDDireccion: featureSetFeatures[0].attributes['id_direccion']
+            });
+          });
+        //save the handler for removing it later (in the off)
         this.setState({btnDireccion: map_click_handle});
+
+        });
 
     }else{
       this.setState({toggleDireccion: 'OFF'});
-      $('.factigis_btnSelectDireccion').css('color',"black");
-      dojo.disconnect(this.state.btnDireccion);
-    //  console.log("this is my saved point for direccion", this.state.factigis_geoDireccion);
+        $('.factigis_btnSelectDireccion').css('color',"black");
+        dojo.disconnect(this.state.btnDireccion);
+        //console.log("this is my saved point for poste", this.state.factigis_geoPoste);
     }
   }
 
@@ -231,7 +272,7 @@ class Factigis_Add extends React.Component {
         <div className="factigis_BigGroupbox">
           <h8>Rótulo Conexión:</h8>
           <div className="factigis_groupbox">
-            <input id="ap_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+            <input id="ap_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" disabled={true} type="text" placeholder="Poste o cámara encontrado" value={this.state.factigisRotulo} />
             <button onClick={this.onClickPoste} className="factigis-selectFromMapButton factigis_btnSelectPoste btn btn-default" title="Ir " type="button" >
               <span><i className="fa fa-map-signs"></i></span>
             </button>
@@ -239,21 +280,21 @@ class Factigis_Add extends React.Component {
           </div>
           <h8>Tramo de Conexión:</h8>
           <div className="factigis_groupbox">
-            <input id="ap_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+            <input id="factigis_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
             <button className="factigis-selectFromMapButton btn btn-default"  style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-signs"></i></span>
             </button>
           </div>
           <h8>Tipo de Empalme:</h8>
           <div className="factigis_groupbox">
-            <input id="ap_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+            <input id="factigis_txtObsLuminaria" className="factigis-input" ref="rotuloValue" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
             <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
               <span><i className="fa fa-map-signs"></i></span>
             </button>
           </div>
           <h8>Dirección:</h8>
           <div className="factigis_groupbox">
-            <input id="ap_txtObsLuminaria" className="factigis-input" ref="dirValue" title="Dirección" type="text" placeholder="Dirección encontrada" />
+            <input id="factigis_txtDireccion" className="factigis-input" title="Dirección" disabled={true} type="text" placeholder="Dirección encontrada" value={this.state.factigisDireccion} />
             <button onClick={this.onClickDireccion} className="factigis-selectFromMapButton factigis_btnSelectDireccion btn btn-default" title="Ir " type="button" >
               <span><i className="fa fa-home"></i></span>
             </button>

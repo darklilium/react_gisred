@@ -85,7 +85,7 @@ class AlumbradoPublico extends React.Component {
       this.setState({dataLuminarias:callback});
     });
 
-  
+
 
   }
 
@@ -196,9 +196,9 @@ class AlumbradoPublico extends React.Component {
         mymap.changeBasemap("topo");
 
       }
-      addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'");
-      addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'");
-      addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'");
+      addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'",(callback));
+      addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'",(callback));
+      addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'",(callback));
 
   }
 
