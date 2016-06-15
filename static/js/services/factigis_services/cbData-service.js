@@ -1,5 +1,6 @@
 var tipoCliente;
 var tipoContribuyente;
+var tipoEmpalme;
 
 tipoCliente = [
 	{ value: '2', label: 'RESIDENCIAL', className: 'State-ACT' },
@@ -17,4 +18,9 @@ tipoContribuyente = [
 	{ value: '81', label: 'AUTOCONSUMO', className: 'State-Vic' }
 ];
 
-export {tipoCliente,tipoContribuyente}
+tipoEmpalme = [
+	{ value: 'aereo', label: 'AÉREO', className: 'State-ACT' },
+	{ value: 'subterraneo', label: 'SUBTERRÁNEO', className: 'State-NSW' }
+];
+
+export {tipoCliente,tipoContribuyente,tipoEmpalme}
