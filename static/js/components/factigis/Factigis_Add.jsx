@@ -88,8 +88,6 @@ class Factigis_Add extends React.Component {
       factigis_tipoEmpalme: tipoEmpalme,
       layerDirecciones: 'off'
 
-
-
     });
   }
 

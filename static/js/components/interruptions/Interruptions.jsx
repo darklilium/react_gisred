@@ -60,7 +60,7 @@ class Interruptions extends React.Component {
     var map = mymap.createMap("map_div","topo",-71.2905 ,-33.1009,9);
     map.disableKeyboardNavigation();
     console.log(map);
-    addCertainLayer('po_interrupciones',9,"");
+    addCertainLayer('po_interrupciones',9,"", (callback)=>{});
 
     map.on('extent-change', ()=>{
 
