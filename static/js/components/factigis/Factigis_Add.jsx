@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTabs from 'react-tabs';
 import Select from 'react-select';
-import {tipoCliente, tipoContribuyente, tipoEmpalme, tipoMonoTri,
-       AEREO_MONOFASICOS,SUB_MONOFASICOS, AEREO_TRIFASICOS, SUB_TRIFASICOS, detallesEmpalmes} from '../../services/factigis_services/cbData-service';
+import {tipoCliente, tipoContribuyente, tipoEmpalme, tipoMonoTri, tipoEmpalmeBTMT, tipoPotencia} from '../../services/factigis_services/cbData-service';
 
 import {mymap} from '../../services/map-service';
 import {factigis_validator} from '../../services/factigis_services/factigis_validator-service';
@@ -27,10 +26,9 @@ class Factigis_Add extends React.Component {
     this.onChangeTipoContribuyente = this.onChangeTipoContribuyente.bind(this);
     this.onChangeTipoEmpalme = this.onChangeTipoEmpalme.bind(this);
     this.onChangeTipoFase = this.onChangeTipoFase.bind(this);
-    this.onChangeTipoDesignacionEmpalme = this.onChangeTipoDesignacionEmpalme.bind(this);
     this.onChangeTipoPotencia = this.onChangeTipoPotencia.bind(this);
-
-
+    this.onChangeTipoEmpalmeBTMT = this.onChangeTipoEmpalmeBTMT.bind(this);
+    this.onChangeRadioEmpalmes = this.onChangeRadioEmpalmes.bind(this);
     this.onClickCliente = this.onClickCliente.bind(this);
     this.onClickPoste = this.onClickPoste.bind(this);
     this.onClickDireccion = this.onClickDireccion.bind(this);
@@ -46,7 +44,7 @@ class Factigis_Add extends React.Component {
       factigis_tipoContribuyente: [] ,
       factigis_tipoEmpalme: [],
       factigis_tipoFase: [],
-      factigis_tipoDesignacionEmpalme: [],
+      factigis_tipoEmpalmeBTMT: [],
       factigis_tipoPotencia: [],
 
       //selected values for comboboxes
@@ -54,6 +52,7 @@ class Factigis_Add extends React.Component {
       factigis_selectedValueTipoContribuyente: '',
       factigis_selectedValueTipoEmpalme: '',
       factigis_selectedValueTipoEmpalmePotencia: '',
+      factigis_selectedValueTipoEmpalmeBTMT: '',
 
       //check states per validation zones
       zonaConcesion: false,
@@ -86,7 +85,11 @@ class Factigis_Add extends React.Component {
       factigisTelefono: '',
       factigisApellido: '',
       factigisNombre: '',
-      factigisRut: ''
+      factigisRut: '',
+
+      //Radios empalmes
+      radioEmpalmeDefinitivo: true,
+      radioEmpalmeProvisorio: false
     }
   }
 
@@ -97,8 +100,10 @@ class Factigis_Add extends React.Component {
       factigis_tipoContribuyente:tipoContribuyente,
       factigis_tipoEmpalme: tipoEmpalme,
       factigis_tipoFase: tipoMonoTri,
-      layerDirecciones: 'off'
-
+      factigis_tipoPotencia: tipoPotencia,
+      factigis_tipoEmpalmeBTMT: tipoEmpalmeBTMT,
+      radioEmpalmeDefinitivo: true,
+      radioEmpalmeProvisorio: false
     });
   }
 
@@ -111,8 +116,6 @@ class Factigis_Add extends React.Component {
 
     }if(index==1){
         console.log("en tab busquedas", index+1);
-
-
 
     }if(index==3){
       console.log("en tab agregar direccion", index+1);
@@ -145,6 +148,7 @@ class Factigis_Add extends React.Component {
 
   }
 
+  //for validations
   onBlur(e){
     switch (e.currentTarget.id) {
       case 'factigis_txtRut':
@@ -201,33 +205,34 @@ class Factigis_Add extends React.Component {
     let tFase = val;
     console.log("my values",tEmpalme,tFase);
 
-    if((tEmpalme=='aereo') && (tFase=='monofasico')){
-      this.setState({factigis_tipoDesignacionEmpalme: AEREO_MONOFASICOS});
-    }
-    if((tEmpalme=='aereo') && (tFase=='trifasico')){
-      this.setState({factigis_tipoDesignacionEmpalme: AEREO_TRIFASICOS});
-    }
-    if((tEmpalme=='subterraneo') && (tFase=='monofasico')){
-      this.setState({factigis_tipoDesignacionEmpalme: SUB_MONOFASICOS});
-    }
-    if((tEmpalme=='subterraneo') && (tFase=='trifasico')){
-      this.setState({factigis_tipoDesignacionEmpalme: SUB_TRIFASICOS});
-    }
-  }
-
-  onChangeTipoDesignacionEmpalme(val){
-    console.log(val);
-    this.setState({factigis_selectedValueTipoDesignacionEmpalme: val});
-
-    //change the next combobox for details related to the selected value here
-    let d = detallesEmpalmes(val);
-    this.setState({factigis_tipoPotencia: d});
   }
   onChangeTipoPotencia(val){
     console.log(val);
     this.setState({factigis_selectedValueTipoPotencia: val});
   }
 
+  onChangeTipoEmpalmeBTMT(val){
+    console.log(val);
+    this.setState({factigis_selectedValueTipoEmpalmeBTMT: val});
+  }
+
+  onChangeRadioEmpalmes(e){
+    console.log(e);
+    switch (e.currentTarget.id) {
+      case 'factigis_checkEmpalmeDefinitivo':
+      this.setState({radioEmpalmeDefinitivo: true, radioEmpalmeProvisorio:false});
+          console.log("checked definitivo");
+      break;
+      case 'factigis_checkEmpalmeProvisorio':
+      this.setState({radioEmpalmeProvisorio: true, radioEmpalmeDefinitivo:false});
+          console.log("checked provisorio");
+      break;
+      default:
+
+    }
+  }
+
+  //Functions for each button that get the map coordinates and validate the Factibility info.
   onClickCliente(e){
     var map = this.props.themap;
     //clean graphics on layer
@@ -327,6 +332,7 @@ class Factigis_Add extends React.Component {
     }
   }
 
+  //Function that adds a new customer but has to validate the other fields yet.
   onClickAgregarCliente(){
   }
 
@@ -346,6 +352,7 @@ class Factigis_Add extends React.Component {
           <h7><b>Datos de Cliente</b></h7>
           <hr className="factigis_hr-subtitle factigis_hr"/>
           <div className="factigis_BigGroupbox">
+
             <h8>Rut:</h8>
             <div className="factigis_groupbox">
               <input id="factigis_txtRut" className="factigis-input" onChange={this.onChange} onBlur={this.onBlur} value={this.state.factigisRut} title="Ingrese Rut e indique ubicación del cliente" type="text" placeholder="Ingrese Rut e indique ubicación del cliente"  />
@@ -354,54 +361,45 @@ class Factigis_Add extends React.Component {
               </button>
               <h8 className="factigis__toggleBtnLabel">{this.state.toggleCliente}</h8>
             </div>
-            <h8>Tipo Cliente:</h8>
+
             <div className="factigis_groupbox">
-              <Select className="factigis_selectInput" name="form-field-name" options={this.state.factigis_tipoCliente} onChange={this.onChangeTipoCliente}
-                      value={this.state.factigis_selectedValueCliente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de cliente"/>
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-marker"></i></span>
-              </button>
+              <div className="factigis_group">
+                <h8>Nombre Cliente:</h8>
+                <input id="factigis_txtNombre" onChange={this.onChange}  value={this.state.factigisNombre}  className="factigis-input factigis_input-solo" title="Escriba el nombre del cliente" type="text" placeholder="Nombre Completo"  />
+              </div>
+
+              <div className="factigis_group">
+                <h8>Apellido:</h8>
+                <input id="factigis_txtApellido" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisApellido} title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
+              </div>
             </div>
 
-            <h8>Nombre Cliente:</h8>
             <div className="factigis_groupbox">
-              <input id="factigis_txtNombre" onChange={this.onChange}  value={this.state.factigisNombre}  className="factigis-input"title="Escriba el nombre del cliente" type="text" placeholder=""  />
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-marker"></i></span>
-                </button>
+              <div className="factigis_group">
+                <h8>Telefono:</h8>
+                <input id="factigis_txtTelefono" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisTelefono} title="Ingrese teléfono del cliente" type="text" placeholder="Celular o Fijo"  />
+              </div>
+
+              <div className="factigis_group">
+                <h8>Email:</h8>
+                <input id="factigis_txtEmail" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisEmail} title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com"  />
+              </div>
             </div>
-            <h8>Apellido:</h8>
             <div className="factigis_groupbox">
-              <input id="factigis_txtApellido" className="factigis-input" onChange={this.onChange}  value={this.state.factigisApellido} title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-marker"></i></span>
-                </button>
-            </div>
-            <h8>Telefono:</h8>
-            <div className="factigis_groupbox">
-              <input id="factigis_txtTelefono" className="factigis-input" onChange={this.onChange}  value={this.state.factigisTelefono} title="Ingrese teléfono del cliente" type="text" placeholder="Celular o Fijo"  />
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-marker"></i></span>
-                </button>
-            </div>
-            <h8>Email:</h8>
-            <div className="factigis_groupbox">
-              <input id="factigis_txtEmail" className="factigis-input" onChange={this.onChange}  value={this.state.factigisEmail} title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com"  />
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-marker"></i></span>
-                </button>
-            </div>
-            <h8>Tipo Contribuyente:</h8>
-            <div className="factigis_groupbox">
-              <Select className="factigis_selectInput" name="form-field-name" options={this.state.factigis_tipoContribuyente} onChange={this.onChangeTipoContribuyente}
-                    value={this.state.factigis_selectedValueTipoContribuyente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de contribuyente"/>
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-marker"></i></span>
-              </button>
+              <div className="factigis_group">
+                <h8>Tipo Cliente:</h8>
+                <Select className="factigis_selectInput" name="form-field-name" options={this.state.factigis_tipoCliente} onChange={this.onChangeTipoCliente}
+                  value={this.state.factigis_selectedValueCliente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de cliente"/>
+              </div>
+              <div className="factigis_group">
+                <h8>Tipo Contribuyente:</h8>
+                <Select className="factigis_selectInput" name="form-field-name" options={this.state.factigis_tipoContribuyente} onChange={this.onChangeTipoContribuyente}
+                  value={this.state.factigis_selectedValueTipoContribuyente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de contribuyente"/>
+              </div>
             </div>
           </div>
-            <h7><b>Datos de Red</b></h7>
-            <hr className="factigis_hr-subtitle factigis_hr"/>
+          <h7><b>Datos de Red</b></h7>
+          <hr className="factigis_hr-subtitle factigis_hr"/>
           <div className="factigis_BigGroupbox">
             <h8>Rótulo Conexión:</h8>
             <div className="factigis_groupbox">
@@ -411,35 +409,39 @@ class Factigis_Add extends React.Component {
               </button>
               <h8 className="factigis__toggleBtnLabel">{this.state.togglePoste}</h8>
             </div>
-            <h8>Tramo de Conexión:</h8>
+              <h8>Tramo de Conexión:</h8>
+              <div className="factigis_groupbox">
+                <input id="factigis_txtTramo" className="factigis-input factigis_input-solo" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+              </div>
+
             <div className="factigis_groupbox">
-              <input id="factigis_txtTramo" className="factigis-input" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
-              <button className="factigis-selectFromMapButton btn btn-default"  style={{visibility:'hidden'}} title="Ir " type="button" >
-                <span><i className="fa fa-map-signs"></i></span>
-              </button>
-            </div>
-            <h8>Tipo de Empalme:</h8>
-            <div className="factigis_groupbox">
-              <div className="factigis_groupbox-box">
+              <div className="factigis_group">
+                <h8>Empalme:</h8>
                 <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoEmpalme} onChange={this.onChangeTipoEmpalme}
                   value={this.state.factigis_selectedValueTipoEmpalme} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo empalme"/>
-                <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoDesignacionEmpalme} onChange={this.onChangeTipoDesignacionEmpalme}
-                    value={this.state.factigis_selectedValueTipoDesignacionEmpalme} simpleValue clearable={true} searchable={false} placeholder="Seleccione designación"/>
-
-                  </div>
-              <div className="factigis_groupbox-box">
-              <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoFase} onChange={this.onChangeTipoFase}
-                value={this.state.factigis_selectedValueTipoFase} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo fase"/>
-                        
+              </div>
+              <div className="factigis_group">
+                <h8>Fase:</h8>
+                <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoFase} onChange={this.onChangeTipoFase}
+                  value={this.state.factigis_selectedValueTipoFase} simpleValue clearable={true} searchable={false} placeholder="Seleccione tipo fase"/>
+              </div>
+              <div className="factigis_group">
+                <h8>Potencia:</h8>
                 <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoPotencia} onChange={this.onChangeTipoPotencia}
                   value={this.state.factigis_selectedValueTipoPotencia} simpleValue clearable={true} searchable={false} placeholder="Seleccione potencia"/>
-
               </div>
-
-              <button className="factigis-selectFromMapButton btn btn-default" style={{visibility:'hidden'}} title="Ir " type="button" >
-                  <span><i className="fa fa-map-signs"></i></span>
-              </button>
+            </div>
+            <div className="factigis_groupbox">
+              <div className="factigis_group factigis_radiobuttonGroup">
+                <input type="radio" id="factigis_checkEmpalmeDefinitivo" className="factigis_radiobutton" name="permanenciaEmpalme" value="DEFINITIVO" defaultChecked={this.state.radioEmpalmeDefinitivo} onChange={this.onChangeRadioEmpalmes} />Definitivo<br />
+                <input type="radio" id="factigis_checkEmpalmeProvisorio" className="factigis_radiobutton" name="permanenciaEmpalme" value="PROVISORIO" defaultChecked={this.state.radioEmpalmeProvisorio} onChange={this.onChangeRadioEmpalmes}/>Provisorio<br />
               </div>
+              <div className="factigis_group">
+                <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoEmpalmeBTMT} onChange={this.onChangeTipoEmpalmeBTMT}
+                  value={this.state.factigis_selectedValueTipoEmpalmeBTMT} simpleValue clearable={true} searchable={false} placeholder="Seleccione BT/MT"/>
+              </div>
+            </div>
+
             <h8>Dirección:</h8>
             <div className="factigis_groupbox">
               <input id="factigis_txtDireccion" className="factigis-input" title="Dirección" disabled={true} type="text" placeholder="Dirección encontrada" value={this.state.factigisDireccion} />

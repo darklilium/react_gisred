@@ -58,11 +58,11 @@
 
 
 .factigis_selectInput{
-  width: 85%;
+  width: 99%;
 }
 
 .factigis_selectEmpalme{
-  max-width: 80%;
+  max-width: 100%;
 }
 
 .factigis_groupbox-box{
@@ -132,6 +132,27 @@ input[type="checkbox"]:checked + label:after {
 
 .factigis_btnSelectDireccion{
   color: black;
+}
+
+.factigis_input-solo{
+  width: 99%;
+  display: flex;
+  height: 3em;
+}
+
+.factigis_group{
+  width: 50%;
+}
+
+.factigis_radiobutton{
+  margin-right: 0.3em;
+  margin-top: 0;
+}
+
+.factigis_radiobuttonGroup{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 //media screens for responsive design 'till 640px max'
 @media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait)  {
