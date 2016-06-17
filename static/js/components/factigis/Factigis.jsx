@@ -28,7 +28,9 @@ class Factigis extends React.Component {
       gis_rotulos.on("click",(event)=>{console.log(event.graphic.attributes)});
     });
 
-    //add chq basemap
+    addCertainLayer("mobile_direccionesNuevas", 12, "",(mobile_direccionesNuevas)=>{
+      mobile_direccionesNuevas.on("click",(event)=>{console.log(event.graphic)});
+    });
 
   }
 

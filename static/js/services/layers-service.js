@@ -151,7 +151,11 @@ function myLayers(){
     },
     read_rotulos2(){
       return serviceURL + "Chilquinta_006/Nodos_006/MapServer/0?f=json&token=" + token.read();
+    },
+    read_direccionesNuevasMobile(){
+      return serviceURL + "Mobile/Ingreso_externo_nuevo/MapServer?f=json&token=" + token.read();
     }
+
 
   };
 }
@@ -304,8 +308,16 @@ function setLayers(){
     },
     gis_chqbasemap(){
       var fSSEELayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_mapabase(),{id:"gis_chqbasemap"});
-    
+
       fSSEELayer.setImageFormat("png32");
+      return fSSEELayer;
+    //  http://gisred.chilquinta.cl:5555/arcgis/rest/services/Cartografia/Cartografia/MapServer
+    },
+    mobile_direccionesNuevas(){
+      var fSSEELayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_direccionesNuevasMobile(),{id:"mobile_direccionesNuevas",
+      minScale: 3000});
+      fSSEELayer.setImageFormat("png32");
+      fSSEELayer.setVisibleLayers([2]);
       return fSSEELayer;
     //  http://gisred.chilquinta.cl:5555/arcgis/rest/services/Cartografia/Cartografia/MapServer
     }
@@ -396,6 +408,10 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     case 'gis_chqbasemap':
       myLayerToAdd = setLayers().gis_chqbasemap(where,order);
     break;
+    case 'mobile_direccionesNuevas':
+      myLayerToAdd = setLayers().mobile_direccionesNuevas(where,order);
+    break;
+
     default:
   }
 

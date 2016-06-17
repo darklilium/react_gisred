@@ -154,6 +154,14 @@ input[type="checkbox"]:checked + label:after {
   justify-content: space-around;
   align-items: center;
 }
+
+// TAB DIRECCIONES
+
+.factigis_addressGroup{
+  width: 100%;
+}
+
+
 //media screens for responsive design 'till 640px max'
 @media screen and (min-width: 0px) and (max-width: 1240px) and (orientation: portrait)  {
   .factigis_ul{

@@ -502,6 +502,48 @@ class Factigis_Add extends React.Component {
 
         {/* Tab direcciones */}
         <TabPanel>
+        <h7><b>Datos de Dirección</b></h7>
+        <hr className="factigis_hr-subtitle factigis_hr"/>
+        <div className="factigis_BigGroupbox">
+
+          <h8>Calle:</h8>
+          <div className="factigis_groupbox">
+            <input id="factigis_txtCalle" className="factigis-input" onChange={this.onChange} onBlur={this.onBlur}  title="Indique el nombre de la calle" type="text" placeholder="Seleccione el nombre de la calle"  />
+            <button onClick={this.onClickCalle} className="factigis-selectFromMapButton factigis_btnSelectCliente btn btn-default" title="Ir " type="button" >
+              <span><i className="fa fa-map-marker"></i></span>
+            </button>
+            <h8 className="factigis__toggleBtnLabel">{/* {this.state.toggleCalle} */} </h8>
+          </div>
+
+          <div className="factigis_groupbox">
+            <div className="factigis_group factigis_addressGroup">
+              <h8>Número:</h8>
+              <input id="factigis_txtNombre" onChange={this.onChange}   className="factigis-input factigis_input-solo" title="Escriba el número de la calle" type="text" placeholder="Número de la calle"  />
+
+              <h8>Anexo 1:</h8>
+              <input id="factigis_txtNombre" onChange={this.onChange} className="factigis-input factigis_input-solo" title="Escriba alguna descripción del lugar" type="text" placeholder="Escriba alguna descripción del lugar"  />
+            </div>
+          </div>
+
+          <div className="factigis_groupbox">
+            <div className="factigis_group factigis_addressGroup">
+              <h8>Anexo 2:</h8>
+              <input id="factigis_txtNombre" onChange={this.onChange}   className="factigis-input factigis_input-solo" title="Escriba alguna descripción del lugar" type="text" placeholder="Escriba alguna descripción del lugar"  />
+            </div>
+
+          </div>
+          <div className="factigis_groupbox">
+            <div className="factigis_group factigis_addressGroup">
+              <h8>Tipo Edificación:</h8>
+              <Select className="factigis_selectInput" name="form-field-name"  onChange={this.onChangeTipoCliente}
+                value={this.state.factigis_selectedValueCliente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de cliente"/>
+            </div>
+          </div>
+          <hr className="factigis_hr"/>
+            <button className="factigis_submitButton btn btn-success" title="Ir " type="button" onClick={this.onClickAgregarCliente} >
+                <span><i className="fa fa-plus"></i> Agregar Dirección</span>
+          </button>
+        </div>
         </TabPanel>
         </Tabs>
 
