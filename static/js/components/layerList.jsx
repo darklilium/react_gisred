@@ -118,6 +118,16 @@ class LayerList extends React.Component {
         mapp.graphics.clear();
         mapp.removeLayer(mapp.getLayer("gis_campamentos"));
       break;
+      case "check_chqbasemap":
+        var addDistribucionLayer = setLayers().gis_chqbasemap();
+        if (this.refs.check_chqbasemap.checked){
+          mapp.addLayer(addDistribucionLayer,1);
+          return;
+        }
+
+        mapp.graphics.clear();
+        mapp.removeLayer(mapp.getLayer("gis_chqbasemap"));
+      break;
       default:
 
     }
@@ -162,6 +172,11 @@ class LayerList extends React.Component {
           margin: '9px 0 0 0'
       },
       check_campamentos:{
+          visibility: 'hidden',
+          display: 'none',
+          margin: '9px 0 0 0'
+      },
+      check_chqbasemap:{
           visibility: 'hidden',
           display: 'none',
           margin: '9px 0 0 0'
@@ -211,7 +226,10 @@ class LayerList extends React.Component {
           visibilityStyle.check_campamentos.visibility= 'visible';
           visibilityStyle.check_campamentos.display= 'flex';
         break;
-
+        case "check_chqbasemap":
+          visibilityStyle.check_chqbasemap.visibility= 'visible';
+          visibilityStyle.check_chqbasemap.display= 'flex';
+        break;
         default:
 
       }
@@ -253,6 +271,10 @@ class LayerList extends React.Component {
           <div className="LayerList__checkbox-div">
             <input style={visibilityStyle.check_campamentos} className="LayerList__checkbox" type="checkbox" id="check_campamentos" ref="check_campamentos" onClick={this.onClick} ></input>
             <h6 style={visibilityStyle.check_campamentos} className="LayerList__h6">Campamentos</h6>
+          </div>
+          <div className="LayerList__checkbox-div">
+            <input style={visibilityStyle.check_chqbasemap} className="LayerList__checkbox" type="checkbox" id="check_chqbasemap" ref="check_chqbasemap" onClick={this.onClick} ></input>
+            <h6 style={visibilityStyle.check_chqbasemap} className="LayerList__h6">Chilquinta Basemap</h6>
           </div>
       </fieldset>
     </div>);

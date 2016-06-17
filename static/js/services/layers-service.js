@@ -301,6 +301,13 @@ function setLayers(){
       fSSEELayer.setImageFormat("png32");
       return fSSEELayer;
     //  http://gisred.chilquinta.cl:5555/arcgis/rest/services/Cartografia/Cartografia/MapServer
+    },
+    gis_chqbasemap(){
+      var fSSEELayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_mapabase(),{id:"gis_chqbasemap"});
+    
+      fSSEELayer.setImageFormat("png32");
+      return fSSEELayer;
+    //  http://gisred.chilquinta.cl:5555/arcgis/rest/services/Cartografia/Cartografia/MapServer
     }
   }
 }
@@ -386,6 +393,9 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
     case 'gis_rotulos':
       myLayerToAdd = setLayers().gis_rotulos(where,order);
     break;
+    case 'gis_chqbasemap':
+      myLayerToAdd = setLayers().gis_chqbasemap(where,order);
+    break;
     default:
   }
 
@@ -413,6 +423,9 @@ function addCertainLayer(layerNameToAdd, order, where, callback){
   }
   if (check_campamentos.checked){
     mapp.addLayer(setLayers().campamentos(), 1);
+  }
+  if (check_chqbasemap.checked){
+    mapp.addLayer(setLayers().gis_chqbasemap(), 1);
   }
 
   callback(myLayerToAdd);

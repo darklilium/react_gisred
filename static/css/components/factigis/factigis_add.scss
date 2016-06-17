@@ -151,7 +151,7 @@ input[type="checkbox"]:checked + label:after {
 
 .factigis_radiobuttonGroup{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 }
 //media screens for responsive design 'till 640px max'

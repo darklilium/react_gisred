@@ -21,9 +21,6 @@ class Factigis extends React.Component {
     var mapp = mymap.createMap("factigis_map_div","topo",-71.2905 ,-33.1009,9);
     this.setState({themap: mapp});
 
-    var baseMapLayer = new esri.layers.ArcGISDynamicMapServiceLayer(layers.read_mapabase(),{id:"CHQBasemap"});
-    mapp.addLayer(baseMapLayer);
-    
     addCertainLayer("gis_cartografia", 11, "",(gis_cartografia)=>{
       gis_cartografia.on("click",(event)=>{console.log(event.graphic.attributes)});
     });
@@ -42,7 +39,7 @@ class Factigis extends React.Component {
           <Factigis_Add themap={this.state.themap}/>
         </div>
         <div className="wrapper_factibilidadRight">
-        <LayerList show={["check_factigis_transmision", "check_factigis_distribucion", "check_factigis_vialidad", "check_campamentos"]} />
+        <LayerList show={["check_factigis_transmision", "check_factigis_distribucion", "check_factigis_vialidad", "check_campamentos", "check_chqbasemap"]} />
           <div className="factigis_map_div" id="factigis_map_div"></div>
         </div>
 

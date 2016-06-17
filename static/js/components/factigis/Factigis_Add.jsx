@@ -32,6 +32,7 @@ class Factigis_Add extends React.Component {
     this.onClickCliente = this.onClickCliente.bind(this);
     this.onClickPoste = this.onClickPoste.bind(this);
     this.onClickDireccion = this.onClickDireccion.bind(this);
+    this.onChangeCantidadEmpalmes = this.onChangeCantidadEmpalmes.bind(this);
     this.onClickAgregarCliente = this.onClickAgregarCliente.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
@@ -46,6 +47,7 @@ class Factigis_Add extends React.Component {
       factigis_tipoFase: [],
       factigis_tipoEmpalmeBTMT: [],
       factigis_tipoPotencia: [],
+      factigis_cantidadEmpalmes: 0,
 
       //selected values for comboboxes
       factigis_selectedValueCliente: '',
@@ -86,6 +88,7 @@ class Factigis_Add extends React.Component {
       factigisApellido: '',
       factigisNombre: '',
       factigisRut: '',
+      factigisCantidadEmpalmes: '',
 
       //Radios empalmes
       radioEmpalmeDefinitivo: true,
@@ -141,7 +144,9 @@ class Factigis_Add extends React.Component {
       case 'factigis_txtEmail':
         this.setState({factigisEmail: e.currentTarget.value});
       break;
-
+      case 'factigis_txtCantEmpalmes':
+        this.setState({factigisCantidadEmpalmes: e.currentTarget.value});
+      break;
       default:
 
     }
@@ -232,6 +237,9 @@ class Factigis_Add extends React.Component {
     }
   }
 
+  onChangeCantidadEmpalmes(val){
+    this.setState({factigis_cantidadEmpalmes: val});
+  }
   //Functions for each button that get the map coordinates and validate the Factibility info.
   onClickCliente(e){
     var map = this.props.themap;
@@ -437,8 +445,13 @@ class Factigis_Add extends React.Component {
                 <input type="radio" id="factigis_checkEmpalmeProvisorio" className="factigis_radiobutton" name="permanenciaEmpalme" value="PROVISORIO" defaultChecked={this.state.radioEmpalmeProvisorio} onChange={this.onChangeRadioEmpalmes}/>Provisorio<br />
               </div>
               <div className="factigis_group">
+              <h8>Tipo</h8>
                 <Select className="factigis_selectEmpalme factigis_selectInput " name="form-field-name" options={this.state.factigis_tipoEmpalmeBTMT} onChange={this.onChangeTipoEmpalmeBTMT}
                   value={this.state.factigis_selectedValueTipoEmpalmeBTMT} simpleValue clearable={true} searchable={false} placeholder="Seleccione BT/MT"/>
+              </div>
+              <div className="factigis_group">
+                <h8>Cantidad</h8>
+              <input id="factigis_txtCantEmpalmes" value={this.state.factigisCantidadEmpalmes} className="factigis-input factigis_input-solo" title="Poste o Cámara" type="text" placeholder="Cantidad Empalmes" onChange={this.onChange} />
               </div>
             </div>
 
