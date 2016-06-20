@@ -8,11 +8,17 @@ function factigis_validator(point, callbackMain){
     var campamentosResponse = campamentosZoneValidator(point, (callback2)=>{
       var transmisionResponse = transmisionZoneValidator(point, (callback3)=>{
         var vialidadResponse = vialidadZoneValidator(point, (callback4)=>{
-          console.log("my returned values",callback1,callback2,callback3,callback4);
+          var restriccionResponse = restriccionZoneValidator(point, (callback5)=>{
+            console.log("my returned values",callback1,callback2,callback3,callback4,callback5);
 
-            //zona concesion, zona campamentos, zona restringida, zona vialidad
-            return callbackMain({zonaConcesion: callback1, zonaCampamentos: callback2, zonaRestringida: callback3,zonaVialidad: callback4});
-
+              //zona concesion, zona campamentos, zona restringida, zona vialidad
+              return callbackMain({
+                zonaConcesion: callback1,
+                zonaCampamentos: callback2,
+                zonaRestringida: callback5,
+                zonaVialidad: callback4,
+                zonaTransmision: callback3});
+          });
         });
       });
     });
@@ -71,17 +77,40 @@ function campamentosZoneValidator(point,callback){
 
 }
 
+function restriccionZoneValidator(point,callback){
+  var qTaskTransmision = new esri.tasks.QueryTask(layers.read_factigis_distribucion());
+  var qTransmision = new esri.tasks.Query();
+  qTransmision.geometry = point;
+  qTransmision.spatialRelationship = esri.tasks.Query.SPATIAL_REL_WITHIN;
+  qTransmision.where = "1=1";
+  qTransmision.returnGeometry = true;
+  qTaskTransmision.execute(qTransmision, (featureSet)=>{
+    if(featureSet.features.length){
+
+      return callback(true);
+    }else{
+      console.log("no hay", featureSet.features.length, "transmision");
+      return callback(false);
+    }
+
+  }, (Errorq)=>{
+
+    return callback("error");
+
+  });
+}
+
 function transmisionZoneValidator(point,callback){
 
-  var qTaskCampamentos = new esri.tasks.QueryTask(layers.read_factigis_transmision());
+  var qTaskTransmision = new esri.tasks.QueryTask(layers.read_factigis_transmision());
 
 
-  var qCampamentos = new esri.tasks.Query();
-  qCampamentos.geometry = point;
-  qCampamentos.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
-  qCampamentos.where = "1=1";
-  qCampamentos.returnGeometry = true;
-  qTaskCampamentos.execute(qCampamentos, (featureSet)=>{
+  var qTransmision = new esri.tasks.Query();
+  qTransmision.geometry = point;
+  qTransmision.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
+  qTransmision.where = "1=1";
+  qTransmision.returnGeometry = true;
+  qTaskTransmision.execute(qTransmision, (featureSet)=>{
     if(featureSet.features.length){
       console.log("hay", featureSet.features.length, "trans", featureSet);
 
@@ -121,4 +150,6 @@ function vialidadZoneValidator(point,callback){
 
   });
 }
+
+
 export {factigis_validator};

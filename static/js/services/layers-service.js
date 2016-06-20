@@ -154,6 +154,9 @@ function myLayers(){
     },
     read_direccionesNuevasMobile(){
       return serviceURL + "Mobile/Ingreso_externo_nuevo/MapServer?f=json&token=" + token.read();
+    },
+    read_calles(){
+        return serviceURL + "MapaBase/MapServer/2?f=json&token=" + token.read();
     }
 
 

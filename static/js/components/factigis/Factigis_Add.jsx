@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom';
 import ReactTabs from 'react-tabs';
 import Select from 'react-select';
 import {tipoCliente, tipoContribuyente, tipoEmpalme, tipoMonoTri, tipoEmpalmeBTMT, tipoPotencia} from '../../services/factigis_services/cbData-service';
-
 import {mymap} from '../../services/map-service';
 import {factigis_validator} from '../../services/factigis_services/factigis_validator-service';
 import makeSymbol from '../../utils/makeSymbol';
 import layers from '../../services/layers-service';
 import {layersActivated, setLayers} from '../../services/layers-service';
-import {factigis_findDireccion, factigis_findRotulo} from '../../services/factigis_services/factigis_find-service';
+import {factigis_findDireccion, factigis_findRotulo, factigis_findCalle} from '../../services/factigis_services/factigis_find-service';
 import Rut from 'rutjs';
-
+import Factigis_AddDireccion from '../factigis/Factigis_AddDireccion.jsx';
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -61,6 +60,7 @@ class Factigis_Add extends React.Component {
       zonaCampamentos: false,
       zonaRestringida: false,
       zonaVialidad: false,
+      zonaTransmision: false,
 
       //save geometries selected
       factigis_geoCliente: '',
@@ -262,6 +262,7 @@ class Factigis_Add extends React.Component {
             zonaCampamentos: callbackMain.zonaCampamentos,
             zonaRestringida: callbackMain.zonaRestringida,
             zonaVialidad: callbackMain.zonaVialidad,
+            zonaTransmision: callbackMain.zonaTransmision
           });
         });
 
@@ -468,17 +469,22 @@ class Factigis_Add extends React.Component {
             <h9><b>Información de Factibilidad:</b></h9>
             <div className="factigis_listbox">
               <ul className="factigis_ul">
-
+                <div>
                   <li>
                     <input type="checkbox" name="manager" id="manager" disabled="true" checked={this.state.zonaConcesion} />
                     <label htmlFor="manager" id="lblConcesion">Zona Concesión</label>
+                  </li>
+                  <li>
+                    <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaTransmision} />
+                    <label htmlFor="csr2" id="lblTransmision">Zona Transmisión</label>
                   </li>
                   <li>
                     <input type="checkbox" name="webdesigner" id="webdesigner" disabled="true" checked={this.state.zonaRestringida} />
                     <label htmlFor="webdesigner" id="lblRestringida">Zona Restringida</label>
                   </li>
 
-
+                </div>
+                <div>
                   <li>
                     <input type="checkbox" name="webdev" id="webdev"  disabled="true" checked={this.state.zonaVialidad}/>
                     <label htmlFor="webdev" id="lblVialidad">Zona Vialidad</label>
@@ -487,7 +493,7 @@ class Factigis_Add extends React.Component {
                     <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaCampamentos} />
                     <label htmlFor="csr" id="lblCampamentos">Zona Campamentos</label>
                   </li>
-
+                </div>  
               </ul>
             </div>
             <hr className="factigis_hr"/>
@@ -502,48 +508,7 @@ class Factigis_Add extends React.Component {
 
         {/* Tab direcciones */}
         <TabPanel>
-        <h7><b>Datos de Dirección</b></h7>
-        <hr className="factigis_hr-subtitle factigis_hr"/>
-        <div className="factigis_BigGroupbox">
-
-          <h8>Calle:</h8>
-          <div className="factigis_groupbox">
-            <input id="factigis_txtCalle" className="factigis-input" onChange={this.onChange} onBlur={this.onBlur}  title="Indique el nombre de la calle" type="text" placeholder="Seleccione el nombre de la calle"  />
-            <button onClick={this.onClickCalle} className="factigis-selectFromMapButton factigis_btnSelectCliente btn btn-default" title="Ir " type="button" >
-              <span><i className="fa fa-map-marker"></i></span>
-            </button>
-            <h8 className="factigis__toggleBtnLabel">{/* {this.state.toggleCalle} */} </h8>
-          </div>
-
-          <div className="factigis_groupbox">
-            <div className="factigis_group factigis_addressGroup">
-              <h8>Número:</h8>
-              <input id="factigis_txtNombre" onChange={this.onChange}   className="factigis-input factigis_input-solo" title="Escriba el número de la calle" type="text" placeholder="Número de la calle"  />
-
-              <h8>Anexo 1:</h8>
-              <input id="factigis_txtNombre" onChange={this.onChange} className="factigis-input factigis_input-solo" title="Escriba alguna descripción del lugar" type="text" placeholder="Escriba alguna descripción del lugar"  />
-            </div>
-          </div>
-
-          <div className="factigis_groupbox">
-            <div className="factigis_group factigis_addressGroup">
-              <h8>Anexo 2:</h8>
-              <input id="factigis_txtNombre" onChange={this.onChange}   className="factigis-input factigis_input-solo" title="Escriba alguna descripción del lugar" type="text" placeholder="Escriba alguna descripción del lugar"  />
-            </div>
-
-          </div>
-          <div className="factigis_groupbox">
-            <div className="factigis_group factigis_addressGroup">
-              <h8>Tipo Edificación:</h8>
-              <Select className="factigis_selectInput" name="form-field-name"  onChange={this.onChangeTipoCliente}
-                value={this.state.factigis_selectedValueCliente} simpleValue clearable={true} searchable={false} placeholder="Seleccione el tipo de cliente"/>
-            </div>
-          </div>
-          <hr className="factigis_hr"/>
-            <button className="factigis_submitButton btn btn-success" title="Ir " type="button" onClick={this.onClickAgregarCliente} >
-                <span><i className="fa fa-plus"></i> Agregar Dirección</span>
-          </button>
-        </div>
+        <Factigis_AddDireccion themap={this.props.themap} />
         </TabPanel>
         </Tabs>
 
