@@ -8,9 +8,10 @@ import {factigis_validator} from '../../services/factigis_services/factigis_vali
 import makeSymbol from '../../utils/makeSymbol';
 import layers from '../../services/layers-service';
 import {layersActivated, setLayers} from '../../services/layers-service';
-import {factigis_findDireccion, factigis_findRotulo, factigis_findCalle} from '../../services/factigis_services/factigis_find-service';
+import {factigis_findDireccion, factigis_findRotulo, factigis_findCalle, factigis_findNewDireccion} from '../../services/factigis_services/factigis_find-service';
 import Rut from 'rutjs';
 import Factigis_AddDireccion from '../factigis/Factigis_AddDireccion.jsx';
+import toggleOff from '../../services/factigis_services/factigis_toggleBtnFx-service';
 
 var Tab = ReactTabs.Tab;
 var Tabs = ReactTabs.Tabs;
@@ -243,7 +244,12 @@ class Factigis_Add extends React.Component {
   //Functions for each button that get the map coordinates and validate the Factibility info.
   onClickCliente(e){
     var map = this.props.themap;
-    //clean graphics on layer
+
+    //turn off the other toggle buttons from the same window.
+    toggleOff('direccion', this.state.btnDireccion);
+    this.setState({toggleDireccion: 'OFF'});
+    toggleOff('poste', this.state.btnPoste, this.state.togglePoste);
+    this.setState({togglePoste: 'OFF'});
 
     if (this.state.toggleCliente =='OFF'){
       this.setState({toggleCliente: 'ON'});
@@ -265,7 +271,7 @@ class Factigis_Add extends React.Component {
             zonaTransmision: callbackMain.zonaTransmision
           });
         });
-
+        //clean graphics on layer
         //draw customer location on the map.
         map.graphics.clear();
         let pointSymbol = makeSymbol.makePointCustomer();
@@ -273,6 +279,7 @@ class Factigis_Add extends React.Component {
         map.graphics.add(new esri.Graphic(g.mapPoint,pointSymbol));
 
       });
+      //change the state from toggle handler and save it for removing later
       this.setState({btnCliente: map_click_handle});
 
 
@@ -286,6 +293,12 @@ class Factigis_Add extends React.Component {
 
   onClickPoste(e){
     var map = this.props.themap;
+
+    //turn off the other toggle buttons from the same window.
+    toggleOff('cliente', this.state.btnCliente);
+    this.setState({toggleCliente: 'OFF'});
+    toggleOff('direccion', this.state.btnDireccion, this.state.toggleDireccion);
+    this.setState({toggleDireccion: 'OFF'});
 
     if (this.state.togglePoste =='OFF'){
       this.setState({togglePoste: 'ON'});
@@ -313,6 +326,11 @@ class Factigis_Add extends React.Component {
   onClickDireccion(e){
     var map = this.props.themap;
 
+    //turn off the other toggle buttons from the same window.
+    toggleOff('cliente', this.state.btnCliente);
+    this.setState({toggleCliente: 'OFF'});
+    toggleOff('poste', this.state.btnPoste, this.state.togglePoste);
+    this.setState({togglePoste: 'OFF'});
 
     if (this.state.toggleDireccion =='OFF'){
       this.setState({toggleDireccion: 'ON'});
@@ -320,13 +338,32 @@ class Factigis_Add extends React.Component {
 
         var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
           factigis_findDireccion(g.mapPoint, (featureSetFeatures)=>{
-
-            let direccion = featureSetFeatures[0].attributes['nombre_calle'] + " " + featureSetFeatures[0].attributes['numero'];
-            this.setState({
-              factigis_geoDireccion: featureSetFeatures[0].geometry,
-              factigisDireccion: direccion,
-              factigisIDDireccion: featureSetFeatures[0].attributes['id_direccion']
-            });
+            //if theres no results for old addresses, search in new ones.
+            if(!featureSetFeatures.length){
+              console.log("searching in new addresses");
+              factigis_findNewDireccion(g.mapPoint, (featureSetFeatures)=>{
+                if(!featureSetFeatures.length){
+                  console.log("not detected any in old or new adresses");
+                }else{
+                  console.log("detected in new addresses");
+                  let direccion = featureSetFeatures[0].attributes['CALLE'] + " " + featureSetFeatures[0].attributes['NUMERO'];
+                  this.setState({
+                    factigis_geoDireccion: featureSetFeatures[0].geometry,
+                    factigisDireccion: direccion,
+                    factigisIDDireccion: featureSetFeatures[0].attributes['OBJECTID']
+                  });
+                }
+              });
+            //else , change the values for states and display the old address found.
+            }else{
+              console.log("detected in old addresses");
+              let direccion = featureSetFeatures[0].attributes['nombre_calle'] + " " + featureSetFeatures[0].attributes['numero'];
+              this.setState({
+                factigis_geoDireccion: featureSetFeatures[0].geometry,
+                factigisDireccion: direccion,
+                factigisIDDireccion: featureSetFeatures[0].attributes['id_direccion']
+              });
+            }
           });
         //save the handler for removing it later (in the off)
         this.setState({btnDireccion: map_click_handle});
@@ -493,7 +530,7 @@ class Factigis_Add extends React.Component {
                     <input type="checkbox" name="csr" id="csr" disabled="true" checked={this.state.zonaCampamentos} />
                     <label htmlFor="csr" id="lblCampamentos">Zona Campamentos</label>
                   </li>
-                </div>  
+                </div>
               </ul>
             </div>
             <hr className="factigis_hr"/>

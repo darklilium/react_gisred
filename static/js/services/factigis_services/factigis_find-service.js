@@ -20,7 +20,10 @@ function factigis_findDireccion(geometry,callback){
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
 
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
-
+    console.log(featureSet.features.length);
+    if(!featureSet.features.length){
+      return callback([]);
+    }
     callback(featureSet.features);
   }, (Errorq)=>{
     console.log(Errorq,"Error doing query for direccion");
@@ -40,7 +43,9 @@ function factigis_findRotulo(geometry,callback){
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
 
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
-
+    if(!featureSet.features.length){
+      return callback([]);
+    }
     callback(featureSet.features);
   }, (Errorq)=>{
     console.log(Errorq,"Error doing query for rotulos");
@@ -60,6 +65,9 @@ function factigis_findCalle(geometry,callback){
   qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
 
   qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
+    if(!featureSet.features.length){
+      return callback([]);
+    }
     callback(featureSet.features);
   }, (Errorq)=>{
     console.log(Errorq,"Error doing query for direccion");
@@ -67,5 +75,26 @@ function factigis_findCalle(geometry,callback){
   });
 }
 
+function factigis_findNewDireccion(geometry, callback){
+  var myRectangulo = crearRectangulo(geometry,1);
+  var qTaskInterruptions = new esri.tasks.QueryTask(layers.read_direccionesNuevasQuery());
+  var qInterruptions = new esri.tasks.Query();
 
-export {factigis_findDireccion, factigis_findRotulo,factigis_findCalle};
+  qInterruptions.returnGeometry = true;
+  qInterruptions.outFields=["*"];
+  qInterruptions.geometry = myRectangulo;
+  qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
+
+  qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
+    console.log("EN NEW",featureSet.features.length);
+    if(!featureSet.features.length){
+      return callback([]);
+    }
+    callback(featureSet.features);
+  }, (Errorq)=>{
+    console.log(Errorq,"Error doing query for new direccion");
+    callback([]);
+  });
+
+}
+export {factigis_findDireccion, factigis_findRotulo,factigis_findCalle, factigis_findNewDireccion};
