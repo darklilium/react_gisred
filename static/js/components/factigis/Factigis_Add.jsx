@@ -40,22 +40,6 @@ class Factigis_Add extends React.Component {
     this.state = {
       //selected tab in the beginning
       selectedTab: 0,
-      //data for comboboxes
-      factigis_tipoCliente: [],
-      factigis_tipoContribuyente: [] ,
-      factigis_tipoEmpalme: [],
-      factigis_tipoFase: [],
-      factigis_tipoEmpalmeBTMT: [],
-      factigis_tipoPotencia: [],
-      factigis_cantidadEmpalmes: 0,
-
-      //selected values for comboboxes
-      factigis_selectedValueCliente: '',
-      factigis_selectedValueTipoContribuyente: '',
-      factigis_selectedValueTipoEmpalme: '',
-      factigis_selectedValueTipoEmpalmePotencia: '',
-      factigis_selectedValueTipoEmpalmeBTMT: '',
-
       //check states per validation zones
       zonaConcesion: false,
       zonaCampamentos: false,
@@ -79,21 +63,48 @@ class Factigis_Add extends React.Component {
       btnDireccion: '',
 
       // state values for textboxes
+      factigisRut: '',
+      factigisNombre: '',
+      factigisApellido: '',
+      factigisTelefono: '',
+      factigisEmail: '',
+      factigisRotulo: '',
+      factigisTramo: '',
       factigisDireccion: '',  //per full name
       factigisIDDireccion: '', //per id dir
       factigisTipoEmpalme:'',
       factigisConexion: '',
-      factigisRotulo: '',
-      factigisEmail: '',
-      factigisTelefono: '',
-      factigisApellido: '',
-      factigisNombre: '',
-      factigisRut: '',
-      factigisCantidadEmpalmes: '',
-
+      //data for comboboxes
+      factigis_tipoCliente: [],
+      factigis_tipoContribuyente: [] ,
+      factigis_tipoEmpalme: [],
+      factigis_tipoFase: [],
+      factigis_tipoPotencia: [],
+      factigis_tipoEmpalmeBTMT: [],
+      factigis_cantidadEmpalmes: 0,
       //Radios empalmes
       radioEmpalmeDefinitivo: true,
-      radioEmpalmeProvisorio: false
+      radioEmpalmeProvisorio: false,
+      //selected values for comboboxes
+      factigis_selectedValueCliente: '',
+      factigis_selectedValueTipoContribuyente: '',
+      factigis_selectedValueTipoEmpalme: '',
+      factigis_selectedValueTipoEmpalmePotencia: '',
+      factigis_selectedValueTipoEmpalmeBTMT: '',
+
+
+      //validators:
+      factigisRutValidator: '',
+      factigisNombreValidator: '',
+      factigisApellidoValidator: '',
+      factigisTelefonoValidator: '',
+      factigisEmailValidator: '',
+      factigisRotuloValidator: '',
+      factigisTramoValidator: '',
+      factigisDireccionValidator: '',  //per full name
+      factigisIDDireccionValidator: '', //per id dir
+      factigisTipoEmpalmeValidator:'',
+      factigisConexionValidator: '',
     }
   }
 
@@ -159,27 +170,59 @@ class Factigis_Add extends React.Component {
     switch (e.currentTarget.id) {
       case 'factigis_txtRut':
         var rut = new Rut(this.state.factigisRut);
-
         if (rut.isValid){
-          console.log("rut valido");
+          console.log("rut valido", rut.getNiceRut(false));
+          this.setState({
+            factigisRut: rut.getNiceRut(false),
+            factigisRutValidator: true
+          });
           //here put the color green to the field for validation ok
         }else{
           console.log("rut invalido");
+          this.setState({factigisRutValidator: false});
           //here put the color red to the field for wrong validation.
         }
-
       break;
       case 'factigis_txtNombre':
 
+        if(!this.state.factigisNombre==''){
+          console.log("si factigisNombre",this.state.factigisNombre.toUpperCase());
+          this.setState({
+            factigisNombre:this.state.factigisNombre.toUpperCase(),
+            factigisNombreValidator: true
+          });
+        }else{
+          console.log("no factigisNombre",this.state.factigisNombre);
+          this.setState({factigisNombreValidator: false});
+        }
+
       break;
       case 'factigis_txtApellido':
-
+        if(!this.state.factigisApellido==''){
+          console.log("si factigisApellido",this.state.factigisApellido);
+          this.setState({validationStates: {apellido: true}});
+        }else{
+          console.log("no factigisApellido",this.state.factigisApellido);
+          this.setState({validationStates: {apellido: false}});
+        }
       break;
       case 'factigis_txtTelefono':
-
+        if(!this.state.factigisTelefono==''){
+          console.log("si factigisTelefono",this.state.factigisTelefono);
+          this.setState({validationStates: {telefono: true}});
+        }else{
+          console.log("no factigisTelefono",this.state.factigisTelefono);
+          this.setState({validationStates: {telefono: false}});
+        }
       break;
       case 'factigis_txtEmail':
-
+        if(!this.state.factigisEmail==''){
+          console.log("si factigisEmail",this.state.factigisEmail);
+          this.setState({validationStates: {email: true}});
+        }else{
+          console.log("no factigisEmail",this.state.factigisEmail);
+          this.setState({validationStates: {email: false}});
+        }
       break;
       default:
 
@@ -212,6 +255,7 @@ class Factigis_Add extends React.Component {
     console.log("my values",tEmpalme,tFase);
 
   }
+
   onChangeTipoPotencia(val){
     console.log(val);
     this.setState({factigis_selectedValueTipoPotencia: val});
@@ -241,6 +285,7 @@ class Factigis_Add extends React.Component {
   onChangeCantidadEmpalmes(val){
     this.setState({factigis_cantidadEmpalmes: val});
   }
+
   //Functions for each button that get the map coordinates and validate the Factibility info.
   onClickCliente(e){
     var map = this.props.themap;
@@ -378,8 +423,61 @@ class Factigis_Add extends React.Component {
     }
   }
 
-  //Function that adds a new customer but has to validate the other fields yet.
+    //Function that adds a new customer but has to validate the other fields yet.
   onClickAgregarCliente(){
+    let radioBtnValue = 'DEFINITIVO';
+
+    let zonaConcesion = 'EN ZONA CONCESIÓN';
+    let zonaCampamentos = 'EN ZONA CAMPAMENTOS';
+    let zonaRestringida = 'EN ZONA RESTRINGIDA';
+    let zonaVialidad = 'EN ZONA DE VIALIDAD';
+    let zonaTransmision = 'EN ZONA DE TRANSMISION';
+
+    if(this.state.radioEmpalmeProvisorio==true){
+      radioBtnValue = 'PROVISORIO';
+    }
+
+    if(this.state.zonaConcesion==false){
+      zonaConcesion = 'FUERA ZONA CONCESION';
+    }
+
+    if(this.state.zonaCampamentos==true){
+      zonaCampamentos = 'FUERA ZONA CAMPAMENTOS';
+    }
+    if(this.state.zonaRestringida==true){
+      zonaRestringida = 'FUERA ZONA RESTRINGIDA';
+    }
+    if(this.state.zonaVialidad==true){
+      zonaVialidad = 'FUERA ZONA VIALIDAD';
+    }
+    if(this.state.zonaTransmision==true){
+      zonaTransmision = 'FUERA ZONA TRANSMISION';
+    }
+    //check states per validation zones
+
+    console.log("Rut: ",this.state.factigisRut,
+                "Nombre:", this.state.factigisNombre,
+                "Apellido:", this.state.factigisApellido,
+                "Telefono:", this.state.factigisTelefono,
+                "Email:", this.state.factigisEmail,
+                "Tipo Cliente:", this.state.factigis_selectedValueCliente,
+                "Tipo Contribuyente:", this.state.factigis_selectedValueTipoContribuyente,
+                "Datos de Red ---",
+                "Rotulo:", this.state.factigisRotulo,
+                "Tramo Conexion:", this.state.factigisTramo,
+                "Empalme:", this.state.factigis_selectedValueTipoEmpalme,
+                "Tipo Fase:", this.state.factigis_selectedValueTipoFase,
+                "Potencia:", this.state.factigis_selectedValueTipoPotencia,
+                "Definitivo/Provisorio:", radioBtnValue,
+                "BT/MT:", this.state.factigis_selectedValueTipoEmpalmeBTMT,
+                "Cantidad:", this.state.factigisCantidadEmpalmes,
+                "Dirección:", this.state.factigisDireccion,
+                "Información de Factibilidad -----",
+                "Zona Concesión:", zonaConcesion,
+                "Zona Campamentos:", zonaCampamentos,
+                "Zona Restringida:", zonaRestringida,
+                "Zona Vialidad:", zonaVialidad,
+                "Zona Transmision:", zonaTransmision);
   }
 
 
@@ -411,24 +509,24 @@ class Factigis_Add extends React.Component {
             <div className="factigis_groupbox">
               <div className="factigis_group">
                 <h8>Nombre Cliente:</h8>
-                <input id="factigis_txtNombre" onChange={this.onChange}  value={this.state.factigisNombre}  className="factigis-input factigis_input-solo" title="Escriba el nombre del cliente" type="text" placeholder="Nombre Completo"  />
+                <input id="factigis_txtNombre" onChange={this.onChange} value={this.state.factigisNombre} onBlur={this.onBlur} className="factigis-input factigis_input-solo" title="Escriba el nombre del cliente" type="text" placeholder="Nombre Completo"  />
               </div>
 
               <div className="factigis_group">
                 <h8>Apellido:</h8>
-                <input id="factigis_txtApellido" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisApellido} title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
+                <input id="factigis_txtApellido" onChange={this.onChange} value={this.state.factigisApellido} onBlur={this.onBlur} className="factigis-input factigis_input-solo" title="Escriba el primer apellido del cliente" type="text" placeholder="Apellido Paterno"  />
               </div>
             </div>
 
             <div className="factigis_groupbox">
               <div className="factigis_group">
                 <h8>Telefono:</h8>
-                <input id="factigis_txtTelefono" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisTelefono} title="Ingrese teléfono del cliente" type="text" placeholder="Celular o Fijo"  />
+                <input id="factigis_txtTelefono" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisTelefono} onBlur={this.onBlur} title="Ingrese teléfono del cliente" type="text" placeholder="Celular o Fijo"  />
               </div>
 
               <div className="factigis_group">
                 <h8>Email:</h8>
-                <input id="factigis_txtEmail" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisEmail} title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com"  />
+                <input id="factigis_txtEmail" className="factigis-input factigis_input-solo" onChange={this.onChange}  value={this.state.factigisEmail} onBlur={this.onBlur} title="Escriba el email de contacto" type="text" placeholder="ejemplo@email.com"  />
               </div>
             </div>
             <div className="factigis_groupbox">
@@ -457,7 +555,7 @@ class Factigis_Add extends React.Component {
             </div>
               <h8>Tramo de Conexión:</h8>
               <div className="factigis_groupbox">
-                <input id="factigis_txtTramo" className="factigis-input factigis_input-solo" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+                <input id="factigis_txtTramo" value={this.state.factigisTramo} className="factigis-input factigis_input-solo" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
               </div>
 
             <div className="factigis_groupbox">
