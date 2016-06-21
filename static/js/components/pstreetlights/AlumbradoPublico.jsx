@@ -73,9 +73,9 @@ class AlumbradoPublico extends React.Component {
     var settings = my_AP_Settings.read();
     var map = mymap.createMap("map_div","topo",settings.latx,settings.laty, settings.zoom);
 
-    addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'");
-    addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'");
-    addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'");
+    addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'", (callback)=>{});
+    addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'", (callback)=>{});
+    addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'", (callback)=>{});
 
     ap_getDataMedidores(this.state.settings.comuna,(callback)=>{
       this.setState({dataMedidores:callback});

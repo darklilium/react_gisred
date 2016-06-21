@@ -36,6 +36,7 @@ class Factigis_Add extends React.Component {
     this.onClickDireccion = this.onClickDireccion.bind(this);
     this.onChangeCantidadEmpalmes = this.onChangeCantidadEmpalmes.bind(this);
     this.onClickAgregarCliente = this.onClickAgregarCliente.bind(this);
+
     this.onChange = this.onChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.onClickSelect = this.onClickSelect.bind(this);
@@ -182,6 +183,10 @@ class Factigis_Add extends React.Component {
       case 'factigis_txtCantEmpalmes':
         this.setState({factigisCantidadEmpalmes: e.currentTarget.value});
       break;
+      case 'factigis_txtTramo':
+        this.setState({factigisTramo: e.currentTarget.value});
+      break;
+      
       default:
 
     }
@@ -253,6 +258,7 @@ class Factigis_Add extends React.Component {
         }
       break;
       case 'factigis_txtTramo':
+
         if(!this.state.factigisTramo==''){
           console.log("si factigisTramo",this.state.factigisTramo);
           this.setState({factigisTramoValidator: true});
@@ -539,66 +545,7 @@ class Factigis_Add extends React.Component {
         //then add the new fact to arcgis services
       }
     });
-  /*  let radioBtnValue = 'DEFINITIVO';
-    let zonaConcesion = 'EN ZONA CONCESIÓN';
-    let zonaCampamentos = 'EN ZONA CAMPAMENTOS';
-    let zonaRestringida = 'EN ZONA RESTRINGIDA';
-    let zonaVialidad = 'EN ZONA DE VIALIDAD';
-    let zonaTransmision = 'EN ZONA DE TRANSMISION';
-    let email = 'EMAIL NO VALIDO';
 
-    if(this.state.radioEmpalmeProvisorio==true){
-      radioBtnValue = 'PROVISORIO';
-    }
-
-    if(this.state.zonaConcesion==false){
-      zonaConcesion = 'FUERA ZONA CONCESION';
-    }
-
-    if(this.state.zonaCampamentos==true){
-      zonaCampamentos = 'FUERA ZONA CAMPAMENTOS';
-    }
-    if(this.state.zonaRestringida==true){
-      zonaRestringida = 'FUERA ZONA RESTRINGIDA';
-    }
-    if(this.state.zonaVialidad==true){
-      zonaVialidad = 'FUERA ZONA VIALIDAD';
-    }
-    if(this.state.zonaTransmision==true){
-      zonaTransmision = 'FUERA ZONA TRANSMISION';
-    }
-    //check states per validation zones
-    var validator = validateEmail(this.state.factigisEmail);
-
-    if (validator){
-      email = this.state.factigisEmail;
-    }
-
-    console.log("Rut: ",this.state.factigisRut,
-                "\n Nombre:", this.state.factigisNombre,
-                "\n Apellido:", this.state.factigisApellido,
-                "\n Telefono:", this.state.factigisTelefono,
-                "\n Email:", email,
-                "\n Tipo Cliente:", this.state.factigis_selectedValueCliente,
-                "\n Tipo Contribuyente:", this.state.factigis_selectedValueTipoContribuyente,
-                "\n Datos de Red ---",
-                "\n Rotulo:", this.state.factigisRotulo,
-                "\n Tramo Conexion:", this.state.factigisTramo,
-                "\n Empalme:", this.state.factigis_selectedValueTipoEmpalme,
-                "\n Tipo Fase:", this.state.factigis_selectedValueTipoFase,
-                "\n Potencia:", this.state.factigis_selectedValueTipoPotencia,
-                "\n Definitivo/Provisorio:", radioBtnValue,
-                "\n BT/MT:", this.state.factigis_selectedValueTipoEmpalmeBTMT,
-                "\n Cantidad:", this.state.factigisCantidadEmpalmes,
-                "\n Dirección:", this.state.factigisDireccion,
-                "\n Información de Factibilidad -----",
-                "\n Zona Concesión:", zonaConcesion,
-                "\n Zona Campamentos:", zonaCampamentos,
-                "\n Zona Restringida:", zonaRestringida,
-                "\n Zona Vialidad:", zonaVialidad,
-                "\n Zona Transmision:", zonaTransmision);
-
-  */
   }
 
 
@@ -676,7 +623,7 @@ class Factigis_Add extends React.Component {
             </div>
               <h8>Tramo de Conexión:</h8>
               <div className="factigis_groupbox">
-                <input id="factigis_txtTramo" value={this.state.factigisTramo} onBlur={this.onBlur} className="factigis-input factigis_input-solo" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
+                <input id="factigis_txtTramo" value={this.state.factigisTramo} onChange={this.onChange} onBlur={this.onBlur} className="factigis-input factigis_input-solo" title="Poste o Cámara" type="text" placeholder="Poste o cámara encontrado" />
               </div>
 
             <div className="factigis_groupbox">

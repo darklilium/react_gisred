@@ -18,7 +18,7 @@ function myLayers(){
     },
 
     read_logAccess(){  /*using*/
-        return serviceURL + "Admin/LogAccesos/FeatureServer/2?f=json&token=" + token.read();
+        return serviceURL + "Admin/LogAccesos/MapServer/2?f=json&token=" + token.read();
     },
     //chq mapabase
     read_mapabase(){
