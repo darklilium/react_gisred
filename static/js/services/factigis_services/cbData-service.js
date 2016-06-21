@@ -1,27 +1,27 @@
 var tipoCliente = [
-	{ value: 'RESIDENCIAL', label: 'RESIDENCIAL' },
-	{ value: 'COMERCIAL', label: 'COMERCIAL' },
-	{ value: 'ESTATAL', label: 'ESTATAL' },
-	{ value: 'INDUSTRIAL', label: 'INDUSTRIAL' },
-	{ value: 'MUNICIPAL', label: 'MUNICIPAL'},
-	{ value: 'AGRICOLA', label: 'AGRICOLA' },
-	{ value: 'UTILIDAD PUBLICA', label: 'UTILIDAD PUBLICA' }
+	{ value: '2', label: 'RESIDENCIAL' },
+	{ value: '3', label: 'COMERCIAL' },
+	{ value: '4', label: 'ESTATAL' },
+	{ value: '5', label: 'INDUSTRIAL' },
+	{ value: '9', label: 'MUNICIPAL'},
+	{ value: '10', label: 'AGRICOLA' },
+	{ value: '11', label: 'UTILIDAD PUBLICA' }
 ];
 
 var tipoContribuyente = [
-	{ value: 'PERSONA NATURAL', label: 'PERSONA NATURAL' },
-	{ value: 'PERSONA JURIDICA', label: 'PERSONA JURIDICA' },
-	{ value: 'AUTOCONSUMO', label: 'AUTOCONSUMO' }
+	{ value: '1', label: 'PERSONA NATURAL' },
+	{ value: '2', label: 'PERSONA JURIDICA' },
+	{ value: '81', label: 'AUTOCONSUMO' }
 ];
 
 var tipoEmpalme = [
-	{ value: 'AEREO', label: 'AÉREO'},
-	{ value: 'SUBTERRANEO', label: 'SUBTERRÁNEO' }
+	{ value: 'aereo', label: 'AÉREO'},
+	{ value: 'subterraneo', label: 'SUBTERRÁNEO' }
 ];
 
 var tipoMonoTri=[
-	{ value: 'MONOFASICO', label: 'MONOFÁSICO'},
-	{ value: 'TRIFASICO', label: 'TRIFÁSICO' }
+	{ value: 'monofasico', label: 'MONOFÁSICO'},
+	{ value: 'trifasico', label: 'TRIFÁSICO' }
 ];
 
 var tipoPotencia = [
