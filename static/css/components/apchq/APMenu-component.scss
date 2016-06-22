@@ -1,0 +1,35 @@
+.apmenu_dashboard{
+  background-image: url("images/gisredDashboard_images/dashboardbg.jpg");
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+
+.apmenu_wrapper{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+.image-gallery-swipe{
+  display: flex;
+    justify-content: center;
+}
+
+.apmenu_buttongroup{
+  position: relative;
+     display: inline-block;
+     vertical-align: middle;
+     display: flex;
+     justify-content: center;
+     padding-top: 5em;
+}
+
+.apmenu_button{
+  width: 6em;
+}
+
+.apmenu_button-login{
+  width: 15em;
+}

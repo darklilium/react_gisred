@@ -84,6 +84,7 @@ function muniLogin(user,pass){
 
 //for ap
 function saveSettings(user){
+  console.log(user);
   var getUserAccountSettings = createQueryTask({
     url: myLayers.read_logAccess(),
     whereClause: "usuario = '"+ user+ "'",
@@ -140,7 +141,7 @@ function gisredLogin(user, pass){
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
       return;
     }
-    
+
     console.log('writing token into system');
     token.write(myToken);
     //if the login is correct. Get user permission:
@@ -232,4 +233,4 @@ function saveGisredLogin(user,page,mod, tkn){
   });
 }
 
-export { /*genericLogin,*/ muniLogin, /*factigisLogin,*/gisredLogin,saveGisredLogin };
+export { /*genericLogin,*/ muniLogin, /*factigisLogin,*/gisredLogin,saveGisredLogin,saveSettings };

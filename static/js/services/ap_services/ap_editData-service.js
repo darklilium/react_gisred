@@ -10,7 +10,7 @@ function ap_showEditor(event){
   var elementLuminaria = document.getElementById('wrapper_luminarias');
   var elementLuminariaAsociada = document.getElementById('wrapper_luminariasAsociadas');
 
-//  console.log("doing something",graphic);
+
 
   if ((elementMedidor.style.display=='none') && (elementLuminaria.style.display=='none') && (elementLuminariaAsociada.style.display=='none')){
     console.log("Esta apagado todo");
@@ -19,9 +19,21 @@ function ap_showEditor(event){
 
 
     ap_getPics(event.graphic.attributes['ID_NODO'],event.graphic.attributes['COMUNA'] ,(callback)=>{
+      console.log(event.graphic.attributes);
+      let attributesSelected = {
+        TIPO_CONEXION:event.graphic.attributes['TIPO_CONEXION'] ,
+        TIPO:event.graphic.attributes['TIPO'],
+        POTENCIA:event.graphic.attributes['POTENCIA'],
+        PROPIEDAD:event.graphic.attributes['PROPIEDAD'],
+        OBSERVACION:event.graphic.attributes['OBSERVACION'],
+        ID_LUMINARIA:event.graphic.attributes['ID_LUMINARIA'],
+        ID_NODO:event.graphic.attributes['ID_NODO'],
+        ROTULO:event.graphic.attributes['ROTULO']
+
+      }
       ap_getPicsAttached(callback, (mySecondCallback)=>{
         let mysettings = {
-          graphics:  event.graphic.attributes,
+          graphics:  attributesSelected,
           pics: mySecondCallback
         };
         cookieHandler.set('crrntgrphc',mysettings);

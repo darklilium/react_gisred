@@ -34,7 +34,8 @@
     "cookie-handler": "~1.0.1",
     "redux": "~3.5.2",
     "react-select": "~1.0.0-beta13",
-    "rutjs": "~0.1.1"
+    "rutjs": "~0.1.1",
+    "react-image-gallery": "~0.6.4"
   },
   "devDependencies": {
     "babel-core": "^6.6.5",
