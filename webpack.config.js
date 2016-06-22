@@ -8,7 +8,9 @@ module.exports = {
     apchq: './static/js/bundles/apchq.js',
     factigisDashboard: './static/js/bundles/factigisDashboard.js',
     factigisBackoffice: './static/js/bundles/factigisBackoffice.js',
-    factigisFrontoffice: './static/js/bundles/factigisFrontoffice.js'
+    factigisFrontoffice: './static/js/bundles/factigisFrontoffice.js',
+    apdashboard: './static/js/bundles/apdashboard.js',
+    apmenu: './static/js/bundles/apmenu.js'
 
   },
   output: {
