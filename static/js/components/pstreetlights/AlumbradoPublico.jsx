@@ -7,22 +7,22 @@ import APEditor from '../pstreetlights/AP_Editor.jsx';
 import APInfo from '../pstreetlights/AP_Info.jsx';
 import LayerList from '../../../js/components/LayerList.jsx';
 import my_AP_Settings from '../../../js/services/ap_services/ap_settings-service';
-import {addCertainLayer} from '../../../js/services/layers-service';
-import {layersActivated} from '../../../js/services/layers-service';
+import {addCertainLayer,setLayers,layersActivated} from '../../../js/services/layers-service';
 import {ap_getDataMedidores} from '../../../js/services/ap_services/ap_getData-service';
-import {ap_getDataLuminarias} from '../../../js/services/ap_services/ap_getData-service';
-import {ap_getTramosMedidor} from '../../../js/services/ap_services/ap_getData-service';
-import {ap_getTramosLuminaria} from '../../../js/services/ap_services/ap_getData-service';
+import {ap_getDataLuminarias, ap_getTramosMedidor, ap_getTramosLuminaria,ap_getDataLuminariasAsociadas} from '../../../js/services/ap_services/ap_getData-service';
 import {myValuesSelected} from '../../../js/services/ap_services/ap_settings-service';
-import {ap_getDataLuminariasAsociadas} from '../../../js/services/ap_services/ap_getData-service';
 import {ap_getMedidorLocation} from '../../../js/services/ap_services/ap_getLocation-service';
-import {setLayers} from '../../../js/services/layers-service';
+import {ap_showEditor} from '../../../js/services/ap_services/ap_editData-service';
 //import {ap_exportGraphicsToPDF} from '../../../js/services/ap_services/ap_exportToPdf';
-
 import {ap_exportToExcel} from '../../../js/services/ap_services/ap_exportToExcel';
-import {myDisplayedMedidor} from '../../../js/services/ap_services/ap_settings-service';
-import {myDisplayedLuminaria} from '../../../js/services/ap_services/ap_settings-service';
-import {myDisplayedLuminariaAsociada} from '../../../js/services/ap_services/ap_settings-service';
+import {myDisplayedMedidor,myDisplayedLuminaria,myDisplayedLuminariaAsociada} from '../../../js/services/ap_services/ap_settings-service';
+import {ap_getClickedLuminaria} from '../../../js/services/ap_services/ap_editData-service';
+import cookieHandler from 'cookie-handler';
+
+import onClickLuminaria from '../pstreetlights/actions/apactions';
+import { createStore, combineReducers } from 'redux';
+
+const store = createStore(onClickLuminaria);
 
 class AlumbradoPublico extends React.Component {
 
@@ -52,7 +52,12 @@ class AlumbradoPublico extends React.Component {
       dataLuminariasAsociadas: [],
       settings: [],
       mapClick : 0,
-      idEquipoapSelected: 0
+      idEquipoapSelected: 0,
+      themap : {},
+
+      //disable - enable event-handler for map
+      themapHandler: {},
+      luminariaElements: {}
 
     };
   }
@@ -72,9 +77,10 @@ class AlumbradoPublico extends React.Component {
 
     var settings = my_AP_Settings.read();
     var map = mymap.createMap("map_div","topo",settings.latx,settings.laty, settings.zoom);
+    this.setState({themap: map});
 
     addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'", (callback)=>{});
-    addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'", (callback)=>{});
+
     addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'", (callback)=>{});
 
     ap_getDataMedidores(this.state.settings.comuna,(callback)=>{
@@ -85,12 +91,27 @@ class AlumbradoPublico extends React.Component {
       this.setState({dataLuminarias:callback});
     });
 
-
+      var map_click_handle = dojo.connect(map, 'onClick', (g)=>{
+        console.log("my clicked g",g);
+        ap_getClickedLuminaria(g.mapPoint,(callback)=>{
+          if(callback.length==0){
+            console.log("no hay nada aqui");
+            store.dispatch({type: 'CLICK_LUMINARIA', state: callback});
+            return;
+          }else{
+            ap_showEditor(callback[0].attributes,(callback)=>{
+            store.dispatch({type: 'CLICK_LUMINARIA', state: callback});
+             // <--- se los manda al hijo APEditor, donde tienen q mostrarse y podrian ser modificados
+            });
+          }
+        });
+      });
 
   }
 
   onSearch(){
     console.log("onsearch clicked");
+
     if (this.state.onSearch==0){
       this.setState({ onSearch : 1 });
       $('.ap__search_wrapper').css('visibility', 'visible');
@@ -196,9 +217,9 @@ class AlumbradoPublico extends React.Component {
         mymap.changeBasemap("topo");
 
       }
-      addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'",(callback));
-      addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'",(callback));
-      addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'",(callback));
+      addCertainLayer("ap_comuna", 11, "nombre='"+this.state.settings.comuna+"'",(callback)=>{});
+      addCertainLayer("ap_tramos", 12, "COMUNA='"+this.state.settings.comuna+"'",(callback)=>{});
+      addCertainLayer("ap_luminarias", 13, "COMUNA='"+this.state.settings.comuna+"'",(callback)=>{});
 
   }
 
@@ -363,6 +384,7 @@ class AlumbradoPublico extends React.Component {
   render(){
     let region = this.state.settings.comuna;
     let noneStyle = {display: 'none'};
+    console.log(this.state.themap);
     return (
     <div className="ap__wrapper">
 
@@ -379,7 +401,7 @@ class AlumbradoPublico extends React.Component {
 
     <div className="ap_search_notifications"></div>
 
-    <APEditor />
+    <APEditor themap={this.state.themap} luminariaElements={this.state.luminariaElements}/>
 
     <div className="ap__wrapper-tables">
 

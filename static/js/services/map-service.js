@@ -33,7 +33,7 @@ var map = {
           this.map.removeAllLayers();
 
           myActiveLayers.forEach(activeLayer =>{
-            addCertainLayer(activeLayer,10,"");
+            addCertainLayer(activeLayer,10,"", (callback)=>{});
           });
 
           this.map.setBasemap(bm);
@@ -44,7 +44,7 @@ var map = {
       this.map.removeAllLayers();
 
       myActiveLayers.forEach((activeLayer, index) =>{
-        addCertainLayer(activeLayer,10+index,"");
+        addCertainLayer(activeLayer,10+index,"", (callback)=>{});
       });
       this.map.addLayer(baseMapLayer,0);
 

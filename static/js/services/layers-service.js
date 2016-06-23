@@ -18,7 +18,7 @@ function myLayers(){
     },
 
     read_logAccess(){  /*using*/
-        return serviceURL + "Admin/LogAccesos/MapServer/2?f=json&token=" + token.read();
+        return serviceURL + "Admin/LogAccesos/FeatureServer/2?f=json&token=" + token.read();
     },
     //chq mapabase
     read_mapabase(){
@@ -103,8 +103,16 @@ function myLayers(){
     //19-05-2016
     read_ap_modificaciones(){
       return serviceURL + "AP_Municipal/AP_MUNICIPAL/MapServer?f=json&token=" + token.read();
-    },
+    }/*,
     read_ap_luminarias(){
+      return serviceURL + "AP_Municipal/AP_MUNICIPAL/FeatureServer/1?f=json&token=" + token.read();
+    },
+    */
+    ,
+    read_ap_luminarias(){
+      return serviceURL + "AP_Municipal/AP_MUNICIPAL/MapServer?f=json&token=" + token.read();
+    },
+    read_ap_luminariasQuery(){
       return serviceURL + "AP_Municipal/AP_MUNICIPAL/FeatureServer/1?f=json&token=" + token.read();
     },
     //20/05/2016
@@ -224,7 +232,7 @@ function setLayers(){
       apModificacionesLayer.setLayerDefinitions(layerDefinitions);
 
       return apModificacionesLayer;
-    },
+    }/*,
     ap_luminarias(whereRegion, layerNumber){
       var apLuminariasLayer = new esri.layers.FeatureLayer(myLayers().read_ap_luminarias(),{id:"ap_luminarias",
       mode: esri.layers.FeatureLayer.MODE_ONDEMAND,
@@ -248,6 +256,37 @@ function setLayers(){
         ap_showEditor(evt);
       });
 
+      return apLuminariasLayer;
+    },
+    */
+    ,
+    ap_luminarias(whereRegion, layerNumber){
+      var apLuminariasLayer = new esri.layers.ArcGISDynamicMapServiceLayer(myLayers().read_ap_luminarias(),{id:"ap_luminarias",
+      minScale: 9000});
+      apLuminariasLayer.setImageFormat("png32");
+      apLuminariasLayer.setVisibleLayers([1,2]);
+      var layerDefinitions = [];
+      layerDefinitions[1] = whereRegion;
+      layerDefinitions[2] = whereRegion;
+
+      apLuminariasLayer.setLayerDefinitions(layerDefinitions);
+
+      /*//ON MOUSE OVER EVENT
+      apLuminariasLayer.on('mouse-over',(evt)=>{
+
+        ap_infoWindow(evt.graphic.attributes['ID_LUMINARIA'],
+          evt.graphic.attributes['ROTULO'],
+          evt.graphic.attributes['TIPO_CONEXION'],
+          evt.graphic.attributes['TIPO'],
+          evt.graphic.attributes['PROPIEDAD'],
+          evt.graphic.attributes['MEDIDO_TERRENO'],
+          evt.graphic.geometry);
+
+      });
+      apLuminariasLayer.on('click', (evt)=>{
+        ap_showEditor(evt);
+      });
+      */
       return apLuminariasLayer;
     },
     ap_tramos(whereRegion, layerNumber){

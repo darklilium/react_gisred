@@ -84,7 +84,7 @@ function muniLogin(user,pass){
 
 //for ap
 function saveSettings(user){
-  console.log(user);
+  
   var getUserAccountSettings = createQueryTask({
     url: myLayers.read_logAccess(),
     whereClause: "usuario = '"+ user+ "'",

@@ -2,9 +2,9 @@ import cookieHandler from 'cookie-handler';
 import APEditor from '../../../js/components/pstreetlights/AP_Editor.jsx';
 import createQueryTask from '../../../js/services/createquerytask-service';
 import layers from '../../../js/services/layers-service';
+import {crearRectangulo} from '../../../js/services/crearRectangulo';
 
-
-function ap_showEditor(event){
+function ap_showEditor(attributes,callbackMain){
   cookieHandler.remove('crrntgrphc');
   var elementMedidor = document.getElementById('wrapper_medidores');
   var elementLuminaria = document.getElementById('wrapper_luminarias');
@@ -16,19 +16,17 @@ function ap_showEditor(event){
     console.log("Esta apagado todo");
     $('.ap_wrapper-editor').css('visibility', 'visible').css('display','flex');
 
+    ap_getPics(attributes['ID_NODO'],attributes['COMUNA'],(callback)=>{
 
-
-    ap_getPics(event.graphic.attributes['ID_NODO'],event.graphic.attributes['COMUNA'] ,(callback)=>{
-      console.log(event.graphic.attributes);
       let attributesSelected = {
-        TIPO_CONEXION:event.graphic.attributes['TIPO_CONEXION'] ,
-        TIPO:event.graphic.attributes['TIPO'],
-        POTENCIA:event.graphic.attributes['POTENCIA'],
-        PROPIEDAD:event.graphic.attributes['PROPIEDAD'],
-        OBSERVACION:event.graphic.attributes['OBSERVACION'],
-        ID_LUMINARIA:event.graphic.attributes['ID_LUMINARIA'],
-        ID_NODO:event.graphic.attributes['ID_NODO'],
-        ROTULO:event.graphic.attributes['ROTULO']
+        TIPO_CONEXION:attributes['TIPO_CONEXION'] ,
+        TIPO:attributes['TIPO'],
+        POTENCIA:attributes['POTENCIA'],
+        PROPIEDAD:attributes['PROPIEDAD'],
+        OBSERVACION:attributes['OBSERVACION'],
+        ID_LUMINARIA:attributes['ID_LUMINARIA'],
+        ID_NODO:attributes['ID_NODO'],
+        ROTULO:attributes['ROTULO']
 
       }
       ap_getPicsAttached(callback, (mySecondCallback)=>{
@@ -37,8 +35,9 @@ function ap_showEditor(event){
           pics: mySecondCallback
         };
         cookieHandler.set('crrntgrphc',mysettings);
-        APEditor.layerClicked();
+        callbackMain(mysettings);
       });
+
     });
 
   }else{
@@ -46,6 +45,8 @@ function ap_showEditor(event){
     $('.ap_wrapper-editor').css('visibility', 'hidden').css('display','flex');
 
   }
+
+
 }
 
 function ap_getPics(idnodo,comuna,callback){
@@ -98,4 +99,30 @@ function ap_getPicsAttached(idnodo, mySecondCallback){
 
 
 }
-export {ap_showEditor}
+
+
+function ap_getClickedLuminaria(geometry, callback){
+
+    var myRectangulo = crearRectangulo(geometry,3);
+    var qTaskInterruptions = new esri.tasks.QueryTask(layers.read_ap_luminariasQuery());
+    var qInterruptions = new esri.tasks.Query();
+
+    qInterruptions.returnGeometry = true;
+    qInterruptions.outFields=["*"];
+    qInterruptions.geometry = myRectangulo;
+    qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
+
+    qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
+      console.log(featureSet.features);
+      if(!featureSet.features.length){
+        return callback([]);
+      }
+      callback(featureSet.features);
+    }, (Errorq)=>{
+      console.log(Errorq,"Error doing query for luminaria clicked");
+      callback([]);
+    });
+
+}
+
+export {ap_showEditor, ap_getClickedLuminaria}

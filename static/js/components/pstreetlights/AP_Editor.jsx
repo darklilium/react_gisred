@@ -4,42 +4,7 @@ import ReactTabs from 'react-tabs';
 import cookieHandler from 'cookie-handler';
 import { createStore, combineReducers } from 'redux';
 
-//redux
 
-//Reducer del componente para la accion del layer.
-
-function EditorState(previousState = [], action){
-  switch(action.type){
-    case 'CLICKED':
-      return cookieHandler.get('crrntgrphc');
-
-    default:
-      return previousState;
-  }
-}
-
-function PictureCounter(state = 0, action){
-  var picsLength = cookieHandler.get('crrntgrphc');
-//  //  console.log(action.value, "my action value now", state , "my state value now");
-  switch(action.type){
-    case 'INCREMENT':
-      return state + 1
-
-    case 'DECREMENT':
-    if (state > 0){
-      return state - 1
-    }
-
-
-    default:
-      return state;
-  }
-}
-
-//combinar reducers en uno
-var rootReducer = combineReducers({ EditorState, PictureCounter });
-//crea la store
-var store = createStore(rootReducer);
 
 /* EDITOR COMPONENT  */
 var Tab = ReactTabs.Tab;
@@ -51,8 +16,6 @@ class APEditor extends React.Component {
 
   constructor(props){
     super(props);
-    // suscribe.
-    store.subscribe(this.forceUpdate.bind(this));
 
     this.onClickEditor = this.onClickEditor.bind(this);
     this.onClickClose = this.onClickClose.bind(this);
@@ -63,10 +26,10 @@ class APEditor extends React.Component {
     this.onRotateLeft = this.onRotateLeft.bind(this);
     this.onRotateRight = this.onRotateRight.bind(this);
 
-
+    console.log(props);
     this.state = {
       selectedTab: 0,
-      idlum: '',
+      idluminaria: '',
       idnodo: '',
       tipoconexion: '',
       tipoluminaria: '',
@@ -83,49 +46,7 @@ class APEditor extends React.Component {
 
   }
 
-  static layerClicked(){
-
-    store.dispatch({
-      type: 'CLICKED'
-    });
-
-  }
-
-  componentDidMount(){
-    store.subscribe(()=> {
-      var myClickedGraphic = store.getState().EditorState;
-      //if doesnt have any pics to show
-      if (!myClickedGraphic.pics.length){
-
-        this.setState({
-        currentPic: noImg,
-        pics : [],
-        currentPicNumber: 0
-        });
-
-      }else{
-
-        let mycurrentpic = myClickedGraphic.pics[store.getState().PictureCounter].url;
-        this.setState({
-          idlum: myClickedGraphic.graphics.ID_LUMINARIA,
-          idnodo: myClickedGraphic.graphics.ID_NODO,
-          tipoconexion: myClickedGraphic.graphics.TIPO_CONEXION,
-          tipoluminaria: myClickedGraphic.graphics.TIPO,
-          potencia: myClickedGraphic.graphics.POTENCIA,
-          propiedad: myClickedGraphic.graphics.PROPIEDAD,
-          empresa:myClickedGraphic.graphics.EMPRESA,
-          rotulo:myClickedGraphic.graphics.ROTULO,
-          observaciones: myClickedGraphic.graphics.OBSERVACION,
-          pics: myClickedGraphic.pics,
-          currentPic: mycurrentpic,
-          currentPicNumber: store.getState().PictureCounter+1
-        });
-      }
-    });
-  }
-
   onChangeTipoConexion(e){
-  //  //  console.log(e.target.value);
     this.setState({tipoconexion: e.target.value});
   }
 
@@ -139,27 +60,6 @@ class APEditor extends React.Component {
 
   handleSelect(index, last){
     this.setState({selectedTab: index});
-
-    var myClickedGraphic = store.getState().EditorState;
-  //  //  console.log("al clickear el tab", myClickedGraphic);
-        //if doesnt have any pics to show
-        if (!myClickedGraphic.pics.length){
-          this.setState({
-          currentPic: noImg,
-          currentPicNumber: 0
-          });
-
-        }else{
-
-          let mycurrentpic = myClickedGraphic.pics[0].url;
-
-          this.setState({
-          pics: myClickedGraphic.pics,
-          currentPic: mycurrentpic,
-          currentPicNumber: store.getState().PictureCounter+1
-          });
-        }
-
   }
 
   onClickNextPic(){
@@ -206,7 +106,17 @@ class APEditor extends React.Component {
     //  console.log($("#myimg").getRotateAngle(), "this is the angle now and this is my value saved", this.state.rotateImgAngle);
   }
 
+  componenDidUpdate(){
+    console.log("se actualizó");
+    if( _.isEmpty(this.props.luminariaElements) ){
+
+    }else{
+      this.setState({idluminaria: this.props.luminariaElements.graphics.ID_LUMINARIA});
+
+    }
+  }
   render(){
+
 
     return (
     <div className="ap_wrapper-editor">
@@ -222,21 +132,23 @@ class APEditor extends React.Component {
         <TabPanel>
 
           <div className="ap_wrapper-editor-top">
-            <h8 id="ap_lblIDLuminaria">ID Luminaria: {this.state.idlum}</h8>
-            <h8 id="ap_lblIDNodo">ID Nodo: {this.state.idnodo}</h8>
+            <h8 id="ap_lblIDLuminaria">ID Luminaria: {this.state.idluminaria}</h8>
+            <h8 id="ap_lblIDNodo">ID Nodo: {( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.ID_NODO}</h8>
           </div>
 
           <div className="ap_wrapper-editor-mid">
             <h8>Tipo Conexión:</h8>
             <select id="ap_cbTipoConexion" className="ap__editor-combobox" title="Elija una opción " ref="searchType"
-                    value={this.state.tipoconexion} onChange={this.onChangeTipoConexion}>
+                    value={( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.TIPO_CONEXION}
+                    onChange={this.onChangeTipoConexion}>
               <option value="" disabled>--Seleccione</option>
               <option value="Directo a Red BT">Directo a Red BT</option>
               <option value="Hilo Piloto">Hilo Piloto</option>
               <option value="Indeterminada">Indeterminada</option>
               <option value="Red AP">Red AP</option></select>
             <h8>Tipo:</h8>
-            <select id="ap_cbTipoLuminaria" className="ap__editor-combobox" title="Elija una opción " ref="searchType"  value={this.state.tipoluminaria}>
+            <select id="ap_cbTipoLuminaria" className="ap__editor-combobox" title="Elija una opción " ref="searchType"
+            value={( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.TIPO}>
               <option value="" disabled>--Seleccione</option>
               <option value="NA">NA</option>
               <option value="Hg">Hg</option>
@@ -246,7 +158,8 @@ class APEditor extends React.Component {
               <option value="LED">LED</option>
               <option value="Ornamental">Ornamental</option></select>
             <h8>Potencia:</h8>
-            <select id="ap_cbPotenciaLuminaria" className="ap__editor-combobox" title="Elija una opción " ref="searchType"  value={this.state.potencia}>
+            <select id="ap_cbPotenciaLuminaria" className="ap__editor-combobox" title="Elija una opción " ref="searchType"
+            value={( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.POTENCIA}>
               <option value="" disabled>--Seleccione</option>
               <option value="70">70</option>
               <option value="80">80</option>
@@ -265,7 +178,8 @@ class APEditor extends React.Component {
               <option value="500">500</option>
               <option value="1000">1000</option></select>
             <h8>Propiedad:</h8>
-            <select id="ap_cbPropiedadLuminaria" className="ap__editor-combobox" title="Elija una opción de búsqueda" ref="searchType" value={this.state.propiedad}>
+            <select id="ap_cbPropiedadLuminaria" className="ap__editor-combobox" title="Elija una opción de búsqueda" ref="searchType"
+            value={( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.PROPIEDAD}>
               <option value="" disabled>--Seleccione</option>
               <option value="Empresa">Empresa</option>
               <option value="Particular">Particular</option>
@@ -273,9 +187,11 @@ class APEditor extends React.Component {
               <option value="Otro">Otro</option>
               <option value="Virtual">Virtual</option></select>
             <h8>Rótulo Poste:</h8>
-            <input id="ap_txtRotuloLuminaria" className="ap__editor-input" ref="rotuloValue" title="Ingrese Rotulo" type="text" placeholder="Rotulo de la luminaria" value={this.state.rotulo} />
+            <input id="ap_txtRotuloLuminaria" className="ap__editor-input" ref="rotuloValue" title="Ingrese Rotulo" type="text" placeholder="Rotulo de la luminaria"
+            value={( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.ROTULO} />
             <h8>Observaciones:</h8>
-            <input id="ap_txtObsLuminaria" className="ap__editor-input" ref="obsValue" title="Observación" type="text" placeholder="Sus observaciones aquí" value={this.state.observaciones}/>
+            <input id="ap_txtObsLuminaria" className="ap__editor-input" ref="obsValue" title="Observación" type="text" placeholder="Sus observaciones aquí"
+            value={( _.isEmpty(this.props.luminariaElements) )? "" : this.props.luminariaElements.graphics.OBSERVACION}/>
           </div>
 
           <div className="ap_wrapper-editor-bot">

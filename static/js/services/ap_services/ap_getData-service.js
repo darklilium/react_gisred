@@ -36,7 +36,7 @@ function ap_getDataMedidores(comuna,callback) {
 
 function ap_getDataLuminarias(comuna,callback){
   var dataLuminariasSrv = createQueryTask({
-    url: layers.read_ap_luminarias(),
+    url: layers.read_ap_luminariasQuery(),
     whereClause: "comuna='"+comuna + "'"
   });
 
