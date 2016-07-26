@@ -5,10 +5,10 @@ import cookieHandler from 'cookie-handler';
 import { createStore, combineReducers } from 'redux';
 import {connect} from 'react-redux';
 import store from '../pstreetlights/store/store.js';
-
+import {getLuminariaDetails} from "../pstreetlights/actions/editor-actions.js";
 const mapStateToProps = function(store) {
   return {
-    elements: store
+    elements: store.editorState
   };
 };
 
@@ -112,10 +112,10 @@ class APEditor extends React.Component {
     //  console.log($("#myimg").getRotateAngle(), "this is the angle now and this is my value saved", this.state.rotateImgAngle);
   }
 
-
+  
   render(){
 
-    console.log(this.props);
+    console.log("my props", this.props);
     return (
     <div className="ap_wrapper-editor">
     <button className="ap_editor_button-close ap__editor_button ap__editor_button-bot btn btn-default" title="Cerrar Ventana" type="button" onClick={this.onClickClose} >

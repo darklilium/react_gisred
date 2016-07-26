@@ -5,16 +5,17 @@ const initialState = {
   attributes: ''
 };
 
-const editorReducer = function(state = initialState, action) {
+const editorReducer = (state = initialState, action) => {
 
   switch(action.type) {
 
     case types.CLICK_LUMINARIA:
 
       return Object.assign({}, state, {
-        pics: action.state.pics,
-        attributes:  state.state.graphics
+        pics: state.pics,
+        attributes:  state.graphics
       });
+      
     break;
   }
 

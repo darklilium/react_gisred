@@ -1,8 +1,7 @@
 import * as types from '../../pstreetlights/actions/apactions.js';
 
-export function getLuminariaDetails(lumDetails){
+export function getLuminariaDetails(){
   return {
-    type: types.CLICK_LUMINARIA,
-    lumDetails
+    type: types.CLICK_LUMINARIA
   };
 }

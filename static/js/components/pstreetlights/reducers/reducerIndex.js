@@ -6,7 +6,7 @@ import editorReducer from './editor-reducer';
 
 // Combine Reducers
 var reducers = combineReducers({
-    editorState: editorReducer
+    editor: editorReducer
 });
 
 export default reducers;
