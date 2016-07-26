@@ -84,7 +84,7 @@ function muniLogin(user,pass){
 
 //for ap
 function saveSettings(user){
-  
+
   var getUserAccountSettings = createQueryTask({
     url: myLayers.read_logAccess(),
     whereClause: "usuario = '"+ user+ "'",
@@ -133,16 +133,14 @@ function gisredLogin(user, pass){
 
     if(myToken.indexOf('Exception') >= 0) {
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
-
       return;
     }
     if (myToken.indexOf('error') >= 0){
-
       notifications('Login incorrecto, intente nuevamente.', 'Login_Error', '.notification-login');
       return;
     }
 
-    console.log('writing token into system');
+    console.log('writing token into system', myToken);
     token.write(myToken);
     //if the login is correct. Get user permission:
     getUserPermission(user, myToken, (UserPermissions)=>{
