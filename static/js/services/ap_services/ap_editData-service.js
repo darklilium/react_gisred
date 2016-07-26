@@ -113,7 +113,7 @@ function ap_getClickedLuminaria(geometry, callback){
     qInterruptions.spatialRelationship = esri.tasks.Query.SPATIAL_REL_INTERSECTS;
 
     qTaskInterruptions.execute(qInterruptions, (featureSet)=>{
-      console.log(featureSet.features);
+    
       if(!featureSet.features.length){
         return callback([]);
       }

@@ -12,17 +12,16 @@ import {ap_getDataMedidores} from '../../../js/services/ap_services/ap_getData-s
 import {ap_getDataLuminarias, ap_getTramosMedidor, ap_getTramosLuminaria,ap_getDataLuminariasAsociadas} from '../../../js/services/ap_services/ap_getData-service';
 import {myValuesSelected} from '../../../js/services/ap_services/ap_settings-service';
 import {ap_getMedidorLocation} from '../../../js/services/ap_services/ap_getLocation-service';
-import {ap_showEditor} from '../../../js/services/ap_services/ap_editData-service';
+import {ap_showEditor,ap_getClickedLuminaria} from '../../../js/services/ap_services/ap_editData-service';
 //import {ap_exportGraphicsToPDF} from '../../../js/services/ap_services/ap_exportToPdf';
 import {ap_exportToExcel} from '../../../js/services/ap_services/ap_exportToExcel';
 import {myDisplayedMedidor,myDisplayedLuminaria,myDisplayedLuminariaAsociada} from '../../../js/services/ap_services/ap_settings-service';
-import {ap_getClickedLuminaria} from '../../../js/services/ap_services/ap_editData-service';
 import cookieHandler from 'cookie-handler';
 
-import onClickLuminaria from '../pstreetlights/actions/apactions';
-import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import store from '../pstreetlights/store/store';
 
-const store = createStore(onClickLuminaria);
+
 
 class AlumbradoPublico extends React.Component {
 
@@ -96,7 +95,7 @@ class AlumbradoPublico extends React.Component {
         ap_getClickedLuminaria(g.mapPoint,(callback)=>{
           if(callback.length==0){
             console.log("no hay nada aqui");
-            store.dispatch({type: 'CLICK_LUMINARIA', state: callback});
+            store.dispatch({type: 'CLICK_LUMINARIA', state: []});
             return;
           }else{
             ap_showEditor(callback[0].attributes,(callback)=>{
@@ -380,96 +379,97 @@ class AlumbradoPublico extends React.Component {
     }
   }
 
-
   render(){
     let region = this.state.settings.comuna;
     let noneStyle = {display: 'none'};
-    console.log(this.state.themap);
+
     return (
-    <div className="ap__wrapper">
+      <Provider store={store}>
+        <div className="ap__wrapper">
 
-    <div className="map_div" id="map_div"></div>
+        <div className="map_div" id="map_div"></div>
 
-    <APNavBar imgLogo={this.state.settings.logo} title={this.state.settings.comuna}
-              onSearch={this.onSearch}
-              onMedidor={this.onMedidor}
-              onLuminarias={this.onLuminarias}
-              onChangeMap={this.onChangeMap}
-              onClearMap={this.onClearMap}/>
+        <APNavBar imgLogo={this.state.settings.logo} title={this.state.settings.comuna}
+                  onSearch={this.onSearch}
+                  onMedidor={this.onMedidor}
+                  onLuminarias={this.onLuminarias}
+                  onChangeMap={this.onChangeMap}
+                  onClearMap={this.onClearMap}/>
 
-    <APSearch region={region}/>
+        <APSearch region={region}/>
 
-    <div className="ap_search_notifications"></div>
+        <div className="ap_search_notifications"></div>
 
-    <APEditor themap={this.state.themap} luminariaElements={this.state.luminariaElements}/>
+        <APEditor themap={this.state.themap} />
 
-    <div className="ap__wrapper-tables">
+        <div className="ap__wrapper-tables">
 
-      <div id ="wrapper_medidores" style={noneStyle} className="ap__info_wrapper-medidores">
-        <div className="medidores_filter">
-          <div className="medidores_tools">
-            <div className="medidores_tools_h6 h6_medidores"><h6>Medidores</h6></div>
-              <div className="medidores_tools_buttons">
-                <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowTramosMedidor" title="Ver Tramos" type="button" onClick={this.onShowTramos} >
-                    <span><i className="fa fa-code-fork "></i></span>
-                </button>
-                <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowLumMedidor" title="Ver Luminarias Asociadas" type="button" onClick={this.onShowLumAsoc} >
-                    <span><i className="fa fa-lightbulb-o"></i></span>
-                </button>
-                <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnDownloadInfoMedidor" title="Descargar info." type="button" onClick={this.onDownLoad}  >
-                    <span><i className="fa fa-download"></i></span>
-                </button>
+          <div id ="wrapper_medidores" style={noneStyle} className="ap__info_wrapper-medidores">
+            <div className="medidores_filter">
+              <div className="medidores_tools">
+                <div className="medidores_tools_h6 h6_medidores"><h6>Medidores</h6></div>
+                  <div className="medidores_tools_buttons">
+                    <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowTramosMedidor" title="Ver Tramos" type="button" onClick={this.onShowTramos} >
+                        <span><i className="fa fa-code-fork "></i></span>
+                    </button>
+                    <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowLumMedidor" title="Ver Luminarias Asociadas" type="button" onClick={this.onShowLumAsoc} >
+                        <span><i className="fa fa-lightbulb-o"></i></span>
+                    </button>
+                    <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnDownloadInfoMedidor" title="Descargar info." type="button" onClick={this.onDownLoad}  >
+                        <span><i className="fa fa-download"></i></span>
+                    </button>
+                  </div>
               </div>
+              <APInfo title={"Medidores"} columns={this.state.columnsMedidores} data={this.state.dataMedidores} comuna={this.state.settings.comuna} />
+            </div>
           </div>
-          <APInfo title={"Medidores"} columns={this.state.columnsMedidores} data={this.state.dataMedidores} comuna={this.state.settings.comuna} />
-        </div>
-      </div>
 
-      <div id ="wrapper_luminariasAsociadas" style={noneStyle} className="ap__info_wrapper-luminariasAsociadas">
-        <div className="medidores_filter">
-          <div className="medidores_tools">
-            <div className="medidores_tools_h6 h6_luminariasAsociadas"><h6>Lum.Asoc </h6></div>
-              <div className="medidores_tools_buttons">
-                <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnDownloadInfoLuminariasAsoc" title="Descargar info." type="button" onClick={this.onDownLoad}>
-                    <span><i className="fa fa-download"></i></span>
-                </button>
+          <div id ="wrapper_luminariasAsociadas" style={noneStyle} className="ap__info_wrapper-luminariasAsociadas">
+            <div className="medidores_filter">
+              <div className="medidores_tools">
+                <div className="medidores_tools_h6 h6_luminariasAsociadas"><h6>Lum.Asoc </h6></div>
+                  <div className="medidores_tools_buttons">
+                    <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnDownloadInfoLuminariasAsoc" title="Descargar info." type="button" onClick={this.onDownLoad}>
+                        <span><i className="fa fa-download"></i></span>
+                    </button>
 
+                  </div>
               </div>
-          </div>
-          <APInfo title={"Luminarias Asociadas"} columns={this.state.columnsLuminarias} data={this.state.dataLuminariasAsociadas} comuna={this.state.settings.comuna}/>
-
-        </div>
-      </div>
-
-      <div id ="wrapper_luminarias" style={noneStyle} className="ap__info_wrapper-luminarias">
-        <div className="medidores_filter">
-          <div className="medidores_tools">
-            <div className="medidores_tools_h6 h6_luminarias"><h6>Luminarias</h6></div>
-            <div className="medidores_tools_buttons">
-              <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowTramosLuminaria" title="Ver Tramos" type="button" onClick={this.onShowTramos}>
-                  <span><i className="fa fa-code-fork "></i></span>
-              </button>
-              <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowMedidorAsoc" title="Mostrar Ubicación Medidor." type="button" onClick={this.onShowMedidorAsoc}>
-                  <span><i className="fa fa-tachometer"></i></span>
-              </button>
-              <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowLumLuminaria" title="Ver Luminarias" type="button" onClick={this.onShowRelatedLumAsoc}>
-                  <span><i className="fa fa-lightbulb-o"></i></span>
-              </button>
-              <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnDownloadInfoLuminarias" title="Descargar info." type="button" onClick={this.onDownLoad}>
-                  <span><i className="fa fa-download"></i></span>
-              </button>
+              <APInfo title={"Luminarias Asociadas"} columns={this.state.columnsLuminarias} data={this.state.dataLuminariasAsociadas} comuna={this.state.settings.comuna}/>
 
             </div>
           </div>
-          <APInfo title={"Luminarias"} columns={this.state.columnsLuminarias} data={this.state.dataLuminarias} comuna={this.state.settings.comuna}/>
+
+          <div id ="wrapper_luminarias" style={noneStyle} className="ap__info_wrapper-luminarias">
+            <div className="medidores_filter">
+              <div className="medidores_tools">
+                <div className="medidores_tools_h6 h6_luminarias"><h6>Luminarias</h6></div>
+                <div className="medidores_tools_buttons">
+                  <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowTramosLuminaria" title="Ver Tramos" type="button" onClick={this.onShowTramos}>
+                      <span><i className="fa fa-code-fork "></i></span>
+                  </button>
+                  <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowMedidorAsoc" title="Mostrar Ubicación Medidor." type="button" onClick={this.onShowMedidorAsoc}>
+                      <span><i className="fa fa-tachometer"></i></span>
+                  </button>
+                  <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnShowLumLuminaria" title="Ver Luminarias" type="button" onClick={this.onShowRelatedLumAsoc}>
+                      <span><i className="fa fa-lightbulb-o"></i></span>
+                  </button>
+                  <button className="ap_table_navbar ap_navbar_button btn btn-default" id="btnDownloadInfoLuminarias" title="Descargar info." type="button" onClick={this.onDownLoad}>
+                      <span><i className="fa fa-download"></i></span>
+                  </button>
+
+                </div>
+              </div>
+              <APInfo title={"Luminarias"} columns={this.state.columnsLuminarias} data={this.state.dataLuminarias} comuna={this.state.settings.comuna}/>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <LayerList show={["check_ap_modificaciones"]} settings={this.state.settings}/>
+        <LayerList show={["check_ap_modificaciones"]} settings={this.state.settings}/>
 
 
-    </div>
+        </div>
+      </Provider>
     );
   }
 }

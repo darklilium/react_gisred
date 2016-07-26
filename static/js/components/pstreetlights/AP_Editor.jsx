@@ -3,8 +3,14 @@ import React from 'react';
 import ReactTabs from 'react-tabs';
 import cookieHandler from 'cookie-handler';
 import { createStore, combineReducers } from 'redux';
+import {connect} from 'react-redux';
+import store from '../pstreetlights/store/store.js';
 
-
+const mapStateToProps = function(store) {
+  return {
+    elements: store
+  };
+};
 
 /* EDITOR COMPONENT  */
 var Tab = ReactTabs.Tab;
@@ -26,7 +32,7 @@ class APEditor extends React.Component {
     this.onRotateLeft = this.onRotateLeft.bind(this);
     this.onRotateRight = this.onRotateRight.bind(this);
 
-    console.log(props);
+
     this.state = {
       selectedTab: 0,
       idluminaria: '',
@@ -106,18 +112,10 @@ class APEditor extends React.Component {
     //  console.log($("#myimg").getRotateAngle(), "this is the angle now and this is my value saved", this.state.rotateImgAngle);
   }
 
-  componenDidUpdate(){
-    console.log("se actualizó");
-    if( _.isEmpty(this.props.luminariaElements) ){
 
-    }else{
-      this.setState({idluminaria: this.props.luminariaElements.graphics.ID_LUMINARIA});
-
-    }
-  }
   render(){
 
-
+    console.log(this.props);
     return (
     <div className="ap_wrapper-editor">
     <button className="ap_editor_button-close ap__editor_button ap__editor_button-bot btn btn-default" title="Cerrar Ventana" type="button" onClick={this.onClickClose} >
@@ -244,4 +242,4 @@ class APEditor extends React.Component {
 
 
 
-export default APEditor;
+export default connect(mapStateToProps)(APEditor);

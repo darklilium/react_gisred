@@ -1,13 +1,12 @@
-//redux
+//Editor actions
+export const CLICK_LUMINARIA = 'ON_CLICK_LUMINARIA';
+/*export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const USER_PROFILE_SUCCESS = 'USER_PROFILE_SUCCESS';
 
-function onClickLuminaria(state = [],action){
-  console.log(action, state);
-  switch (action.type) {
-    case 'CLICK_LUMINARIA':
-      return Object.assign({},state,{attributes: action.attributes});
-    break;
-    default:
-    return state;
-  }
-}
-export default onClickLuminaria;
+// Widgets
+export const GET_WIDGETS_SUCCESS = 'GET_WIDGETS_SUCCESS';
+export const DELETE_WIDGET_SUCCESS = 'DELETE_WIDGET_SUCCESS';
+
+// Search Layout
+export const LOAD_SEARCH_LAYOUT = 'LOAD_SEARCH_LAYOUT';
+*/
