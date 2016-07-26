@@ -186,7 +186,7 @@ class Factigis_Add extends React.Component {
       case 'factigis_txtTramo':
         this.setState({factigisTramo: e.currentTarget.value});
       break;
-      
+
       default:
 
     }
@@ -232,10 +232,12 @@ class Factigis_Add extends React.Component {
       break;
       case 'factigis_txtApellido':
         if(!this.state.factigisApellido==''){
-          console.log("si factigisApellido",this.state.factigisApellido);
-          this.setState({factigisApellidoValidator: true});
+          console.log("si factigisApellido",this.state.factigisApellido.toUpperCase());
+          this.setState({
+            factigisApellido:this.state.factigisApellido.toUpperCase(),
+            factigisApellidoValidator: true});
         }else{
-          console.log("no factigisApellido",this.state.factigisApellido);
+          console.log("no factigisApellido",this.state.factigisApellido.toUpperCase());
           this.setState({factigisApellidoValidator: false});
         }
       break;
@@ -250,10 +252,10 @@ class Factigis_Add extends React.Component {
       break;
       case 'factigis_txtEmail':
         if(!this.state.factigisEmail==''){
-          console.log("si factigisEmail",this.state.factigisEmail);
+          console.log("si factigisEmail",this.state.factigisEmail.toUpperCase());
           this.setState({factigisEmailValidator: true});
         }else{
-          console.log("no factigisEmail",this.state.factigisEmail);
+          console.log("no factigisEmail",this.state.factigisEmail.toUpperCase());
           this.setState({factigisEmailValidator: false});
         }
       break;
